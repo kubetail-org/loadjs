@@ -12,16 +12,17 @@ loadjs is a tiny async loader for the browser.
 <pre>
 loadjs/
 ├── dist
-|   ├── load.js
-|   └── load.min.js
+|   ├── loadjs.js
+|   └── loadjs.min.js
 ├── examples/
 ├── gulpfile.js
 ├── main.js
 ├── package.json
+├── LICENSE.md
 ├── README.md
 ├── src
-|   └── load.js
-├── __tests__/
+|   └── loadjs.js
+├── test/
 </pre>
 
 ## Dependencies

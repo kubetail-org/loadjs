@@ -39,7 +39,7 @@ gulp.task('clean', function(callback) {
 
 
 gulp.task('js', function() {
-  return gulp.src('src/load.js')
+  return gulp.src('src/loadjs.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     .pipe(rename(pkg.name + '.js'))
