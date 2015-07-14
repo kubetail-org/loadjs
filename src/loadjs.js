@@ -146,11 +146,11 @@
     s.style = 'text/javascript';
     s.async = true;
     s.src = path;
-
+    
     s.onload = s.onerror = function(ev) {
       // remove script
       s.parentNode.removeChild(s);
-
+      
       // de-reference script
       s = null;
 

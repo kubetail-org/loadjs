@@ -3,15 +3,29 @@
  * @module test/test-loadjs
  */
 
-
 describe('hello', function() {
   
-  var assert = require('assert'),
-      helpers = require('./helpers.js');
+  var assert = require('assert');
 
-  helpers.initDOM();
 
-  it('should blah', function() {
-    assert.equal(true, true);
+  before(function() {
+    require('../src/loadjs.js');
+  });
+
+
+  it('should blah', function(done) {
+    var loadjs = window.loadjs;
+
+    loadjs(['assets/file1.js'],
+           function() {
+             console.log('load');
+             assert.equal(true, true);
+             done();
+           },
+           function() {
+             console.log('error');
+             assert.equal(false, true);
+             done();
+           });
   });
 });

@@ -240,7 +240,8 @@
   /**
    * done - Done function
    */
-  loadjs.done = function done(id) {
+  loadjs.done = function done(bundleId) {
+    
   };
 
   
