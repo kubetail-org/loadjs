@@ -1,1 +1,1 @@
-console.log('file1.js');
+pathsLoaded['file1.js'] = true;

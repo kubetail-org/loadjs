@@ -22,7 +22,9 @@ if (taskName === 'build-dist') {
   dirName = 'dist';
 } else if (taskName === 'build-examples' || taskName === 'watch') {
   dirName = 'examples/assets/' + pkg.name;
-} else if (taskName !== 'build-e2e-tests') {
+} else if (taskName === 'build-test') {
+  dirName = 'test/assets/' + pkg.name
+} else {
   throw 'Did not understand task "' + taskName + '"';
 }
 
@@ -60,7 +62,6 @@ function build() {
 }
 
 
-
 // ===========================================================================
 // PUBLIC TASKS
 // ============================================================================
@@ -80,22 +81,6 @@ gulp.task('watch', function() {
 });
 
 
-gulp.task('build-e2e-tests', function() {
-  var stream = streamqueue({objectMode: true}),
-      files;
-
-  files = [
-    'test-loadjs.js'
-  ];
-
-  // build streams
-  for (var i=0; i < files.length; i++) {
-    stream.queue(gulp.src('test/' + files[i]));
-  }
-
-  // concat streams
-  return stream.done()
-    .pipe(concat('tests.js'))
-    .pipe(browserify())
-    .pipe(gulp.dest('e2e-tests'));
+gulp.task('build-test', ['clean'], function() {
+  build()
 });
