@@ -4,7 +4,8 @@
  */
 
 var pathsLoaded = null,  // file register
-    assert = chai.assert;
+    assert = chai.assert,
+    expect = chai.expect;
 
 
 describe('hello', function() {
@@ -34,9 +35,10 @@ describe('hello', function() {
 
 
   it('should define bundles', function(done) {
+    // define bundle
     loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle1');
 
-    // on bundle load
+    // define callback
     loadjs.ready('bundle1', function() {
       assert.equal(pathsLoaded['file1.js'], true);
       assert.equal(pathsLoaded['file2.js'], true);
@@ -46,14 +48,27 @@ describe('hello', function() {
 
 
   it('should allow bundle callbacks before definitions', function(done) {
-    // on bundle load
+    // define callback
     loadjs.ready('bundle2', function() {
       assert.equal(pathsLoaded['file1.js'], true);
       assert.equal(pathsLoaded['file2.js'], true);
       done();
     });
 
+    // define bundle
     loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle2');
+  });
+
+
+
+  it('should throw an error if bundle is already defined', function() {
+    loadjs(['assets/file1.js'], 'bundle3');
+
+    var fn = function() {
+      loadjs(['assets/file1.js'], 'bundle3');
+    };
+
+    expect(fn).to.throw(Error, /already been defined/);
   });
 
 

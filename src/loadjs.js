@@ -54,9 +54,17 @@
     // check dependencies
     for (i=deps.length-1; i > -1; i--) {
       bundleId = deps[i];
-      bundleObj = bundleCache[deps[i]];
+      bundleObj = bundleCache[bundleId];
 
-      if (!bundleObj) continue;
+      if (!bundleObj) {
+        // create new
+        bundleObj = bundleCache[bundleId] = {
+          waiting: [],
+          depsNotFound: [],
+          success: [],
+          fail: []
+        };
+      }
 
       if (bundleObj.depsNotFound.length) {
         callbackObj.depsNotFound.push(bundleId);
@@ -173,7 +181,7 @@
 
     // listify
     paths = paths.push ? paths : [paths];
-    
+
     // get args
     for (i=0; i < 3; i++) {
       arg = args[i];
@@ -200,18 +208,25 @@
       anonId += 1;
     }
 
+    bundleObj = bundleCache[id];
+
     // check bundleCache
-    if (id in bundleCache) {
-      throw "LoadJS Error: bundle " + id + " has already been defined.";
+    if (bundleObj && bundleCache[id].waiting.length) {
+      var msg = "LoadJS Error: bundle " + id + " has already been defined.";
+      throw new Error(msg);
     }
 
-    // add to bundleCache
-    bundleObj = bundleCache[id] = {
-      waiting: paths,
-      depsNotFound: [],
-      success: [],
-      fail: []
-    };
+    // update bundleCache
+    if (bundleObj) {
+      bundleCache[id].waiting = paths;
+    } else {
+      bundleObj = bundleCache[id] = {
+        waiting: paths,
+        depsNotFound: [],
+        success: [],
+        fail: []
+      };
+    }
 
     // register callback
     registerCallback([id], successFn, failFn);
@@ -230,7 +245,7 @@
     // listify
     deps = deps.push ? deps : [deps];
 
-    // register calback
+    // register callback
     registerCallback(deps, successFn, failFn);
 
     // return chainable object
