@@ -55,7 +55,7 @@ describe('loadjs tests', function() {
            function(pathsNotFound) {
              assert.equal(pathsLoaded['file1.js'], true);
              assert.equal(pathsNotFound.length, 1);
-             //assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
+             assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
              done();
            });
   });
@@ -87,7 +87,6 @@ describe('loadjs tests', function() {
   });
 
 
-
   it('should throw an error if bundle is already defined', function() {
     // define bundle
     loadjs(['assets/file1.js'], 'bundle3');
@@ -101,7 +100,7 @@ describe('loadjs tests', function() {
   });
 
 
-  it('should create an id and a callback inline', function(done) {
+  it('should create a bundle id and a callback inline', function(done) {
     loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle4', function() {
       assert.equal(pathsLoaded['file1.js'], true);
       assert.equal(pathsLoaded['file2.js'], true);
