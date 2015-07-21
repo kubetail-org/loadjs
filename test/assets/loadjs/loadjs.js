@@ -52,7 +52,7 @@
     };
 
     // check dependencies
-    for (i=deps.length-1; i > -1; i--) {
+    for (i=deps.length - 1; i > -1; i--) {
       bundleId = deps[i];
       bundleObj = bundleCache[bundleId];
 
@@ -85,6 +85,7 @@
     } else {
       callbackQueue.push(callbackObj);
     }
+    console.log(callbackQueue);
   }
 
 
@@ -111,9 +112,10 @@
     if (bundleObj.waiting.length !== 0) return;
 
     // execute callbacks
+    j = 0;
     while (j < callbackQueue.length) {
       callbackObj = callbackQueue[j];
-      
+
       // remove from waiting list
       k = callbackObj.waiting.indexOf(bundleId);
       if (k > -1) callbackObj.waiting.splice(k, 1);
@@ -257,7 +259,22 @@
    * done - Done function
    */
   loadjs.done = function done(bundleId) {
-    
+    var bundleObj = bundleCache[bundleId];
+
+    // update bundleCache
+    if (bundleObj === undefined) {
+      bundleObj = bundleCache[bundleId] = {
+        waiting: [],
+        depsNotFound: [],
+        success: [],
+        fail: []
+      };
+    }
+
+    bundleObj.waiting = [];
+    bundleObj.depsNotFound = [];
+
+    updateQueue(bundleId, null, 'success');
   };
 
   

@@ -15,7 +15,7 @@
     <script src="tests.js"></script>
     <script>
       mocha.checkLeaks();
-      mocha.globals(['loadjs', 'pathsLoaded']);
+      mocha.globals(['loadjs', 'pathsLoaded', 'script*']);
       mocha.run();
     </script>
   </body>

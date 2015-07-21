@@ -63,8 +63,8 @@ loadjs(['foo.js', 'bar.js'], 'bundle', function() {
 });
 
 
-loadjs('foo.js', 'foo')
-loadjs('bar.js', 'bar')
+loadjs('foo.js', 'foo');
+loadjs('bar.js', 'bar');
 loadjs
   .ready('foo', function() {
     // foo.js succeeded
