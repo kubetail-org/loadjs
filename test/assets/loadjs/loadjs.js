@@ -85,7 +85,6 @@
     } else {
       callbackQueue.push(callbackObj);
     }
-    console.log(callbackQueue);
   }
 
 

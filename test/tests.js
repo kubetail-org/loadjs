@@ -31,7 +31,8 @@ describe('loadjs tests', function() {
              throw "Executed success callback";
            },
            function(pathsNotFound) {
-             // TODO: implement and test pathsNotFound
+             assert.equal(pathsNotFound.length, 1);
+             //assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
              done();
            });
   });
@@ -45,6 +46,20 @@ describe('loadjs tests', function() {
     });
   });
 
+
+  it('should call fail callback on one invalid path', function(done) {
+    loadjs(['assets/file1.js', 'assets/file-doesntexist.js'],
+           function() {
+             throw "Executed success callback";
+           },
+           function(pathsNotFound) {
+             assert.equal(pathsLoaded['file1.js'], true);
+             assert.equal(pathsNotFound.length, 1);
+             //assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
+             done();
+           });
+  });
+  
 
   it('should define bundles', function(done) {
     // define bundle
