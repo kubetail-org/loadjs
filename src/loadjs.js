@@ -126,6 +126,9 @@
       
       // execute
       if (callbackObj.waiting.length === 0) {
+        // remove from queue
+        callbackQueue.splice(j, 1);
+
         if (callbackObj.depsNotFound.length) {
           // TODO: use paths for depsNotFound for bundle defined callbacks
           // fail
@@ -134,10 +137,6 @@
           // success
           if (callbackObj.success) callbackObj.success();
         }
-        
-        // remove from queue
-        callbackQueue.splice(j, 1);
-        
       } else {
         // increment loop counter
         j += 1;

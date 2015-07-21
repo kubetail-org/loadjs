@@ -32,7 +32,7 @@ describe('loadjs tests', function() {
            },
            function(pathsNotFound) {
              assert.equal(pathsNotFound.length, 1);
-             //assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
+             assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
              done();
            });
   });
