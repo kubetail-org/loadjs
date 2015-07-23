@@ -1,6 +1,6 @@
 # LoadJS
 
-[![MUI](https://www.muicss.com/static/favicons/icon-192x192.png)](https://www.muicss.com)
+<img src="https://www.muicss.com/static/images/loadjs.svg" width="30%">
 
 LoadJS is a tiny async loading library for the browser.
 
