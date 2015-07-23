@@ -8,7 +8,7 @@ var pathsLoaded = null,  // file register
     expect = chai.expect;
 
 
-describe('loadjs tests', function() {
+describe('LoadJS tests', function() {
 
 
   beforeEach(function() {
@@ -59,32 +59,6 @@ describe('loadjs tests', function() {
              done();
            });
   });
-  
-
-  it('should define bundles', function(done) {
-    // define bundle
-    loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle1');
-
-    // define callback
-    loadjs.ready('bundle1', function() {
-      assert.equal(pathsLoaded['file1.js'], true);
-      assert.equal(pathsLoaded['file2.js'], true);
-      done();
-    });
-  });
-
-
-  it('should allow bundle callbacks before definitions', function(done) {
-    // define callback
-    loadjs.ready('bundle2', function() {
-      assert.equal(pathsLoaded['file1.js'], true);
-      assert.equal(pathsLoaded['file2.js'], true);
-      done();
-    });
-
-    // define bundle
-    loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle2');
-  });
 
 
   it('should throw an error if bundle is already defined', function() {
@@ -96,9 +70,9 @@ describe('loadjs tests', function() {
       loadjs(['assets/file1.js'], 'bundle3');
     };
 
-    expect(fn).to.throw(Error, /already been defined/);
+    expect(fn).to.throw(Error, "LoadJS: Bundle already defined");
   });
-
+  
 
   it('should create a bundle id and a callback inline', function(done) {
     loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle4', function() {
@@ -169,7 +143,7 @@ describe('loadjs tests', function() {
     loadjs.done('plugin1');
   });
 
-  
+
   it('should execute callbacks created after .done()', function(done) {
     // execute done
     loadjs.done('plugin2');
@@ -178,5 +152,35 @@ describe('loadjs tests', function() {
     loadjs.ready('plugin2', function() {
       done();
     });
+  });
+
+
+  it('should define bundles', function(done) {
+    // define bundle
+    loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle1');
+
+    // use 1 second delay to let files load
+    setTimeout(function() {
+      loadjs.ready('bundle1', function() {
+        assert.equal(pathsLoaded['file1.js'], true);
+        assert.equal(pathsLoaded['file2.js'], true);
+        done();
+      });
+    }, 1000);
+  });
+
+
+  it('should allow bundle callbacks before definitions', function(done) {
+    // define callback
+    loadjs.ready('bundle2', function() {
+      assert.equal(pathsLoaded['file1.js'], true);
+      assert.equal(pathsLoaded['file2.js'], true);
+      done();
+    });
+
+    // use 1 second delay
+    setTimeout(function() {
+      loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle2');
+    }, 1000);
   });
 });

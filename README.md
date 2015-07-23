@@ -1,10 +1,10 @@
-# loadjs
+# LoadJS
 
 [![Build Status](https://travis-ci.org/muicss/loadjs.svg?branch=master)](https://travis-ci.org/muicss/loadjs)
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
 
-loadjs is a tiny async loader for the browser.
+LoadJS is a tiny async loading library for the browser.
 
 
 ## Directory structure
@@ -74,16 +74,9 @@ loadjs
   });
 
 
-var dependencyList = {
-  foo: 'foo.js',
-  bar: 'bar.js',
-  thunk: ['thunkor.js', 'thunky.js']
-};
-
-
 loadjs('foo.js', 'foo');
 loadjs('bar.js', 'bar');
-
+loadjs(['thunkor.js', 'thunky.js'], 'thunk');
 
 // wait for multiple depdendencies
 loadjs.ready(['foo', 'bar', 'thunk'],
