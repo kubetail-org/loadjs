@@ -91,9 +91,9 @@ loadjs.ready(['foo', 'bar', 'thunk'],
                // foo.js & bar.js & thunkor.js & thunky.js loaded
              },
              function(depsNotFound) {
-               if (depsNotFound.indexOf('foo') === -1) {};  // foo failed
-               if (depsNotFound.indexOf('bar') === -1) {};  // bar failed
-               if (depsNotFound.indexOf('thunk') === -1) {};  // thunk failed
+               if (depsNotFound.indexOf('foo') > -1) {};  // foo failed
+               if (depsNotFound.indexOf('bar') > -1) {};  // bar failed
+               if (depsNotFound.indexOf('thunk') > -1) {};  // thunk failed
              });
 
 
