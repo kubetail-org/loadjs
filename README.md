@@ -4,7 +4,6 @@
 
 LoadJS is a tiny async loader for modern browsers (590 bytes).
 
-[![Build Status](https://travis-ci.org/muicss/loadjs.svg?branch=master)](https://travis-ci.org/muicss/loadjs)
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
 
@@ -111,11 +110,6 @@ loadjs.ready('jquery', function() {
 });
 ```
 
-## Development Dependencies
-
- * nodejs (http://nodejs.org/)
- * npm (https://www.npmjs.org/)
-
 ## Directory structure
 
 <pre>
@@ -133,3 +127,49 @@ loadjs/
 |   └── loadjs.js
 ├── test/
 </pre>
+
+## Development Quickstart
+
+1. Install dependencies
+ 
+  * nodejs (http://nodejs.org/)
+  * npm (https://www.npmjs.org/)
+  * http-server (via npm)
+
+1. Clone repository
+
+  ```bash
+  $ git clone git@github.com:muicss/loadjs.git
+  $ cd loadjs
+  ```
+
+1. Install node dependencies using npm
+
+  ```bash
+  $ npm install
+  ```
+
+1. Build examples
+
+  ```bash
+  $ ./node_modules/.bin/gulp build-examples
+  ```
+  
+  To view the examples you can use any static file server. To use the `nodejs` http-server module:
+  
+  ```bash
+  $ npm install http-server
+  $ ./node_modules/.bin/http-server -p 3000
+  ```
+  
+  Then visit http://localhost:3000/examples
+  
+## Run tests
+
+To run the browser tests first build the `loadjs` library:
+
+```bash
+$ ./node_modules/.bin/gulp build-test
+```
+
+Then visit http://localhost:3000/test
