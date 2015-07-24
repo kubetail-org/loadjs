@@ -33,55 +33,62 @@ loadjs/
 ## Documentation
 
 ```javascript
+// load a single file
 loadjs('foo.js', function() {
-  // foo.js succeeded
+  // foo.js loaded
 });
 
 
-loadjs('foo.js', 'foo', function() {
-         // foo.js succeeded
-       },  
-       function(depsNotFound) {
-         // foo.js failed
-       });
-
-
+// load multiple files
 loadjs(['foo.js', 'bar.js'], function() {
-  // foo.js & bar.js succeeded
+  // foo.js & bar.js loaded
 });
 
 
-loadjs(['foo.js', 'bar.js'], 'bundle')
-loadjs.ready('bundle', function() {
-  // foo.js & bar.js succeeded
+// add a bundle id
+loadjs(['foo.js', 'bar.js'], 'foobar', function() {
+  // foo.js & bar.js loaded
 });
 
 
-// create an id and callback inline
-loadjs(['foo.js', 'bar.js'], 'bundle', function() {
-  // foo.js & bar.js succeeded
+// add a failure callback
+loadjs(['foo.js', 'bar.js'],
+       'foobar',
+       function() { /* foo.js & bar.js loaded */ },
+       function(pathsNotFound) { /* at least one path didn't load */ });
+
+
+// execute a callback after bundle finishes loading
+loadjs(['foo.js', 'bar.js'], 'foobar');
+
+loadjs.ready('foobar', function() {
+  // foo.js & bar.js loaded
 });
 
 
+// .ready() can be chained together
 loadjs('foo.js', 'foo');
 loadjs('bar.js', 'bar');
+
 loadjs
   .ready('foo', function() {
-    // foo.js succeeded
+    // foo.js loaded
   })
   .ready('bar', function() {
-    // bar.js succeeded
+    // bar.js loaded
   });
 
 
+// compose more complex dependency lists
 loadjs('foo.js', 'foo');
 loadjs('bar.js', 'bar');
 loadjs(['thunkor.js', 'thunky.js'], 'thunk');
 
+
 // wait for multiple depdendencies
 loadjs.ready(['foo', 'bar', 'thunk'],
              function() {
-                // foo.js & bar.js & thunkor.js & thunky.js succeeded
+               // foo.js & bar.js & thunkor.js & thunky.js loaded
              },
              function(depsNotFound) {
                if (depsNotFound.indexOf('foo') === -1) {};  // foo failed
@@ -90,24 +97,20 @@ loadjs.ready(['foo', 'bar', 'thunk'],
              });
 
 
-// in my-awesome-plugin.js
-loadjs.ready('jquery',
-             function() {
-               window.myAwesomePlugin = {};  // define awesome jquery plugin
-
-               loadjs.done('my-awesome-plugin');
-             },
-             function(depsNotFound) {
-               // jquery failed
-             });
-
-
-// in index.html
-loadjs('jquery.js', 'jquery')
-loadjs('my-awesome-plugin.js')
+// use .done() for more control
 loadjs.ready('my-awesome-plugin', function() {
-  // run code here when jquery and my awesome plugin are both finished
-})
+  myAwesomePlugin();
+});
+
+loadjs.ready('jquery', function() {
+  // plugin requires jquery
+  window.myAwesomePlugin = function() {
+    if (!window.jQuery) throw "jQuery is missing!";
+  };
+  
+  // plugin is done loading
+  loadjs.done('my-awesome-plugin');
+});
 ```
 
 ## Development Dependencies
