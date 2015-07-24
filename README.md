@@ -20,12 +20,12 @@ The latest version of LoadJS can be found in the `dist/` directory in this repos
 ## Browser Support 
 
  * IE9+
- * Opera 10+ ??
- * Safar 3+ ??
- * Chrome 1+ ??
- * Firefox 2+ ??
- * iOS ??
- * Android ??
+ * Opera 12+
+ * Safari 5+
+ * Chrome
+ * Firefox
+ * iOS 6+
+ * Android 4.4+
 
 ## Documentation
 
