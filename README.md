@@ -2,7 +2,7 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="30%">
 
-LoadJS is a tiny async loading library for the browser.
+LoadJS is a tiny async loader for modern browsers (590 B gzipped).
 
 [![Build Status](https://travis-ci.org/muicss/loadjs.svg?branch=master)](https://travis-ci.org/muicss/loadjs)
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
@@ -26,10 +26,9 @@ loadjs/
 ├── test/
 </pre>
 
-## Dependencies
+## Introduction
 
- * nodejs (http://nodejs.org/)
- * npm (https://www.npmjs.org/)
+
 
 ## Documentation
 
@@ -110,3 +109,8 @@ loadjs.ready('my-awesome-plugin', function() {
   // run code here when jquery and my awesome plugin are both finished
 })
 ```
+
+## Development Dependencies
+
+ * nodejs (http://nodejs.org/)
+ * npm (https://www.npmjs.org/)
