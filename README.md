@@ -14,6 +14,10 @@ LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simp
 
 LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for error callbacks and to optimize the library for modern browsers. Currently, LoadJS is 590 bytes (minified + gzipped).
 
+The latest version of LoadJS can be found in the `dist/` directory in this repository:
+ * [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.js)
+ * [loadjs.min.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js)
+
 ## Browser Support 
 
  * IE9+
