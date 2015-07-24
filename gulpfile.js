@@ -1,14 +1,9 @@
 var del = require('del'),
-    streamqueue = require('streamqueue'),
     gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
-    concat = require('gulp-concat'),
-    browserify = require('gulp-browserify'),
     pkg = require('./package.json');
-
-
 
 
 // ============================================================================
@@ -27,8 +22,6 @@ if (taskName === 'build-dist') {
 } else {
   throw 'Did not understand task "' + taskName + '"';
 }
-
-
 
 
 // ============================================================================
@@ -65,6 +58,7 @@ function build() {
 // ===========================================================================
 // PUBLIC TASKS
 // ============================================================================
+
 gulp.task('build-dist', ['clean'], function() {
   build()
 });

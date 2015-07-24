@@ -1,146 +1,82 @@
-/**
- * path, bundleName
- * bundleCache
- *
- * bundleCache{}
- *   * <bundleName>{}
- *     * waiting[]
- *     * depsNotFound[]
- *
- * callbackQueue[]{}
- *   * waiting[]
- *   * depsNotFound[]
- *   * success
- *   * fail
- *
- * - user defines bundle 
- *   - update entry in bundleCache (add <path> to waiting list)
- *   - add entry to callbackQueue
- *   - load scripts
- *     - remove <path> from waiting list in bundleCache
- *     - if 'error' add to depsNotFound
- *     - if waiting list is empty execute success / fail callbacks
- *       - delete success/fail lists
- *
- * - user calls ready
- *   - check bundleCache
- *     - if waiting list is empty for all bundles, execute callbacks
- *     - else add to callbackQueue
- * 
- */
 (function(win, doc) {
   var head = doc.head,
-      bundleCache = {},
-      callbackQueue = [],
-      anonId = 0;
-
-
+      devnull = function() {},
+      bundleIdCache = {},
+      bundleResultCache = {},
+      bundleCallbackQueue = {};
+  
+  
   /**
-   * Register callback.
-   * @param {Array} deps - List of bundle ids.
-   * @param {Function} successFn - Success callback if all deps are loaded.
-   * @param {Function} failFn - Fail callback if at least one dep doesn't load.
+   * Subscribe to bundle load event.
+   * @param {string[]} bundleIds - Bundle ids
+   * @param {Function} callbackFn - The callback function
    */
-  function registerCallback(deps, successFn, failFn) {
-    var callbackObj, bundleId, bundleObj, i;
+  function subscribe(bundleIds, callbackFn) {
+    // listify
+    bundleIds = bundleIds.push ? bundleIds : [bundleIds];
 
-    callbackObj = {
-      waiting: [],
-      depsNotFound: [],
-      success: successFn,
-      fail: failFn
+    var depsNotFound, numWaiting, fn, bundleId, i, r, q;
+
+    // define callback function
+    numWaiting = bundleIds.length;
+    depsNotFound = [];
+
+    fn = function(bundleId, pathsNotFound) {
+      if (pathsNotFound.length) depsNotFound.push(bundleId);
+      
+      numWaiting -= 1;
+      if (numWaiting === 0) callbackFn(depsNotFound);
     };
-
-    // check dependencies
-    for (i=deps.length-1; i > -1; i--) {
-      bundleId = deps[i];
-      bundleObj = bundleCache[deps[i]];
-
-      if (!bundleObj) continue;
-
-      if (bundleObj.depsNotFound.length) {
-        callbackObj.depsNotFound.push(bundleId);
-      } else {
-        callbackObj.waiting.push(bundleId);
+    
+    // register callback
+    for (i=bundleIds.length - 1; i > -1; i--) {
+      bundleId = bundleIds[i];
+      
+      // execute callback if in result cache
+      r = bundleResultCache[bundleId];
+      if (r) {
+        fn(bundleId, r);
+        continue;
       }
-    }
-
-    // execute or add to queue
-    if (callbackObj.waiting.length === 0) {
-      if (callbackObj.depsNotFound.length) {
-        // fail
-        if (failFn) failFn(callbackObj.depsNotFound);
-      } else {
-        // success
-        if (successFn) successFn();
-      }
-    } else {
-      callbackQueue.push(callbackObj);
+      
+      // add to callback queue
+      q = bundleCallbackQueue[bundleId] = bundleCallbackQueue[bundleId] || [];
+      q.push(fn);
     }
   }
 
 
   /**
-   * Register callback.
-   * @param {string} bundleId - The bundle id.
-   * @param {string} path - The script's path.
-   * @param {string} result - The result of the script load ("load"|"error").
+   * Publish bundle load event.
+   * @param {string} bundleId - Bundle id
+   * @param {string[]} pathsNotFound - List of files not found
    */
-  function updateQueue(bundleId, path, result) {
-    var bundleObj = bundleCache[bundleId],
-        j,
-        k;
+  function publish(bundleId, pathsNotFound) {
+    // exit if id isn't defined
+    if (!bundleId) return;
 
-    // remove from waiting list
-    j = bundleObj.waiting.indexOf(path);
-    if (j > -1) bundleObj.waiting.splice(j, 1);
-    
-    // add to depsNotFound
-    if (result === 'error') bundleObj.depsNotFound.push(path);
-    
-    // exit if not callbacks
-    if (bundleObj.waiting.length !== 0) return;
+    var q = bundleCallbackQueue[bundleId];
 
-    // execute callbacks
-    while (j < callbackQueue.length) {
-      callbackObj = callbackQueue[j];
+    // cache result
+    bundleResultCache[bundleId] = pathsNotFound;
       
-      // remove from waiting list
-      k = callbackObj.waiting.indexOf(bundleId);
-      if (k > -1) callbackObj.waiting.splice(k, 1);
-      
-      // update depsNotFound
-      if (bundleObj.depsNotFound.length) {
-        callbackObj.depsNotFound.push(bundleId);
-      }
-      
-      // execute
-      if (callbackObj.waiting.length === 0) {
-        if (callbackObj.depsNotFound.length) {
-          // TODO: use paths for depsNotFound for bundle defined callbacks
-          // fail
-          if (callbackObj.fail) callbackObj.fail(callbackObj.depsNotFound);
-        } else {
-          // success
-          if (callbackObj.success) callbackObj.success();
-        }
-        
-        // remove from queue
-        callbackQueue.splice(j, 1);
-        
-      } else {
-        // increment loop counter
-        j += 1;
-        
-      }
+    // exit if queue is empty
+    if (!q) return;
+    
+    // empty callback queue
+    while (q.length) {
+      q[0](bundleId, pathsNotFound);
+      q.splice(0, 1);
     }
   }
 
 
   /**
-   * loadScript - Load JavaScript file
+   * Load individual JavaScript file.
+   * @param {string} path - The file path
+   * @param {Function} callbackFn - The callback function
    */
-  function loadScript(path, bundleId) {
+  function loadScript(path, callbackFn) {
     var s = doc.createElement('script');
 
     s.style = 'text/javascript';
@@ -154,8 +90,8 @@
       // de-reference script
       s = null;
 
-      // update queue
-      updateQueue(bundleId, path, ev.type);
+      // execute callback
+      callbackFn(path, ev.type);
     };
 
     // add to document
@@ -164,87 +100,99 @@
 
 
   /**
-   * loadjs - Main function
+   * Load multiple JavaScript files.
+   * @param {string[]} paths - The file paths
+   * @param {Function} callbackFn - The callback function
    */
-  function loadjs(paths, idOrSuccess, successOrFail, fail) {
-    var id, successFn, failFn, arg, i, bundleObj;
-    var args = [idOrSuccess, successOrFail, fail];
-
-    // listify
+  function loadScripts(paths, callbackFn) {
+    // listify paths
     paths = paths.push ? paths : [paths];
-    
-    // get args
-    for (i=0; i < 3; i++) {
-      arg = args[i];
 
-      // id
-      if (i === 0 && arg && !arg.call) {
-        id = arg.toString();  // use strings for external ids
-        continue;
-      }
+    var numWaiting = paths.length, pathsNotFound = [], fn, i;
 
-      // successFn
-      if (!successFn) {
-        successFn = arg;
-        continue;
-      }
+    // define callback function
+    fn = function(path, result) {
+      if (result === 'error') pathsNotFound.push(path);
 
-      // failFn
-      if (arg) failFn = arg;
-    }
-
-    // generate anonymous id
-    if (id === undefined) {
-      id = anonId;  // use integers for internal ids
-      anonId += 1;
-    }
-
-    // check bundleCache
-    if (id in bundleCache) {
-      throw "LoadJS Error: bundle " + id + " has already been defined.";
-    }
-
-    // add to bundleCache
-    bundleObj = bundleCache[id] = {
-      waiting: paths,
-      depsNotFound: [],
-      success: [],
-      fail: []
+      numWaiting -= 1;
+      if (numWaiting === 0) callbackFn(pathsNotFound);
     };
+    
+    // load scripts
+    for (i=paths.length - 1; i > -1; i--) loadScript(paths[i], fn);
+  }
 
-    // register callback
-    registerCallback([id], successFn, failFn);
 
+  /**
+   * Initiate script load and register bundle.
+   * @param {(string|string[])} paths - The file paths
+   * @param {(string|Function)} [arg1] - The bundleId or success callback
+   * @param {Function} [arg2] - The success or fail callback
+   * @param {Function} [arg3] - The fail callback
+   */
+  function loadjs(paths, arg1, arg2, arg3) {
+    var bundleId, successFn, failFn;
+
+    // bundleId
+    if (arg1 && !arg1.call) bundleId = arg1;
+
+    // successFn, failFn
+    if (bundleId) successFn = arg2;
+    else successFn = arg1;
+
+    // failFn
+    if (bundleId) failFn = arg3;
+    else failFn = arg2;
+
+    // throw error if bundle is already defined
+    if (bundleId) {
+      if (bundleId in bundleIdCache) {
+        throw new Error("LoadJS: Bundle already defined");
+      } else {
+        bundleIdCache[bundleId] = true;
+      }
+    }
+    
     // load scripts
     win.setTimeout(function() {
-      for (var i=paths.length - 1; i > -1; i--) loadScript(paths[i], id);
+      loadScripts(paths, function(pathsNotFound) {
+        if (pathsNotFound.length) (failFn || devnull)(pathsNotFound);
+        else (successFn || devnull)();
+
+        // publish bundle load event
+        publish(bundleId, pathsNotFound);
+      });
     }, 0);  // fires after window 'load' event
   }
 
 
   /**
-   * ready - Ready function
+   * Execute callbacks when dependencies have been satisfied.
+   * @param {(string|string[])} deps - List of bundle ids
+   * @param {Function} [successFn] - Success callback
+   * @param {Function} [failFn] - Fail callback
    */
-  loadjs.ready = function ready(deps, successFn, failFn) {
-    // listify
-    deps = deps.push ? deps : [deps];
+  loadjs.ready = function (deps, successFn, failFn) {
+    // subscribe to bundle load event
+    subscribe(deps, function(depsNotFound) {
+      // execute callbacks
+      if (depsNotFound.length) (failFn || devnull)(depsNotFound);
+      else (successFn || devnull)();
+    });
 
-    // register calback
-    registerCallback(deps, successFn, failFn);
-
-    // return chainable object
     return loadjs;
   };
 
 
   /**
-   * done - Done function
+   * Manually satisfy bundle dependencies.
+   * @param {string} bundleId - The bundle id
    */
   loadjs.done = function done(bundleId) {
-    
+    publish(bundleId, []);
   };
 
-  
+
   // export
   win.loadjs = loadjs;
 })(window, document);
