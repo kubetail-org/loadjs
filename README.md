@@ -2,33 +2,27 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (590 B gzipped).
+LoadJS is a tiny async loader for modern browsers (590 bytes).
 
 [![Build Status](https://travis-ci.org/muicss/loadjs.svg?branch=master)](https://travis-ci.org/muicss/loadjs)
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
 
-## Directory structure
-
-<pre>
-loadjs/
-├── dist
-|   ├── loadjs.js
-|   └── loadjs.min.js
-├── examples/
-├── gulpfile.js
-├── main.js
-├── package.json
-├── LICENSE.md
-├── README.md
-├── src
-|   └── loadjs.js
-├── test/
-</pre>
-
 ## Introduction
 
+LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple but powerful dependency management system that lets you fetch files in parallel and execute code after all the dependencies have been met. The recommended way to use LoadJS is to include the minified source code in your &lt;html&gt; and then use LoadJS to manage JavaScript dependencies after pageload.
 
+LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for error callbacks and to optimize the library for modern browsers.
+
+## Browser Support 
+
+ * IE9+
+ * Opera 10+ ??
+ * Safar 3+ ??
+ * Chrome 1+ ??
+ * Firefox 2+ ??
+ * iOS ??
+ * Android ??
 
 ## Documentation
 
@@ -117,3 +111,21 @@ loadjs.ready('jquery', function() {
 
  * nodejs (http://nodejs.org/)
  * npm (https://www.npmjs.org/)
+
+## Directory structure
+
+<pre>
+loadjs/
+├── dist
+|   ├── loadjs.js
+|   └── loadjs.min.js
+├── examples/
+├── gulpfile.js
+├── main.js
+├── package.json
+├── LICENSE.md
+├── README.md
+├── src
+|   └── loadjs.js
+├── test/
+</pre>
