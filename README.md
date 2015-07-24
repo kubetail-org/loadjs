@@ -1,6 +1,6 @@
 # LoadJS
 
-<img src="https://www.muicss.com/static/images/loadjs.svg" width="30%">
+<img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
 LoadJS is a tiny async loader for modern browsers (590 B gzipped).
 
