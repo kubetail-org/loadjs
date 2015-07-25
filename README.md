@@ -48,9 +48,17 @@ loadjs('foo.js', function() {
 });
 
 
-// load multiple files
+// load multiple files (in parallel)
 loadjs(['foo.js', 'bar.js'], function() {
   // foo.js & bar.js loaded
+});
+
+
+// load files (in series)
+loadjs('foo.js', function() {
+  loadjs('bar.js', function() {
+    // foo.js loaded then bar.js loaded
+  });
 });
 
 
