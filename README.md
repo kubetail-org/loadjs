@@ -54,7 +54,7 @@ loadjs(['foo.js', 'bar.js'], function() {
 });
 
 
-// load files (in series)
+// load multiple files (in series)
 loadjs('foo.js', function() {
   loadjs('bar.js', function() {
     // foo.js loaded then bar.js loaded
