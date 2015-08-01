@@ -15,12 +15,12 @@
     // listify
     bundleIds = bundleIds.push ? bundleIds : [bundleIds];
 
-    var depsNotFound, numWaiting, fn, bundleId, i, r, q;
+    var depsNotFound = [],
+        i = bundleIds.length,
+        numWaiting = i,
+        fn, bundleId, r, q;
 
     // define callback function
-    numWaiting = bundleIds.length;
-    depsNotFound = [];
-
     fn = function(bundleId, pathsNotFound) {
       if (pathsNotFound.length) depsNotFound.push(bundleId);
       
@@ -29,7 +29,7 @@
     };
     
     // register callback
-    for (i=bundleIds.length - 1; i > -1; i--) {
+    while (i--) {
       bundleId = bundleIds[i];
       
       // execute callback if in result cache
@@ -108,7 +108,7 @@
     // listify paths
     paths = paths.push ? paths : [paths];
 
-    var numWaiting = paths.length, pathsNotFound = [], fn, i;
+    var i = paths.length, numWaiting = i, pathsNotFound = [], fn;
 
     // define callback function
     fn = function(path, result) {
@@ -119,7 +119,7 @@
     };
     
     // load scripts
-    for (i=paths.length - 1; i > -1; i--) loadScript(paths[i], fn);
+    while (i--) loadScript(paths[i], fn);
   }
 
 

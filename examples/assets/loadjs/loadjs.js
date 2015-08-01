@@ -15,12 +15,12 @@
     // listify
     bundleIds = bundleIds.push ? bundleIds : [bundleIds];
 
-    var depsNotFound, numWaiting, fn, bundleId, i, r, q;
+    var depsNotFound = [],
+        numWaiting = bundleIds.length,
+        i = numWaiting,
+        fn, bundleId, i, r, q;
 
     // define callback function
-    numWaiting = bundleIds.length;
-    depsNotFound = [];
-
     fn = function(bundleId, pathsNotFound) {
       if (pathsNotFound.length) depsNotFound.push(bundleId);
       
@@ -29,7 +29,7 @@
     };
     
     // register callback
-    for (i=bundleIds.length - 1; i > -1; i--) {
+    while (i--) {
       bundleId = bundleIds[i];
       
       // execute callback if in result cache
