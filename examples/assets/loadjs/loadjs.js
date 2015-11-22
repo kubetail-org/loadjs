@@ -16,9 +16,9 @@
     bundleIds = bundleIds.push ? bundleIds : [bundleIds];
 
     var depsNotFound = [],
-        numWaiting = bundleIds.length,
-        i = numWaiting,
-        fn, bundleId, i, r, q;
+        i = bundleIds.length,
+        numWaiting = i,
+        fn, bundleId, r, q;
 
     // define callback function
     fn = function(bundleId, pathsNotFound) {
@@ -78,9 +78,6 @@
    */
   function loadScript(path, callbackFn) {
     var s = doc.createElement('script');
-
-    s.style = 'text/javascript';
-    s.async = true;
     s.src = path;
 
     s.onload = s.onerror = function(ev) {
@@ -108,7 +105,7 @@
     // listify paths
     paths = paths.push ? paths : [paths];
 
-    var numWaiting = paths.length, pathsNotFound = [], fn, i;
+    var i = paths.length, numWaiting = i, pathsNotFound = [], fn;
 
     // define callback function
     fn = function(path, result) {
@@ -119,7 +116,7 @@
     };
     
     // load scripts
-    for (i=paths.length - 1; i > -1; i--) loadScript(paths[i], fn);
+    while (i--) loadScript(paths[i], fn);
   }
 
 

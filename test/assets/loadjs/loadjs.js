@@ -78,9 +78,6 @@
    */
   function loadScript(path, callbackFn) {
     var s = doc.createElement('script');
-
-    s.style = 'text/javascript';
-    s.async = true;
     s.src = path;
 
     s.onload = s.onerror = function(ev) {
