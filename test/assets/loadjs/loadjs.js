@@ -82,7 +82,8 @@
 
     s.onload = s.onerror = function(ev) {
       // remove script
-      s.parentNode.removeChild(s);
+      var p = s.parentNode;
+      if (p) p.removeChild(s);
 
       // de-reference script
       s = null;

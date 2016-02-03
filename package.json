@@ -2,13 +2,13 @@
   "author": "Andres Morey <andresmarcel@gmail.com>",
   "name": "loadjs",
   "description": "Tiny async loader for modern browsers",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "dependencies": {},
   "devDependencies": {
     "del": "1.2.0",
     "gulp": "3.9.0",
     "gulp-jshint": "1.11.2",
-    "gulp-uglify": "1.2.0",
+    "gulp-uglify": "1.5.1",
     "gulp-rename": "1.2.2"
   }
 }
