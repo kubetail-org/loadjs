@@ -2,7 +2,7 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (545 bytes).
+LoadJS is a tiny async loader for modern browsers (550 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
@@ -11,7 +11,7 @@ LoadJS is a tiny async loader for modern browsers (545 bytes).
 
 LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code in your &lt;html&gt; and then use the `loadjs` global to manage JavaScript dependencies after pageload.
 
-LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/failure callbacks and to optimize the library for modern browsers. LoadJS is 545 bytes (minified + gzipped).
+LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/failure callbacks and to optimize the library for modern browsers. LoadJS is 550 bytes (minified + gzipped).
 
 Here's an example of what you can do with LoadJS:
 
