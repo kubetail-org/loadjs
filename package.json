@@ -1,9 +1,16 @@
 {
-  "author": "Andres Morey <andresmarcel@gmail.com>",
-  "name": "loadjs",
-  "description": "Tiny async loader for modern browsers",
   "version": "0.1.6",
-  "dependencies": {},
+  "license": "MIT",
+  "description": "Source code for loadjs",
+  "homepage": "https://github.com/muicss/loadjs",
+  "bugs": {
+    "url": "https://github.com/muicss/loadjs/issues",
+    "email": "contact@muicss.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muicss/loadjs.git"
+  },
   "devDependencies": {
     "del": "2.2.0",
     "gulp": "git+https://github.com/gulpjs/gulp#c4a7542986107949b049fc81aa081d72d95e98ff",
