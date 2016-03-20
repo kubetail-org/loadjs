@@ -1,80 +1,61 @@
+'use strict';
+
 var del = require('del'),
     gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
-    rename = require('gulp-rename'),
-    pkg = require('./package.json');
+    rename = require('gulp-rename');
 
 
 // ============================================================================
-// CONFIG
-// ============================================================================
-
-var taskName = process.argv[process.argv.length - 1],
-    dirName = null;
-
-if (taskName === 'build-dist') {
-  dirName = 'dist';
-} else if (taskName === 'build-examples' || taskName === 'watch') {
-  dirName = 'examples/assets/' + pkg.name;
-} else if (taskName === 'build-test') {
-  dirName = 'test/assets/' + pkg.name
-} else {
-  throw 'Did not understand task "' + taskName + '"';
-}
-
-
-// ============================================================================
-// RECIPES
-// ============================================================================
-
-gulp.task('clean', function(callback) {
-  del([dirName], callback);
-});
-
-
-gulp.task('js', function() {
-  return gulp.src('src/loadjs.js')
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'))
-    .pipe(rename(pkg.name + '.js'))
-    .pipe(gulp.dest(dirName));
-});
-
-
-gulp.task('uglify', ['js'], function() {
-  return gulp.src(dirName + '/' + pkg.name + '.js')
-    .pipe(uglify())
-    .pipe(rename(pkg.name + '.min.js'))
-    .pipe(gulp.dest(dirName));
-});
-
-
-function build() {
-  gulp.start('js', 'uglify');
-}
-
-
-// ===========================================================================
 // PUBLIC TASKS
 // ============================================================================
 
-gulp.task('build-dist', ['clean'], function() {
-  build()
-});
+gulp.task('examples:build', gulp.series(
+  clean('./examples/assets/loadjs'),
+  buildJs('./examples/assets/loadjs')
+));
 
 
-gulp.task('build-examples', ['clean'], function() {
-  build()
-});
+gulp.task('dist:build', gulp.series(
+  clean('./dist'),
+  buildJs('./dist')
+));
 
 
-gulp.task('watch', function() {
-  // watch .js files
-  gulp.watch('src/js/**/*.js', ['js', 'uglify']);
-});
+gulp.task('test:build', gulp.series(
+  clean('./test/assets/loadjs'),
+  buildJs('./test/assets/loadjs')
+));
 
 
-gulp.task('build-test', ['clean'], function() {
-  build()
-});
+
+// ============================================================================
+// PRIVATE TASKS
+// ============================================================================
+
+function makeTask(displayName, fn) {
+  if (displayName) fn.displayName = displayName;
+  return fn;
+}
+
+
+function clean(dirname) {
+  return makeTask('clean: ' + dirname, function(done) {
+    return del(dirname, done);
+  });
+}
+
+
+function buildJs(dirname) {
+  return makeTask('build-js: ' + dirname, function() {
+    return gulp.src('src/loadjs.js')
+      .pipe(jshint())
+      .pipe(jshint.reporter('default'))
+      .pipe(rename('loadjs.js'))
+      .pipe(gulp.dest(dirname))
+      .pipe(uglify())
+      .pipe(rename('loadjs.min.js'))
+      .pipe(gulp.dest(dirname));
+  });
+}

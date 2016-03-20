@@ -5,10 +5,10 @@
   "version": "0.1.5",
   "dependencies": {},
   "devDependencies": {
-    "del": "1.2.0",
-    "gulp": "3.9.0",
-    "gulp-jshint": "1.11.2",
-    "gulp-uglify": "1.5.1",
+    "del": "2.2.0",
+    "gulp": "git+https://github.com/gulpjs/gulp#c4a7542986107949b049fc81aa081d72d95e98ff",
+    "gulp-jshint": "2.0.0",
+    "gulp-uglify": "1.5.3",
     "gulp-rename": "1.2.2"
   }
 }
