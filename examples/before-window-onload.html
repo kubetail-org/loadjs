@@ -10,6 +10,7 @@
     </script>
   </head>
   <body>
-    <h1>Example: Load script after DOMContentLoaded event fires but before window onload event</h1>
+    <h1>Example: Trigger script load before window onload event fires</h1>
+    <p>Note: If the network fetch returns before the DOMContentLoaded event or the window onload event fires then the browser will delay event execution until the script has finished executing.</p>
   </body>
 </html>

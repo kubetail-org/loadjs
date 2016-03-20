@@ -2,7 +2,7 @@
   "author": "Andres Morey <andresmarcel@gmail.com>",
   "name": "loadjs",
   "description": "Tiny async loader for modern browsers",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "dependencies": {},
   "devDependencies": {
     "del": "2.2.0",

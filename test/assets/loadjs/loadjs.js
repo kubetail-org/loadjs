@@ -151,7 +151,7 @@
       }
     }
     
-    // start downloads
+    // load scripts
     loadScripts(paths, function(pathsNotFound) {
       if (pathsNotFound.length) (failFn || devnull)(pathsNotFound);
       else (successFn || devnull)();
