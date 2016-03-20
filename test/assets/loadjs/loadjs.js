@@ -151,16 +151,14 @@
       }
     }
     
-    // load scripts
-    win.setTimeout(function() {
-      loadScripts(paths, function(pathsNotFound) {
-        if (pathsNotFound.length) (failFn || devnull)(pathsNotFound);
-        else (successFn || devnull)();
+    // start downloads
+    loadScripts(paths, function(pathsNotFound) {
+      if (pathsNotFound.length) (failFn || devnull)(pathsNotFound);
+      else (successFn || devnull)();
 
-        // publish bundle load event
-        publish(bundleId, pathsNotFound);
-      });
-    }, 0);  // fires after window 'load' event
+      // publish bundle load event
+      publish(bundleId, pathsNotFound);
+    });
   }
 
 

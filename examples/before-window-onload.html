@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="assets/log.js"></script>
+    <script src="assets/loadjs/loadjs.js"></script>
+    <script>
+      loadjs('assets/file1.js', function() {
+        log('file1.js loaded');
+      });      
+    </script>
+  </head>
+  <body>
+    <h1>Example: Load script after DOMContentLoaded event fires but before window onload event</h1>
+  </body>
+</html>

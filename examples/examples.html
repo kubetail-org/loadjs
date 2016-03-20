@@ -1,18 +1,9 @@
 <!doctype html>
 <html>
   <head>
+    <script src="assets/log.js"></script>
     <script src="assets/loadjs/loadjs.js"></script>
     <script>
-      // define global logging function
-      function log(msg) {
-        var d = new Date(), ts;
-        ts = d.toLocaleTimeString().split(' ');
-        ts = ts[0] + '.' + d.getMilliseconds() + ' ' + ts[1];
-
-        console.log('[' + ts + '] ' + msg);
-      }
-
-      
       // load a single file
       loadjs('assets/file1.js', function() {
         log('example1: file1.js loaded');
