@@ -2,6 +2,7 @@
   "version": "0.1.6",
   "license": "MIT",
   "description": "Source code for loadjs",
+  "main": "dist/loadjs.umd.js",
   "homepage": "https://github.com/muicss/loadjs",
   "bugs": {
     "url": "https://github.com/muicss/loadjs/issues",
@@ -15,7 +16,8 @@
     "del": "2.2.0",
     "gulp": "git+https://github.com/gulpjs/gulp#c4a7542986107949b049fc81aa081d72d95e98ff",
     "gulp-jshint": "2.0.0",
+    "gulp-rename": "1.2.2",
     "gulp-uglify": "1.5.3",
-    "gulp-rename": "1.2.2"
+    "gulp-umd": "^0.2.0"
   }
 }
