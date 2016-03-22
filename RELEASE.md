@@ -23,6 +23,5 @@
 1. Push changes to NPM
 
   ```bash
-  $ cd packages/npm
   $ npm publish
   ```
