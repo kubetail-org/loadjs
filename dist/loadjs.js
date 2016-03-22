@@ -140,12 +140,8 @@ function loadjs(paths, arg1, arg2, arg3) {
   if (arg1 && !arg1.call) bundleId = arg1;
 
   // successFn, failFn
-  if (bundleId) successFn = arg2;
-  else successFn = arg1;
-
-  // failFn
-  if (bundleId) failFn = arg3;
-  else failFn = arg2;
+  successFn = bundleId ? arg2 : arg1;
+  failFn    = bundleId ? arg3 : arg2;
 
   // throw error if bundle is already defined
   if (bundleId) {
