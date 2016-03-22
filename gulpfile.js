@@ -11,6 +11,8 @@ var umdNamespace = function() {
   return 'loadjs';
 }
 
+
+
 // ============================================================================
 // PUBLIC TASKS
 // ============================================================================
@@ -33,6 +35,13 @@ gulp.task('dist:build', gulp.series(
 gulp.task('test:build', gulp.series(
   clean('./test/assets/loadjs'),
   buildJs('./test/assets/loadjs')
+));
+
+
+gulp.task('build-all', gulp.parallel(
+  'examples:build',
+  'dist:build',
+  'test:build'
 ));
 
 
