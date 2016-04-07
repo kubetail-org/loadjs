@@ -17,7 +17,7 @@ Here's an example of what you can do with LoadJS:
 
 ```javascript
 // define a dependency bundle
-loadjs(['foo.js', 'bar.js'], 'foobar');
+loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
 // execute code elsewhere when the bundle has loaded
 loadjs.ready('foobar', function() {
@@ -29,7 +29,21 @@ The latest version of LoadJS can be found in the `dist/` directory in this repos
  * [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.js)
  * [loadjs.min.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js)
 
-You can also use it as a CJS or AMD module.
+You can also use it as a CJS or AMD module:
+
+```bash
+$ npm install --save-dev loadjs
+```
+
+```javascript
+var loadjs = require('loadjs');
+
+loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
+
+loadjs.ready('foobar', function() {
+  // foo.js & bar.js loaded
+});
+```
 
 ## Browser Support
 
@@ -45,40 +59,40 @@ You can also use it as a CJS or AMD module.
 
 ```javascript
 // load a single file
-loadjs('foo.js', function() {
+loadjs('/path/to/foo.js', function() {
   // foo.js loaded
 });
 
 
 // load multiple files (in parallel)
-loadjs(['foo.js', 'bar.js'], function() {
+loadjs(['/path/to/foo.js', '/path/to/bar.js'], function() {
   // foo.js & bar.js loaded
 });
 
 
 // load multiple files (in series)
-loadjs('foo.js', function() {
-  loadjs('bar.js', function() {
+loadjs('/path/to/foo.js', function() {
+  loadjs('/path/to/bar.js', function() {
     // foo.js loaded then bar.js loaded
   });
 });
 
 
 // add a bundle id
-loadjs(['foo.js', 'bar.js'], 'foobar', function() {
+loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', function() {
   // foo.js & bar.js loaded
 });
 
 
 // add a failure callback
-loadjs(['foo.js', 'bar.js'],
+loadjs(['/path/to/foo.js', '/path/to/bar.js'],
        'foobar',
        function() { /* foo.js & bar.js loaded */ },
        function(pathsNotFound) { /* at least one path didn't load */ });
 
 
 // execute a callback after bundle finishes loading
-loadjs(['foo.js', 'bar.js'], 'foobar');
+loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
 loadjs.ready('foobar', function() {
   // foo.js & bar.js loaded
@@ -86,8 +100,8 @@ loadjs.ready('foobar', function() {
 
 
 // .ready() can be chained together
-loadjs('foo.js', 'foo');
-loadjs('bar.js', 'bar');
+loadjs('/path/to/foo.js', 'foo');
+loadjs('/path/to/bar.js', 'bar');
 
 loadjs
   .ready('foo', function() {
@@ -99,9 +113,9 @@ loadjs
 
 
 // compose more complex dependency lists
-loadjs('foo.js', 'foo');
-loadjs('bar.js', 'bar');
-loadjs(['thunkor.js', 'thunky.js'], 'thunk');
+loadjs('/path/to/foo.js', 'foo');
+loadjs('/path/to/bar.js', 'bar');
+loadjs(['/path/to/thunkor.js', '/path/to/thunky.js'], 'thunk');
 
 
 // wait for multiple depdendencies
