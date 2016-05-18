@@ -85,13 +85,6 @@ function loadScript(path, callbackFn) {
   s.src = path;
 
   s.onload = s.onerror = function(ev) {
-    // remove script
-    var p = s.parentNode;
-    if (p) p.removeChild(s);
-
-    // de-reference script
-    s = null;
-
     // execute callback
     callbackFn(path, ev.type);
   };

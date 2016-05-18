@@ -1,5 +1,10 @@
 # LoadJS Changelog
 
+## 1.0.2 - May 18, 2016
+
+* Added bower.json
+* Removed onload script deletion
+
 ## 1.0.1 - March 22, 2016
 
 * Small improvement to internal code to save a few bytes
