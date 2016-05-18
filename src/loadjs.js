@@ -17,7 +17,7 @@ var devnull = function() {},
 function subscribe(bundleIds, callbackFn) {
   // listify
   bundleIds = bundleIds.push ? bundleIds : [bundleIds];
-
+  
   var depsNotFound = [],
       i = bundleIds.length,
       numWaiting = i,
@@ -30,18 +30,18 @@ function subscribe(bundleIds, callbackFn) {
     numWaiting -= 1;
     if (numWaiting === 0) callbackFn(depsNotFound);
   };
-
+  
   // register callback
   while (i--) {
     bundleId = bundleIds[i];
-
+    
     // execute callback if in result cache
     r = bundleResultCache[bundleId];
     if (r) {
       fn(bundleId, r);
       continue;
     }
-
+    
     // add to callback queue
     q = bundleCallbackQueue[bundleId] = bundleCallbackQueue[bundleId] || [];
     q.push(fn);
@@ -57,15 +57,15 @@ function subscribe(bundleIds, callbackFn) {
 function publish(bundleId, pathsNotFound) {
   // exit if id isn't defined
   if (!bundleId) return;
-
+  
   var q = bundleCallbackQueue[bundleId];
-
+  
   // cache result
   bundleResultCache[bundleId] = pathsNotFound;
-
+  
   // exit if queue is empty
   if (!q) return;
-
+  
   // empty callback queue
   while (q.length) {
     q[0](bundleId, pathsNotFound);
@@ -82,13 +82,14 @@ function publish(bundleId, pathsNotFound) {
 function loadScript(path, callbackFn) {
   var doc = document,
       s = doc.createElement('script');
-  s.src = path;
 
+  s.src = path;
+  
   s.onload = s.onerror = function(ev) {
     // execute callback
     callbackFn(path, ev.type);
   };
-
+  
   // add to document
   doc.head.appendChild(s);
 }
@@ -102,17 +103,17 @@ function loadScript(path, callbackFn) {
 function loadScripts(paths, callbackFn) {
   // listify paths
   paths = paths.push ? paths : [paths];
-
+  
   var i = paths.length, numWaiting = i, pathsNotFound = [], fn;
-
+  
   // define callback function
   fn = function(path, result) {
     if (result === 'error') pathsNotFound.push(path);
-
+    
     numWaiting -= 1;
     if (numWaiting === 0) callbackFn(pathsNotFound);
   };
-
+  
   // load scripts
   while (i--) loadScript(paths[i], fn);
 }
@@ -127,14 +128,14 @@ function loadScripts(paths, callbackFn) {
  */
 function loadjs(paths, arg1, arg2, arg3) {
   var bundleId, successFn, failFn;
-
+  
   // bundleId
   if (arg1 && !arg1.call) bundleId = arg1;
-
+  
   // successFn, failFn
   successFn = bundleId ? arg2 : arg1;
   failFn    = bundleId ? arg3 : arg2;
-
+  
   // throw error if bundle is already defined
   if (bundleId) {
     if (bundleId in bundleIdCache) {
@@ -143,12 +144,12 @@ function loadjs(paths, arg1, arg2, arg3) {
       bundleIdCache[bundleId] = true;
     }
   }
-
+  
   // load scripts
   loadScripts(paths, function(pathsNotFound) {
     if (pathsNotFound.length) (failFn || devnull)(pathsNotFound);
     else (successFn || devnull)();
-
+    
     // publish bundle load event
     publish(bundleId, pathsNotFound);
   });
@@ -168,7 +169,7 @@ loadjs.ready = function (deps, successFn, failFn) {
     if (depsNotFound.length) (failFn || devnull)(depsNotFound);
     else (successFn || devnull)();
   });
-
+  
   return loadjs;
 };
 
