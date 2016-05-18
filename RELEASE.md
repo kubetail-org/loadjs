@@ -10,6 +10,8 @@
 
 1. Change version number in package.json
 
+1. Change version number in bower.json
+
 1. Commit changes and tag code
 
   ```bash
