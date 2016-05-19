@@ -27,8 +27,8 @@ function subscribe(bundleIds, callbackFn) {
   fn = function(bundleId, pathsNotFound) {
     if (pathsNotFound.length) depsNotFound.push(bundleId);
 
-    numWaiting -= 1;
-    if (numWaiting === 0) callbackFn(depsNotFound);
+    numWaiting--;
+    if (!numWaiting) callbackFn(depsNotFound);
   };
   
   // register callback
@@ -108,10 +108,11 @@ function loadScripts(paths, callbackFn) {
   
   // define callback function
   fn = function(path, result) {
-    if (result === 'error') pathsNotFound.push(path);
+    // handle error
+    if (result[0] == 'e') pathsNotFound.push(path);
     
-    numWaiting -= 1;
-    if (numWaiting === 0) callbackFn(pathsNotFound);
+    numWaiting--;
+    if (!numWaiting) callbackFn(pathsNotFound);
   };
   
   // load scripts
@@ -134,7 +135,7 @@ function loadjs(paths, arg1, arg2, arg3) {
   
   // successFn, failFn
   successFn = bundleId ? arg2 : arg1;
-  failFn    = bundleId ? arg3 : arg2;
+  failFn = bundleId ? arg3 : arg2;
   
   // throw error if bundle is already defined
   if (bundleId) {

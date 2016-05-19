@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 1.0.3 - May 18, 2016
+
+* Shaved off 3 more bytes (minified + gzipped)
+
 ## 1.0.2 - May 18, 2016
 
 * Added bower.json
