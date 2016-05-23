@@ -183,4 +183,23 @@ describe('LoadJS tests', function() {
       loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle2');
     }, 1000);
   });
+
+  // Un-'x' this for testing ad blocked scripts.
+  //   Ghostery: Disallow "Google Adservices"
+  //   AdBlock Plus: Add "www.googletagservices.com/tag/js/gpt.js" as a custom filter under Options
+  //   
+  xit('it should report ad blocked scripts as missing', function(done) {
+    var blockedScript = 'https://www.googletagservices.com/tag/js/gpt.js';
+
+    loadjs([blockedScript, 'assets/file1.js'],
+      function() {
+        throw "Executed success callback";
+      },
+      function(pathsNotFound) {
+        assert.equal(pathsLoaded['file1.js'], true);
+        assert.equal(pathsNotFound.length, 1);
+        assert.equal(pathsNotFound[0], blockedScript);
+        done();
+      });
+  });
 });

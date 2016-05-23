@@ -85,9 +85,9 @@ function loadScript(path, callbackFn) {
 
   s.src = path;
   
-  s.onload = s.onerror = function(ev) {
+  s.onload = s.onerror = s.onbeforeload = function(ev) {
     // execute callback
-    callbackFn(path, ev.type);
+    callbackFn(path, ev.type, ev);
   };
   
   // add to document
@@ -107,9 +107,15 @@ function loadScripts(paths, callbackFn) {
   var i = paths.length, numWaiting = i, pathsNotFound = [], fn;
   
   // define callback function
-  fn = function(path, result) {
+  fn = function(path, result, ev) {
     // handle error
     if (result[0] == 'e') pathsNotFound.push(path);
+
+    // handle beforeload event. If defaultPrevented then that means the load will be blocked (ex. Ghostery on Safari)
+    else if (result[0] == 'b') {
+        if (ev.defaultPrevented) pathsNotFound.push(path);
+        else return;
+    }
     
     numWaiting--;
     if (!numWaiting) callbackFn(pathsNotFound);
