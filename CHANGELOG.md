@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 1.0.4 - May 25, 2016
+
+* Added support for ad blocked script failures
+
 ## 1.0.3 - May 18, 2016
 
 * Shaved off 3 more bytes (minified + gzipped)
