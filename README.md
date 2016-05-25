@@ -55,7 +55,7 @@ loadjs.ready('foobar', function() {
  * iOS 6+
  * Android 4.4+
 
- LoadJS also detects script failures from AdBlock Plus and Ghostery in:
+LoadJS also detects script failures from AdBlock Plus and Ghostery in:
 
  * Safari
  * Chrome
