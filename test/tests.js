@@ -186,9 +186,10 @@ describe('LoadJS tests', function() {
 
   // Un-'x' this for testing ad blocked scripts.
   //   Ghostery: Disallow "Google Adservices"
-  //   AdBlock Plus: Add "www.googletagservices.com/tag/js/gpt.js" as a custom filter under Options
+  //   AdBlock Plus: Add "www.googletagservices.com/tag/js/gpt.js" as a
+  //   custom filter under Options
   //   
-  it('it should report ad blocked scripts as missing', function(done) {
+  xit('it should report ad blocked scripts as missing', function(done) {
     var blockedScript = 'https://www.googletagservices.com/tag/js/gpt.js';
 
     loadjs([blockedScript, 'assets/file1.js'],
