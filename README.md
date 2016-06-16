@@ -76,7 +76,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
 
-2. Fetch files in parallel and load asynchronously
+2. Fetch files in parallel and load them asynchronously
 
   ```javascript
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
@@ -84,7 +84,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
 
-3. Fetch files in parallel and load in series
+3. Fetch files in parallel and load them in series
 
   ```javascript
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
