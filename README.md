@@ -2,16 +2,16 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (537 bytes).
+LoadJS is a tiny async loader for modern browsers (585 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
 
 ## Introduction
 
-LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code in your &lt;html&gt; and then use the `loadjs` global to manage JavaScript dependencies after pageload.
+LoadJS is a tiny async loading library for modern browsers (IE10+). It has a simple yet powerful dependency management system that lets you fetch files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code in your &lt;html&gt; and then use the `loadjs` global to manage JavaScript dependencies after pageload.
 
-LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/failure callbacks and to optimize the library for modern browsers. LoadJS is 537 bytes (minified + gzipped).
+LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/failure callbacks and to optimize the library for modern browsers. LoadJS is 586 bytes (minified + gzipped).
 
 Here's an example of what you can do with LoadJS:
 
@@ -20,8 +20,13 @@ Here's an example of what you can do with LoadJS:
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
 // execute code elsewhere when the bundle has loaded
-loadjs.ready('foobar', function() {
-  // foo.js & bar.js loaded
+loadjs.ready('foobar', {
+  success: function() {
+    // foo.js & bar.js loaded
+  },
+  fail: function(depsNotFound) {
+    // foobar bundle load failed
+  }
 });
 ```
 
@@ -40,14 +45,15 @@ var loadjs = require('loadjs');
 
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
-loadjs.ready('foobar', function() {
-  // foo.js & bar.js loaded
+loadjs.ready('foobar', {
+  success: function() { /* foo.js & bar.js loaded */ },
+  fail: function(depsNotFound) {/* foobar bundle load failed */}
 });
 ```
 
 ## Browser Support
 
- * IE9+
+ * IE10+
  * Opera 12+
  * Safari 5+
  * Chrome
@@ -62,94 +68,115 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
 
 ## Documentation
 
-```javascript
-// load a single file
-loadjs('/path/to/foo.js', function() {
-  // foo.js loaded
-});
+1. Load a single file
 
-
-// load multiple files (in parallel)
-loadjs(['/path/to/foo.js', '/path/to/bar.js'], function() {
-  // foo.js & bar.js loaded
-});
-
-
-// load multiple files (in series)
-loadjs('/path/to/foo.js', function() {
-  loadjs('/path/to/bar.js', function() {
-    // foo.js loaded then bar.js loaded
+  ```javascript
+  loadjs('/path/to/foo.js', {
+    success: function() { /* foo.js loaded */}
   });
-});
+  ```
 
+2. Fetch files in parallel and load asynchronously
 
-// add a bundle id
-loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', function() {
-  // foo.js & bar.js loaded
-});
+  ```javascript
+  loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
+    success: function() { /* foo.js & bar.js loaded */ }
+  });
+  ```
 
+3. Fetch files in parallel and load in series
 
-// add a failure callback
-loadjs(['/path/to/foo.js', '/path/to/bar.js'],
-       'foobar',
-       function() { /* foo.js & bar.js loaded */ },
-       function(pathsNotFound) { /* at least one path didn't load */ });
+  ```javascript
+  loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
+    success: function() { /* foo.js and bar.js loaded in series */ },
+    async: false
+  });
+  ```
 
+4. Add a bundle id
 
-// execute a callback after bundle finishes loading
-loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
+  ```javascript
+  // add a bundle id
+  loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
+    success: function() { /* foo.js & bar.js loaded */ }
+  });
+  ```
 
-loadjs.ready('foobar', function() {
-  // foo.js & bar.js loaded
-});
+5. Add a failure callback
 
+  ```javascript
+  loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
+    success: function() { /* foo.js & bar.js loaded */ },
+    fail: function(pathsNotFound) { /* at least one path didn't load */ }
+  });
+  ```
 
-// .ready() can be chained together
-loadjs('/path/to/foo.js', 'foo');
-loadjs('/path/to/bar.js', 'bar');
+6. Execute a callback after bundle finishes loading
 
-loadjs
-  .ready('foo', function() {
-    // foo.js loaded
-  })
-  .ready('bar', function() {
-    // bar.js loaded
+  ```javascript
+  loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
+
+  loadjs.ready('foobar', {
+    success: function() { /* foo.js & bar.js loaded */ }
+  });
+  ```
+
+7. Chain .ready() together
+
+  ```javascript
+  loadjs('/path/to/foo.js', 'foo');
+  loadjs('/path/to/bar.js', 'bar');
+
+  loadjs
+    .ready('foo', {
+      success: function() { /* foo.js loaded */ }
+    })
+    .ready('bar', {
+      success: function() { /* bar.js loaded */ }
+    });
+  ```
+
+8. Compose more complex dependency lists
+
+  ```javascript
+  loadjs('/path/to/foo.js', 'foo');
+  loadjs('/path/to/bar.js', 'bar');
+  loadjs(['/path/to/thunkor.js', '/path/to/thunky.js'], 'thunk');
+
+  // wait for multiple depdendencies
+  loadjs.ready(['foo', 'bar', 'thunk'], {
+    success: function() {
+      // foo.js & bar.js & thunkor.js & thunky.js loaded
+    },
+    fail: function(depsNotFound) {
+      if (depsNotFound.indexOf('foo') > -1) {};  // foo failed
+      if (depsNotFound.indexOf('bar') > -1) {};  // bar failed
+      if (depsNotFound.indexOf('thunk') > -1) {};  // thunk failed
+    }
+  });
+  ```
+  
+9. Use .done() for more control
+
+  ```javascript
+  loadjs.ready('my-awesome-plugin', {
+    success: function() {
+      myAwesomePlugin();
+    }
   });
 
+  loadjs.ready('jquery', {
+    success: function() {
+      // plugin requires jquery
+      window.myAwesomePlugin = function() {
+        if (!window.jQuery) throw "jQuery is missing!";
+      };
 
-// compose more complex dependency lists
-loadjs('/path/to/foo.js', 'foo');
-loadjs('/path/to/bar.js', 'bar');
-loadjs(['/path/to/thunkor.js', '/path/to/thunky.js'], 'thunk');
-
-
-// wait for multiple depdendencies
-loadjs.ready(['foo', 'bar', 'thunk'],
-             function() {
-               // foo.js & bar.js & thunkor.js & thunky.js loaded
-             },
-             function(depsNotFound) {
-               if (depsNotFound.indexOf('foo') > -1) {};  // foo failed
-               if (depsNotFound.indexOf('bar') > -1) {};  // bar failed
-               if (depsNotFound.indexOf('thunk') > -1) {};  // thunk failed
-             });
-
-
-// use .done() for more control
-loadjs.ready('my-awesome-plugin', function() {
-  myAwesomePlugin();
-});
-
-loadjs.ready('jquery', function() {
-  // plugin requires jquery
-  window.myAwesomePlugin = function() {
-    if (!window.jQuery) throw "jQuery is missing!";
-  };
-
-  // plugin is done loading
-  loadjs.done('my-awesome-plugin');
-});
-```
+      // plugin is done loading
+      loadjs.done('my-awesome-plugin');
+    }
+  });
+  ```
 
 ## Directory structure
 

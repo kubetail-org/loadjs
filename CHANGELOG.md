@@ -1,5 +1,10 @@
 # LoadJS Changelog
 
+## 2.0.0 - June 15, 2016
+
+* Changed API to accept object with success/fail functions
+* Added support for async: false
+
 ## 1.0.4 - May 25, 2016
 
 * Added support for ad blocked script failures
