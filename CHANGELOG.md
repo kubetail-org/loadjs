@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 2.0.1 - June 19, 2016
+
+* Added support for loading CSS files
+
 ## 2.0.0 - June 15, 2016
 
 * Changed API to accept object with success/fail functions
