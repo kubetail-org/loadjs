@@ -102,7 +102,6 @@ Note: LoadJS treats empty CSS files as load failures (as a workaround for the la
 1. Add a bundle id
 
   ```javascript
-  // add a bundle id
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
     success: function() { /* foo.js & bar.js loaded */ }
   });
