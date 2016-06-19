@@ -84,33 +84,48 @@ function publish(bundleId, pathsNotFound) {
 
 
 /**
- * Load individual JavaScript file.
+ * Load individual file.
  * @param {string} path - The file path
  * @param {Function} callbackFn - The callback function
  */
-function loadScript(path, callbackFn, async) {
+function loadFile(path, callbackFn, async) {
   var doc = document,
-      s = doc.createElement('script');
+      e;
 
-  s.src = path;
-  s.async = (async === undefined) ? true : async;
+  if (/\.css$/.test(path)) {
+    // css
+    e = doc.createElement('link');
+    e.rel = 'stylesheet';
+    e.href = path;
+  } else {
+    // javascript
+    e = doc.createElement('script');
+    e.src = path;
+    e.async = (async === undefined) ? true : async;
+  }
   
-  s.onload = s.onerror = s.onbeforeload = function(ev) {
+  e.onload = e.onerror = e.onbeforeload = function(ev) {
+    var result = ev.type[0];
+
+    // treat empty stylesheets as failures (to get around lack of onerror
+    // support in IE
+    if (e.sheet && !e.sheet.cssRules.length) result = 'e';
+
     // execute callback
-    callbackFn(path, ev.type[0], ev.defaultPrevented);
+    callbackFn(path, result, ev.defaultPrevented);
   };
   
   // add to document
-  doc.head.appendChild(s);
+  doc.head.appendChild(e);
 }
 
 
 /**
- * Load multiple JavaScript files.
+ * Load multiple files.
  * @param {string[]} paths - The file paths
  * @param {Function} callbackFn - The callback function
  */
-function loadScripts(paths, callbackFn, async) {
+function loadFiles(paths, callbackFn, async) {
   // listify paths
   paths = paths.push ? paths : [paths];
   
@@ -133,7 +148,7 @@ function loadScripts(paths, callbackFn, async) {
   };
   
   // load scripts
-  for (i=0; i <= x - 1; i++) loadScript(paths[i], fn, async);
+  for (i=0; i < x; i++) loadFile(paths[i], fn, async);
 }
 
 
@@ -156,14 +171,14 @@ function loadjs(paths, arg1, arg2) {
   // throw error if bundle is already defined
   if (bundleId) {
     if (bundleId in bundleIdCache) {
-      throw new Error("LoadJS: Bundle already defined");
+      throw new Error("LoadJS");
     } else {
       bundleIdCache[bundleId] = true;
     }
   }
   
   // load scripts
-  loadScripts(paths, function(pathsNotFound) {
+  loadFiles(paths, function(pathsNotFound) {
     // success and fail callbacks
     if (pathsNotFound.length) (args.fail || devnull)(pathsNotFound);
     else (args.success || devnull)();

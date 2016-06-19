@@ -2,16 +2,16 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (585 bytes).
+LoadJS is a tiny async loader for modern browsers (630 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
 
 ## Introduction
 
-LoadJS is a tiny async loading library for modern browsers (IE10+). It has a simple yet powerful dependency management system that lets you fetch files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code in your &lt;html&gt; and then use the `loadjs` global to manage JavaScript dependencies after pageload.
+LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch JavaScrip and CSS files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code in your &lt;html&gt; and then use the `loadjs` global to manage JavaScript dependencies after pageload.
 
-LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/failure callbacks and to optimize the library for modern browsers. LoadJS is 585 bytes (minified + gzipped).
+LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/failure callbacks and to optimize the library for modern browsers. LoadJS is 630 bytes (minified + gzipped).
 
 Here's an example of what you can do with LoadJS:
 
@@ -21,12 +21,8 @@ loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
 // execute code elsewhere when the bundle has loaded
 loadjs.ready('foobar', {
-  success: function() {
-    // foo.js & bar.js loaded
-  },
-  fail: function(depsNotFound) {
-    // foobar bundle load failed
-  }
+  success: function() { /* foo.js & bar.js loaded */ },
+  fail: function(depsNotFound) { /* foobar bundle load failed */ }
 });
 ```
 
@@ -53,7 +49,7 @@ loadjs.ready('foobar', {
 
 ## Browser Support
 
- * IE10+
+ * IE9+ (`async: false` support only works in IE10+)
  * Opera 12+
  * Safari 5+
  * Chrome
@@ -66,6 +62,8 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
  * Safari
  * Chrome
 
+Note: LoadJS treats empty CSS files as load failures (as a workaround for the lack of support for `<link>` onerror events in IE9-11).
+
 ## Documentation
 
 1. Load a single file
@@ -76,7 +74,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
 
-2. Fetch files in parallel and load them asynchronously
+1. Fetch files in parallel and load them asynchronously
 
   ```javascript
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
@@ -84,7 +82,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
 
-3. Fetch files in parallel and load them in series
+1. Fetch files in parallel and load them in series
 
   ```javascript
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
@@ -93,7 +91,15 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
 
-4. Add a bundle id
+1. Fetch JavaScript and CSS files
+
+   ```javascript
+   loadjs(['/path/to/foo.css', '/path/to/bar.js'], {
+     success: function() { /* foo.css and bar.js loaded */ }
+   });
+   ```
+
+1. Add a bundle id
 
   ```javascript
   // add a bundle id
@@ -102,7 +108,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
 
-5. Add a failure callback
+1. Add a failure callback
 
   ```javascript
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
@@ -111,7 +117,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
 
-6. Execute a callback after bundle finishes loading
+1. Execute a callback after bundle finishes loading
 
   ```javascript
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
@@ -121,7 +127,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
 
-7. Chain .ready() together
+1. Chain .ready() together
 
   ```javascript
   loadjs('/path/to/foo.js', 'foo');
@@ -136,7 +142,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
     });
   ```
 
-8. Compose more complex dependency lists
+1. Compose more complex dependency lists
 
   ```javascript
   loadjs('/path/to/foo.js', 'foo');
@@ -156,7 +162,7 @@ LoadJS also detects script failures from AdBlock Plus and Ghostery in:
   });
   ```
   
-9. Use .done() for more control
+1. Use .done() for more control
 
   ```javascript
   loadjs.ready('my-awesome-plugin', {
