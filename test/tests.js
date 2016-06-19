@@ -82,7 +82,12 @@ describe('LoadJS tests', function() {
       
       // run tests sequentially
       var testFn = function(paths) {
-        loadjs(paths, {
+        // add cache busters
+        var pathsUncached = paths.slice(0);
+        pathsUncached[0] += '?_=' + Math.random();
+        pathsUncached[1] += '?_=' + Math.random();
+
+        loadjs(pathsUncached, {
           success: function() {
             var f1 = paths[0].replace('assets/', '');
             var f2 = paths[1].replace('assets/', '');
