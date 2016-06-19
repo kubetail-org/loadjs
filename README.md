@@ -93,11 +93,11 @@ Note: LoadJS treats empty CSS files as load failures (as a workaround for the la
 
 1. Fetch JavaScript and CSS files
 
-   ```javascript
-   loadjs(['/path/to/foo.css', '/path/to/bar.js'], {
-     success: function() { /* foo.css and bar.js loaded */ }
-   });
-   ```
+  ```javascript
+  loadjs(['/path/to/foo.css', '/path/to/bar.js'], {
+    success: function() { /* foo.css and bar.js loaded */ }
+  });
+  ```
 
 1. Add a bundle id
 
