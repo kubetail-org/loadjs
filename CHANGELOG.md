@@ -1,6 +1,10 @@
 # LoadJS Changelog
 
-## 2.0.1 - June 19, 2016
+## 2.1.1 - July 25, 2016
+
+* Fixed bug causing issues with external css files
+
+## 2.1.0 - June 19, 2016
 
 * Added support for loading CSS files
 

@@ -153,7 +153,7 @@ describe('LoadJS tests', function() {
     before(function() {
       // add test div to body for css tests
       testEl = document.createElement('div');
-      testEl.className = 'test-div';
+      testEl.className = 'test-div mui-container';
       testEl.style.display = 'inline-block';
       document.body.appendChild(testEl);
     });
@@ -169,7 +169,7 @@ describe('LoadJS tests', function() {
         el = els[i];
 
         // remove test stylesheets
-        if (el.href.indexOf('assets/file') != -1) {
+        if (el.href.indexOf('mocha.css') === -1) {
           el.parentNode.removeChild(el);
         }        
       }
@@ -222,12 +222,29 @@ describe('LoadJS tests', function() {
     });
 
 
-    it('should call fail callback on empty css', function(done) {
-      loadjs(['assets/emptycss'], {
+    it('should load external css files', function(done) {
+      this.timeout(0);
+
+      loadjs(['//cdn.muicss.com/mui-0.6.8/css/mui.min.css'], {
+        success: function() {
+          var styleObj = getComputedStyle(testEl);
+          assert.equal(styleObj.getPropertyValue('padding-left'), '15px');
+          done();
+        }
+      });
+    });
+
+
+    it('should call failure on missing external file', function(done) {
+      this.timeout(0);
+
+      loadjs(['//cdn.muicss.com/mui-0.6.8/css/mui-doesnotexist.min.css'], {
         success: function() {
           throw "Executed success callback";
         },
         fail: function(pathsNotFound) {
+          var styleObj = getComputedStyle(testEl);
+          assert.equal(styleObj.getPropertyValue('padding-left'), '0px');
           assert.equal(pathsNotFound.length, 1);
           done();
         }

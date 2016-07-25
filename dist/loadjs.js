@@ -82,9 +82,12 @@ function publish(bundleId, pathsNotFound) {
  */
 function loadFile(path, callbackFn, async) {
   var doc = document,
+      isCss,
       e;
 
   if (/\.css$/.test(path)) {
+    isCss = true;
+
     // css
     e = doc.createElement('link');
     e.rel = 'stylesheet';
@@ -95,13 +98,21 @@ function loadFile(path, callbackFn, async) {
     e.src = path;
     e.async = (async === undefined) ? true : async;
   }
-  
+
   e.onload = e.onerror = e.onbeforeload = function(ev) {
     var result = ev.type[0];
 
-    // treat empty stylesheets as failures (to get around lack of onerror
-    // support in IE
-    if (e.sheet && !e.sheet.cssRules.length) result = 'e';
+    // Note: The following code isolates IE using `hideFocus` and treats empty
+    // stylesheets as failures to get around lack of onerror support
+    if (isCss && 'hideFocus' in e) {
+      try {
+        if (!e.sheet.cssText.length) result = 'e';
+      } catch (x) {
+        // sheets objects created from load errors don't allow access to
+        // `cssText`
+        result = 'e';
+      }
+    }
 
     // execute callback
     callbackFn(path, result, ev.defaultPrevented);
