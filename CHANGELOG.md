@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 2.1.2 - August 22, 2016
+
+* Upgraded devDependencies, rebuilt packaged, saved a byte
+
 ## 2.1.1 - July 25, 2016
 
 * Fixed bug causing issues with external css files
