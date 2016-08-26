@@ -8,8 +8,7 @@
   "homepage": "https://github.com/muicss/loadjs",
   "description": "LoadJS is a tiny async loader for modern browsers.",
   "main": [
-    "dist/loadjs.js",
-    "dist/loadjs.min.js"
+    "dist/loadjs.js"
   ],
   "repository": {
     "type": "git",
