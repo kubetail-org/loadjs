@@ -1,5 +1,10 @@
 # LoadJS Changelog
 
+## 3.0.0 - August 25, 2016
+
+* Changed 'fail' callback name to 'error'
+* Fixed bug in main attribute of bower.json
+
 ## 2.1.2 - August 22, 2016
 
 * Upgraded devDependencies, rebuilt packaged, saved a byte

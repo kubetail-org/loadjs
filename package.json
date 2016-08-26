@@ -1,6 +1,6 @@
 {
   "name": "loadjs",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "license": "MIT",
   "description": "Tiny async loader for modern browsers",
   "keywords": [
