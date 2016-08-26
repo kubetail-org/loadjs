@@ -158,8 +158,8 @@ function loadFiles(paths, callbackFn, async) {
  * Initiate script load and register bundle.
  * @param {(string|string[])} paths - The file paths
  * @param {(string|Function)} [arg1] - The bundleId or success callback
- * @param {Function} [arg2] - The success or fail callback
- * @param {Function} [arg3] - The fail callback
+ * @param {Function} [arg2] - The success or error callback
+ * @param {Function} [arg3] - The error callback
  */
 function loadjs(paths, arg1, arg2) {
   var bundleId, args;
@@ -181,8 +181,8 @@ function loadjs(paths, arg1, arg2) {
   
   // load scripts
   loadFiles(paths, function(pathsNotFound) {
-    // success and fail callbacks
-    if (pathsNotFound.length) (args.fail || devnull)(pathsNotFound);
+    // success and error callbacks
+    if (pathsNotFound.length) (args.error || devnull)(pathsNotFound);
     else (args.success || devnull)();
 
     // publish bundle load event
@@ -194,13 +194,13 @@ function loadjs(paths, arg1, arg2) {
 /**
  * Execute callbacks when dependencies have been satisfied.
  * @param {(string|string[])} deps - List of bundle ids
- * @param {Object} args - success/fail arguments
+ * @param {Object} args - success/error arguments
  */
 loadjs.ready = function (deps, args) {
   // subscribe to bundle load event
   subscribe(deps, function(depsNotFound) {
     // execute callbacks
-    if (depsNotFound.length) (args.fail || devnull)(depsNotFound);
+    if (depsNotFound.length) (args.error || devnull)(depsNotFound);
     else (args.success || devnull)();
   });
   

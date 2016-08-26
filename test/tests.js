@@ -35,12 +35,12 @@ describe('LoadJS tests', function() {
     });
     
     
-    it('should call fail callback on invalid path', function(done) {
+    it('should call error callback on invalid path', function(done) {
       loadjs(['assets/file-doesntexist.js'], {
         success: function() {
           throw "Executed success callback";
         },
-        fail: function(pathsNotFound) {
+        error: function(pathsNotFound) {
           assert.equal(pathsNotFound.length, 1);
           assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
           done();
@@ -60,12 +60,12 @@ describe('LoadJS tests', function() {
     });
 
     
-    it('should call fail callback on one invalid path', function(done) {
+    it('should call error callback on one invalid path', function(done) {
       loadjs(['assets/file1.js', 'assets/file-doesntexist.js'], {
         success: function() {
           throw "Executed success callback";
         },
-        fail: function(pathsNotFound) {
+        error: function(pathsNotFound) {
           assert.equal(pathsLoaded['file1.js'], true);
           assert.equal(pathsNotFound.length, 1);
           assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
@@ -132,7 +132,7 @@ describe('LoadJS tests', function() {
         success: function() {
           throw "Executed success callback";
         },
-        fail: function(pathsNotFound) {
+        error: function(pathsNotFound) {
           assert.equal(pathsLoaded['file1.js'], true);
           assert.equal(pathsNotFound.length, 1);
           assert.equal(pathsNotFound[0], blockedScript);
@@ -196,12 +196,12 @@ describe('LoadJS tests', function() {
     });
     
     
-    it('should call fail callback on one invalid path', function(done) {
+    it('should call error callback on one invalid path', function(done) {
       loadjs(['assets/file1.css', 'assets/file-doesntexist.css'], {
         success: function() {
           throw "Executed success callback";
         },
-        fail: function(pathsNotFound) {
+        error: function(pathsNotFound) {
           assert.equal(testEl.offsetWidth, 100);
           assert.equal(pathsNotFound.length, 1);
           assert.equal(pathsNotFound[0], 'assets/file-doesntexist.css');
@@ -235,14 +235,14 @@ describe('LoadJS tests', function() {
     });
 
 
-    it('should call failure on missing external file', function(done) {
+    it('should call errorure on missing external file', function(done) {
       this.timeout(0);
 
       loadjs(['//cdn.muicss.com/mui-0.6.8/css/mui-doesnotexist.min.css'], {
         success: function() {
           throw "Executed success callback";
         },
-        fail: function(pathsNotFound) {
+        error: function(pathsNotFound) {
           var styleObj = getComputedStyle(testEl);
           assert.equal(styleObj.getPropertyValue('padding-left'), '0px');
           assert.equal(pathsNotFound.length, 1);
@@ -329,7 +329,7 @@ describe('LoadJS tests', function() {
     });
     
     
-    it('should fail on missing depdendencies', function(done) {
+    it('should error on missing depdendencies', function(done) {
       loadjs('assets/file1.js', 'bundle9');
       loadjs('assets/file-doesntexist.js', 'bundle10');
       
@@ -337,7 +337,7 @@ describe('LoadJS tests', function() {
         success: function() {
           throw "Executed success callback";
         },
-        fail: function(depsNotFound) {
+        error: function(depsNotFound) {
           assert.equal(pathsLoaded['file1.js'], true);
           assert.equal(depsNotFound.length, 1);
           assert.equal(depsNotFound[0], 'bundle10');
