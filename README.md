@@ -33,7 +33,7 @@ The latest version of LoadJS can be found in the `dist/` directory in this repos
 You can also use it as a CJS or AMD module:
 
 ```bash
-$ npm install --save-dev loadjs
+$ npm install --save loadjs
 ```
 
 ```javascript
