@@ -119,6 +119,47 @@ describe('LoadJS tests', function() {
       testFn(paths);
     });
 
+    it("should support setting crossOrigin attribute", function(done) {
+      var src = 'assets/file1.js?crossOriginTest';
+      loadjs([src], {
+        error: function() {
+          var scriptTag = document.querySelector("script[src='" + src + "']");
+          expect(scriptTag.crossOrigin).to.equal("anonymous");
+          done();
+        },
+        crossOrigin: "anonymous"
+      });
+    });
+
+    it("should support setting integrity attribute", function(done) {
+      var src = 'assets/integrity.js?integrityTest';
+      var integrityValue = "sha384-GbHPfLTNyQxF+OnhuT99q4kuaNDMUy+VHNhggEW5gq9H916bS2glvGBsVNLswi+B";
+      loadjs([src], {
+        error: function() {
+          var scriptTag = document.querySelector("script[src='" + src + "']");
+          expect(scriptTag.integrity).to.equal(integrityValue);
+          done();
+        },
+        integrity: integrityValue
+      });
+    });
+
+    it("should ignore script attributes that are not whitelisted", function(done) {
+      var src = 'assets/file1.js?unsupportedTagsTest';
+      loadjs([src], {
+        success: function() {
+          var scriptTag = document.querySelector("script[src='" + src + "']");
+          expect(scriptTag.fakeAttribute).to.equal(undefined);
+          expect(scriptTag["data-test"]).to.equal(undefined);
+          expect(scriptTag.another_attribute).to.equal(undefined);
+          done();
+        },
+        fakeAttribute: "something",
+        "data-test": "ignore",
+        another_attribute: false
+      });
+    });
+
 
     // Un-'x' this for testing ad blocked scripts.
     //   Ghostery: Disallow "Google Adservices"
