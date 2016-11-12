@@ -9,6 +9,12 @@ var devnull = function() {},
     bundleResultCache = {},
     bundleCallbackQueue = {};
 
+var ALLOWED_SCRIPT_ATTRIBUTES = [
+    "async",
+    "integrity",
+    "crossOrigin"
+];
+
 
 /**
  * Subscribe to bundle load event.
@@ -80,10 +86,11 @@ function publish(bundleId, pathsNotFound) {
  * @param {string} path - The file path
  * @param {Function} callbackFn - The callback function
  */
-function loadFile(path, callbackFn, async) {
+function loadFile(path, callbackFn, args) {
   var doc = document,
       isCss,
-      e;
+      e,
+      key;
 
   if (/\.css$/.test(path)) {
     isCss = true;
@@ -96,7 +103,17 @@ function loadFile(path, callbackFn, async) {
     // javascript
     e = doc.createElement('script');
     e.src = path;
-    e.async = (async === undefined) ? true : async;
+
+    // set async default to true
+    args.async = (args.async === undefined) ? true : args.async;
+
+    // cycle through the args and see if any are allowed attributes for the
+    // script tag
+    for (key in args) {
+      if (ALLOWED_SCRIPT_ATTRIBUTES.indexOf(key) !== -1) {
+        e[key] = args[key];
+      }
+    }
   }
 
   e.onload = e.onerror = e.onbeforeload = function(ev) {
@@ -128,7 +145,7 @@ function loadFile(path, callbackFn, async) {
  * @param {string[]} paths - The file paths
  * @param {Function} callbackFn - The callback function
  */
-function loadFiles(paths, callbackFn, async) {
+function loadFiles(paths, callbackFn, args) {
   // listify paths
   paths = paths.push ? paths : [paths];
   
@@ -151,7 +168,7 @@ function loadFiles(paths, callbackFn, async) {
   };
   
   // load scripts
-  for (i=0; i < x; i++) loadFile(paths[i], fn, async);
+  for (i=0; i < x; i++) loadFile(paths[i], fn, args);
 }
 
 
@@ -188,7 +205,7 @@ function loadjs(paths, arg1, arg2) {
 
     // publish bundle load event
     publish(bundleId, pathsNotFound);
-  }, args.async);
+  }, args);
 }
 
 
