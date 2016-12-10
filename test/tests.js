@@ -121,16 +121,14 @@ describe('LoadJS tests', function() {
 
 
     it('should support multiple tries', function(done) {
-      var numTries = 0;
-
-      loadjs('assets/file-doesntexist-numtries.js', {
+      loadjs('assets/file-numretries.js', {
         error: function() {
           // check number of scripts in document
-          var selector = 'script[src="assets/file-doesntexist-numtries.js"]',
+          var selector = 'script[src="assets/file-numretries.js"]',
               scripts = document.querySelectorAll(selector);
           if (scripts.length === 2) done();
         },
-        numTries: 2
+        numRetries: 1
       });
     });
 

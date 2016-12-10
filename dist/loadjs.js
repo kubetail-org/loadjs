@@ -83,7 +83,7 @@ function publish(bundleId, pathsNotFound) {
 function loadFile(path, callbackFn, args, numTries) {
   var doc = document,
       async = args.async,
-      maxTries = args.numTries || 1,
+      maxTries = (args.numRetries || 0) + 1,
       isCss,
       e;
 
