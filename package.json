@@ -21,10 +21,10 @@
   "devDependencies": {
     "del": "2.2.2",
     "gulp": "git+https://github.com/gulpjs/gulp#4.0",
-    "gulp-jshint": "2.0.1",
+    "gulp-jshint": "2.0.4",
     "gulp-rename": "1.2.2",
     "gulp-uglify": "2.0.0",
     "gulp-umd": "^0.2.0",
-    "jshint": "^2.9.3"
+    "jshint": "^2.9.4"
   }
 }
