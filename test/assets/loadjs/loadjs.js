@@ -80,10 +80,14 @@ function publish(bundleId, pathsNotFound) {
  * @param {string} path - The file path
  * @param {Function} callbackFn - The callback function
  */
-function loadFile(path, callbackFn, async) {
+function loadFile(path, callbackFn, args, numTries) {
   var doc = document,
+      async = args.async,
+      maxTries = args.numTries || 1,
       isCss,
       e;
+
+  numTries = numTries || 0;
 
   if (/\.css$/.test(path)) {
     isCss = true;
@@ -114,6 +118,17 @@ function loadFile(path, callbackFn, async) {
       }
     }
 
+    // handle retries in case of load failure
+    if (result == 'e') {
+      // increment counter
+      numTries += 1;
+
+      // exit function and try again
+      if (numTries < maxTries) {
+        return loadFile(path, callbackFn, args, numTries);
+      }
+    }
+
     // execute callback
     callbackFn(path, result, ev.defaultPrevented);
   };
@@ -128,7 +143,7 @@ function loadFile(path, callbackFn, async) {
  * @param {string[]} paths - The file paths
  * @param {Function} callbackFn - The callback function
  */
-function loadFiles(paths, callbackFn, async) {
+function loadFiles(paths, callbackFn, args) {
   // listify paths
   paths = paths.push ? paths : [paths];
   
@@ -151,7 +166,7 @@ function loadFiles(paths, callbackFn, async) {
   };
   
   // load scripts
-  for (i=0; i < x; i++) loadFile(paths[i], fn, async);
+  for (i=0; i < x; i++) loadFile(paths[i], fn, args);
 }
 
 
@@ -188,7 +203,7 @@ function loadjs(paths, arg1, arg2) {
 
     // publish bundle load event
     publish(bundleId, pathsNotFound);
-  }, args.async);
+  }, args);
 }
 
 

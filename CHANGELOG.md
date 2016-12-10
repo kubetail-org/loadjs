@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 3.0.1 - December 9, 2016
+
+* Added numTries option
+
 ## 3.0.0 - August 25, 2016
 
 * Changed 'fail' callback name to 'error'

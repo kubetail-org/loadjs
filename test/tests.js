@@ -34,7 +34,7 @@ describe('LoadJS tests', function() {
       });
     });
     
-    
+
     it('should call error callback on invalid path', function(done) {
       loadjs(['assets/file-doesntexist.js'], {
         success: function() {
@@ -117,6 +117,21 @@ describe('LoadJS tests', function() {
       
       // run tests
       testFn(paths);
+    });
+
+
+    it('should support multiple tries', function(done) {
+      var numTries = 0;
+
+      loadjs('assets/file-doesntexist-numtries.js', {
+        error: function() {
+          // check number of scripts in document
+          var selector = 'script[src="assets/file-doesntexist-numtries.js"]',
+              scripts = document.querySelectorAll(selector);
+          if (scripts.length === 2) done();
+        },
+        numTries: 2
+      });
     });
 
 

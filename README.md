@@ -116,6 +116,16 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
   });
   ```
 
+1. Try loading the files multiple times before calling the error callback
+
+  ```javascript
+  loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
+    success: function() { /* foo.js & bar.js loaded */ },
+    error: function(pathsNotFound) { /* at least one path didn't load */ },
+    numTries: 3
+  });
+  ```
+
 1. Execute a callback after bundle finishes loading
 
   ```javascript
