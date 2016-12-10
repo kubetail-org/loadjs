@@ -2,7 +2,7 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (654 bytes).
+LoadJS is a tiny async loader for modern browsers (692 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
