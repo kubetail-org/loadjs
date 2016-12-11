@@ -1,5 +1,10 @@
 # LoadJS Changelog
 
+## 3.2.0 - December 11, 2016
+
+* Added `before` callback hook to modify script/link elements before adding
+  them to the DOM
+
 ## 3.1.0 - December 9, 2016
 
 * Added numRetries option
