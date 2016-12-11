@@ -47,6 +47,34 @@ describe('LoadJS tests', function() {
         }
       });
     });
+
+
+    it('should call before callback before embedding into document', function(done) {
+      var scriptTags = [];
+
+      loadjs(['assets/file1.js', 'assets/file2.js'], {
+        before: function(path, el) {
+          scriptTags.push({
+            path: path,
+            el: el
+          });
+
+          // add cross origin script for file2
+          if (path === 'assets/file2.js') {
+            el.crossOrigin = 'anonymous';
+          }
+        },
+        success: function () {
+          assert.equal(scriptTags[0].path, 'assets/file1.js');
+          assert.equal(scriptTags[1].path, 'assets/file2.js');
+
+          assert.equal(scriptTags[0].el.crossOrigin, undefined);
+          assert.equal(scriptTags[1].el.crossOrigin, 'anonymous');
+
+          done();
+        }
+      });
+    });
     
     
     it('should call success callback on two valid paths', function(done) {
