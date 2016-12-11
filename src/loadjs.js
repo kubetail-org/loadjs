@@ -83,6 +83,7 @@ function loadFile(path, callbackFn, args, numTries) {
   var doc = document,
       async = args.async,
       maxTries = (args.numRetries || 0) + 1,
+      beforeCallbackFn = (args.before || devnull),
       isCss,
       e;
 
@@ -131,6 +132,9 @@ function loadFile(path, callbackFn, args, numTries) {
     // execute callback
     callbackFn(path, result, ev.defaultPrevented);
   };
+
+  // execute before callback
+  beforeCallbackFn(path, e);
   
   // add to document
   doc.head.appendChild(e);

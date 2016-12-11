@@ -126,6 +126,14 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
   });
   ```
 
+1. Execute a callback before script tags is embedded
+
+  ```javascript
+  loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
+    before: function(path, scriptEl) { /* called for each script node before embedded */ }
+  });
+  ```
+
 1. Execute a callback after bundle finishes loading
 
   ```javascript
