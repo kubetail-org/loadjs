@@ -130,7 +130,10 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 
   ```javascript
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
-    before: function(path, scriptEl) { /* called for each script node before embedded */ }
+    before: function(path, scriptEl) {
+      /* called for each script node before being embedded */
+      if (path === '/path/to/foo.js') scriptEl.crossOrigin = true;
+    }
   });
   ```
 
