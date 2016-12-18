@@ -249,14 +249,14 @@ loadjs/
 1. Build examples
 
   ```bash
-  $ npm run build:examples
+  $ npm run build-examples
   ```
 
   To view the examples you can use any static file server. To use the `nodejs` http-server module:
 
   ```bash
   $ npm install http-server
-  $ npm run serve
+  $ npm run http-server -- -p 3000
   ```
 
   Then visit http://localhost:3000/examples
@@ -264,17 +264,24 @@ loadjs/
 1. Build distribution files
 
   ```bash
-  $ npm run build
+  $ npm run build-dist
   ```
 
   The files will be located in the `dist` directory.
 
-## Run tests
+1. Run tests
 
-To run the browser tests first build the `loadjs` library:
+   To run the browser tests first build the `loadjs` library:
 
-```bash
-$ npm run build:test
-```
+   ```bash
+   $ npm run build-tests
+   ```
 
-Then visit http://localhost:3000/test
+   Then visit http://localhost:3000/test
+
+1. Build all files
+
+   ```bash
+   $ npm run build-all
+   ```
+

@@ -17,13 +17,13 @@ var umdNamespace = function() {
 // PUBLIC TASKS
 // ============================================================================
 
-gulp.task('examples:build', gulp.series(
+gulp.task('build-examples', gulp.series(
   clean('./examples/assets/loadjs'),
   buildJs('./examples/assets/loadjs')
 ));
 
 
-gulp.task('dist:build', gulp.series(
+gulp.task('build-dist', gulp.series(
   clean('./dist'),
   gulp.parallel(
     buildJs('./dist'),
@@ -32,16 +32,16 @@ gulp.task('dist:build', gulp.series(
 ));
 
 
-gulp.task('test:build', gulp.series(
+gulp.task('build-tests', gulp.series(
   clean('./test/assets/loadjs'),
   buildJs('./test/assets/loadjs')
 ));
 
 
 gulp.task('build-all', gulp.parallel(
-  'examples:build',
-  'dist:build',
-  'test:build'
+  'build-examples',
+  'build-dist',
+  'build-tests'
 ));
 
 

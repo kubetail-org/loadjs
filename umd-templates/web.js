@@ -1,3 +1,3 @@
-window.<%= namespace %> = (function (<%= param %>) {
+<%= namespace %> = (function (<%= param %>) {
 <%= contents %>
 })(<%= global %>);

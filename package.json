@@ -19,10 +19,12 @@
   },
   "main": "dist/loadjs.umd.js",
   "scripts": {
-    "build": "gulp dist:build",
-    "build:examples": "gulp examples:build",
-    "build:test": "gulp test:build",
-    "serve": "http-server -p 3000"
+    "build-all": "gulp build-all",
+    "build-dist": "gulp build-dist",
+    "build-examples": "gulp build-examples",
+    "build-tests": "gulp build-tests",
+    "gulp": "gulp",
+    "http-server": "http-server"
   },
   "devDependencies": {
     "del": "2.2.2",
