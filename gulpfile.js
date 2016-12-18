@@ -9,7 +9,7 @@ var del = require('del'),
 
 var umdNamespace = function() {
   return 'loadjs';
-}
+};
 
 
 

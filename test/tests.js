@@ -11,13 +11,10 @@ var pathsLoaded = null,  // file register
 
 describe('LoadJS tests', function() {
 
-
   beforeEach(function() {
     // reset register
     pathsLoaded = {};
   });
-
-
 
   // ==========================================================================
   // JavaScript file loading tests
@@ -33,7 +30,7 @@ describe('LoadJS tests', function() {
         }
       });
     });
-    
+
 
     it('should call error callback on invalid path', function(done) {
       loadjs(['assets/file-doesntexist.js'], {
@@ -75,8 +72,8 @@ describe('LoadJS tests', function() {
         }
       });
     });
-    
-    
+
+
     it('should call success callback on two valid paths', function(done) {
       loadjs(['assets/file1.js', 'assets/file2.js'], {
         success: function() {
@@ -87,7 +84,7 @@ describe('LoadJS tests', function() {
       });
     });
 
-    
+
     it('should call error callback on one invalid path', function(done) {
       loadjs(['assets/file1.js', 'assets/file-doesntexist.js'], {
         success: function() {
@@ -141,7 +138,7 @@ describe('LoadJS tests', function() {
           },
           async: false
         });
-      }
+      };
       
       // run tests
       testFn(paths);
@@ -165,13 +162,13 @@ describe('LoadJS tests', function() {
     //   Ghostery: Disallow "Google Adservices"
     //   AdBlock Plus: Add "www.googletagservices.com/tag/js/gpt.js" as a
     //   custom filter under Options
-    //   
+    //
     xit('it should report ad blocked scripts as missing', function(done) {
       var blockedScript = 'https://www.googletagservices.com/tag/js/gpt.js';
-      
+
       loadjs([blockedScript, 'assets/file1.js'], {
         success: function() {
-          throw "Executed success callback";
+          throw new Error('Executed success callback');
         },
         error: function(pathsNotFound) {
           assert.equal(pathsLoaded['file1.js'], true);
@@ -182,7 +179,6 @@ describe('LoadJS tests', function() {
       });
     });
   });
-
 
 
   // ==========================================================================
@@ -212,7 +208,7 @@ describe('LoadJS tests', function() {
         // remove test stylesheets
         if (el.href.indexOf('mocha.css') === -1) {
           el.parentNode.removeChild(el);
-        }        
+        }
       }
     });
 
@@ -225,8 +221,8 @@ describe('LoadJS tests', function() {
         }
       });
     });
-    
-    
+
+
     it('should load multiple files', function(done) {
       loadjs(['assets/file1.css', 'assets/file2.css'], {
         success: function() {
@@ -235,12 +231,12 @@ describe('LoadJS tests', function() {
         }
       });
     });
-    
-    
+
+
     it('should call error callback on one invalid path', function(done) {
       loadjs(['assets/file1.css', 'assets/file-doesntexist.css'], {
         success: function() {
-          throw "Executed success callback";
+          throw new Error('Executed success callback');
         },
         error: function(pathsNotFound) {
           assert.equal(testEl.offsetWidth, 100);
@@ -269,6 +265,7 @@ describe('LoadJS tests', function() {
       loadjs(['//cdn.muicss.com/mui-0.6.8/css/mui.min.css'], {
         success: function() {
           var styleObj = getComputedStyle(testEl);
+
           assert.equal(styleObj.getPropertyValue('padding-left'), '15px');
           done();
         }
@@ -281,10 +278,11 @@ describe('LoadJS tests', function() {
 
       loadjs(['//cdn.muicss.com/mui-0.6.8/css/mui-doesnotexist.min.css'], {
         success: function() {
-          throw "Executed success callback";
+          throw new Error('Executed success callback');
         },
         error: function(pathsNotFound) {
           var styleObj = getComputedStyle(testEl);
+
           assert.equal(styleObj.getPropertyValue('padding-left'), '0px');
           assert.equal(pathsNotFound.length, 1);
           done();
@@ -301,7 +299,6 @@ describe('LoadJS tests', function() {
   });
 
 
-
   // ==========================================================================
   // API tests
   // ==========================================================================
@@ -311,16 +308,16 @@ describe('LoadJS tests', function() {
     it('should throw an error if bundle is already defined', function() {
       // define bundle
       loadjs(['assets/file1.js'], 'bundle3');
-      
+
       // define bundle again
       var fn = function() {
         loadjs(['assets/file1.js'], 'bundle3');
       };
-      
+
       expect(fn).to.throw(Error, "LoadJS");
     });
-    
-    
+
+
     it('should create a bundle id and a callback inline', function(done) {
       loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle4', {
         success: function() {
@@ -336,11 +333,11 @@ describe('LoadJS tests', function() {
       function bothDone() {
         if (pathsLoaded['file1.js'] && pathsLoaded['file2.js']) done();
       }
-      
+
       // define bundles
       loadjs('assets/file1.js', 'bundle5');
       loadjs('assets/file2.js', 'bundle6');
-      
+
       loadjs
         .ready('bundle5', {
           success: function() {
@@ -354,12 +351,12 @@ describe('LoadJS tests', function() {
           }
         });
     });
-    
-    
+
+
     it('should handle multiple dependencies', function(done) {
       loadjs('assets/file1.js', 'bundle7');
       loadjs('assets/file2.js', 'bundle8');
-      
+
       loadjs.ready(['bundle7', 'bundle8'], {
         success: function() {
           assert.equal(pathsLoaded['file1.js'], true);
@@ -368,12 +365,12 @@ describe('LoadJS tests', function() {
         }
       });
     });
-    
-    
+
+
     it('should error on missing depdendencies', function(done) {
       loadjs('assets/file1.js', 'bundle9');
       loadjs('assets/file-doesntexist.js', 'bundle10');
-      
+
       loadjs.ready(['bundle9', 'bundle10'], {
         success: function() {
           throw "Executed success callback";
@@ -386,8 +383,8 @@ describe('LoadJS tests', function() {
         }
       });
     });
-    
-    
+
+
     it('should execute callbacks on .done()', function(done) {
       // add handler
       loadjs.ready('plugin1', {
@@ -395,16 +392,16 @@ describe('LoadJS tests', function() {
           done();
         }
       });
-      
+
       // execute done
       loadjs.done('plugin1');
     });
-    
-    
+
+
     it('should execute callbacks created after .done()', function(done) {
       // execute done
       loadjs.done('plugin2');
-      
+
       // add handler
       loadjs.ready('plugin2', {
         success: function() {
@@ -412,12 +409,12 @@ describe('LoadJS tests', function() {
         }
       });
     });
-    
-    
+
+
     it('should define bundles', function(done) {
       // define bundle
       loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle1');
-      
+
       // use 1 second delay to let files load
       setTimeout(function() {
         loadjs.ready('bundle1', {
@@ -429,8 +426,8 @@ describe('LoadJS tests', function() {
         });
       }, 1000);
     });
-    
-    
+
+
     it('should allow bundle callbacks before definitions', function(done) {
       // define callback
       loadjs.ready('bundle2', {
@@ -440,7 +437,7 @@ describe('LoadJS tests', function() {
           done();
         }
       });
-      
+
       // use 1 second delay
       setTimeout(function() {
         loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle2');
