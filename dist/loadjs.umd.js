@@ -26,11 +26,14 @@ var devnull = function() {},
 function subscribe(bundleIds, callbackFn) {
   // listify
   bundleIds = bundleIds.push ? bundleIds : [bundleIds];
-  
+
   var depsNotFound = [],
       i = bundleIds.length,
       numWaiting = i,
-      fn, bundleId, r, q;
+      fn,
+      bundleId,
+      r,
+      q;
 
   // define callback function
   fn = function(bundleId, pathsNotFound) {
@@ -43,14 +46,14 @@ function subscribe(bundleIds, callbackFn) {
   // register callback
   while (i--) {
     bundleId = bundleIds[i];
-    
+
     // execute callback if in result cache
     r = bundleResultCache[bundleId];
     if (r) {
       fn(bundleId, r);
       continue;
     }
-    
+
     // add to callback queue
     q = bundleCallbackQueue[bundleId] = bundleCallbackQueue[bundleId] || [];
     q.push(fn);
@@ -68,10 +71,10 @@ function publish(bundleId, pathsNotFound) {
   if (!bundleId) return;
   
   var q = bundleCallbackQueue[bundleId];
-  
+
   // cache result
   bundleResultCache[bundleId] = pathsNotFound;
-  
+
   // exit if queue is empty
   if (!q) return;
   
@@ -92,7 +95,7 @@ function loadFile(path, callbackFn, args, numTries) {
   var doc = document,
       async = args.async,
       maxTries = (args.numRetries || 0) + 1,
-      beforeCallbackFn = (args.before || devnull),
+      beforeCallbackFn = args.before || devnull,
       isCss,
       e;
 
@@ -109,7 +112,7 @@ function loadFile(path, callbackFn, args, numTries) {
     // javascript
     e = doc.createElement('script');
     e.src = path;
-    e.async = (async === undefined) ? true : async;
+    e.async = async === undefined ? true : async;
   }
 
   e.onload = e.onerror = e.onbeforeload = function(ev) {
@@ -144,7 +147,7 @@ function loadFile(path, callbackFn, args, numTries) {
 
   // execute before callback
   beforeCallbackFn(path, e);
-  
+
   // add to document
   doc.head.appendChild(e);
 }
@@ -159,7 +162,11 @@ function loadFiles(paths, callbackFn, args) {
   // listify paths
   paths = paths.push ? paths : [paths];
   
-  var numWaiting = paths.length, x = numWaiting, pathsNotFound = [], fn, i;
+  var numWaiting = paths.length,
+      x = numWaiting,
+      pathsNotFound = [],
+      fn,
+      i;
   
   // define callback function
   fn = function(path, result, defaultPrevented) {
@@ -172,11 +179,11 @@ function loadFiles(paths, callbackFn, args) {
       if (defaultPrevented) pathsNotFound.push(path);
       else return;
     }
-    
+
     numWaiting--;
     if (!numWaiting) callbackFn(pathsNotFound);
   };
-  
+
   // load scripts
   for (i=0; i < x; i++) loadFile(paths[i], fn, args);
 }
@@ -190,14 +197,15 @@ function loadFiles(paths, callbackFn, args) {
  * @param {Function} [arg3] - The error callback
  */
 function loadjs(paths, arg1, arg2) {
-  var bundleId, args;
+  var bundleId,
+      args;
   
   // bundleId (if string)
   if (arg1 && arg1.trim) bundleId = arg1;
 
   // args (default is {})
   args = (bundleId ? arg2 : arg1) || {};
-  
+
   // throw error if bundle is already defined
   if (bundleId) {
     if (bundleId in bundleIdCache) {
@@ -206,7 +214,7 @@ function loadjs(paths, arg1, arg2) {
       bundleIdCache[bundleId] = true;
     }
   }
-  
+
   // load scripts
   loadFiles(paths, function(pathsNotFound) {
     // success and error callbacks
@@ -231,7 +239,7 @@ loadjs.ready = function (deps, args) {
     if (depsNotFound.length) (args.error || devnull)(depsNotFound);
     else (args.success || devnull)();
   });
-  
+
   return loadjs;
 };
 

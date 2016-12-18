@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 3.2.1 - December 18, 2016
+
+* Minor code cleanup
+
 ## 3.2.0 - December 11, 2016
 
 * Added `before` callback hook to modify script/link elements before adding
