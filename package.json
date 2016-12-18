@@ -18,6 +18,12 @@
     "url": "https://github.com/muicss/loadjs.git"
   },
   "main": "dist/loadjs.umd.js",
+  "scripts": {
+    "build": "gulp dist:build",
+    "build:examples": "gulp examples:build",
+    "build:test": "gulp test:build",
+    "serve": "http-server -p 3000"
+  },
   "devDependencies": {
     "del": "2.2.2",
     "gulp": "git+https://github.com/gulpjs/gulp#4.0",

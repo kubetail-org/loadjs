@@ -249,14 +249,14 @@ loadjs/
 1. Build examples
 
   ```bash
-  $ ./node_modules/.bin/gulp examples:build
+  $ npm run build:examples
   ```
 
   To view the examples you can use any static file server. To use the `nodejs` http-server module:
 
   ```bash
   $ npm install http-server
-  $ ./node_modules/.bin/http-server -p 3000
+  $ npm run serve
   ```
 
   Then visit http://localhost:3000/examples
@@ -264,7 +264,7 @@ loadjs/
 1. Build distribution files
 
   ```bash
-  $ ./node_modules/.bin/gulp dist:build
+  $ npm run build
   ```
 
   The files will be located in the `dist` directory.
@@ -274,7 +274,7 @@ loadjs/
 To run the browser tests first build the `loadjs` library:
 
 ```bash
-$ ./node_modules/.bin/gulp test:build
+$ npm run build:test
 ```
 
 Then visit http://localhost:3000/test
