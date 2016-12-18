@@ -11,7 +11,7 @@ LoadJS is a tiny async loader for modern browsers (710 bytes).
 
 LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch JavaScript and CSS files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code in your &lt;html&gt; and then use the `loadjs` global to manage JavaScript dependencies after pageload.
 
-LoadJS is based on the excellent <a href="https://github.com/ded/script.js">$script</a> library by <a href="https://github.com/ded">Dustin Diaz</a>. We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 710 bytes (minified + gzipped).
+LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 710 bytes (minified + gzipped).
 
 Here's an example of what you can do with LoadJS:
 
@@ -27,8 +27,8 @@ loadjs.ready('foobar', {
 ```
 
 The latest version of LoadJS can be found in the `dist/` directory in this repository:
- * [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.js)
- * [loadjs.min.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js)
+ * [loadjs.js](dist/loadjs.js)
+ * [loadjs.min.js](dist/loadjs.min.js)
 
 You can also use it as a CJS or AMD module:
 
@@ -229,8 +229,8 @@ loadjs/
 
 1. Install dependencies
 
-  * nodejs (http://nodejs.org/)
-  * npm (https://www.npmjs.org/)
+  * [nodejs](http://nodejs.org/)
+  * [npm](https://www.npmjs.org/)
   * http-server (via npm)
 
 1. Clone repository
@@ -259,7 +259,7 @@ loadjs/
   $ npm run http-server -- -p 3000
   ```
 
-  Then visit http://localhost:3000/examples
+  Then visit [http://localhost:3000/examples](http://localhost:3000/examples)
 
 1. Build distribution files
 
@@ -277,7 +277,7 @@ loadjs/
    $ npm run build-tests
    ```
 
-   Then visit http://localhost:3000/test
+   Then visit [http://localhost:3000/test](http://localhost:3000/test)
 
 1. Build all files
 
