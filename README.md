@@ -27,8 +27,8 @@ loadjs.ready('foobar', {
 ```
 
 The latest version of LoadJS can be found in the `dist/` directory in this repository:
- * [loadjs.js](dist/loadjs.js)
- * [loadjs.min.js](dist/loadjs.min.js)
+ * [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.js)
+ * [loadjs.min.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js)
 
 You can also use it as a CJS or AMD module:
 
