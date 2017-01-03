@@ -187,23 +187,19 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 1. Use .done() for more control
 
   ```javascript
-  loadjs.ready('my-awesome-plugin', {
+  loadjs.ready(['dependency1', 'dependency2'], {
     success: function() {
-      myAwesomePlugin();
+      // run code after dependencies have been met
     }
   });
 
-  loadjs.ready('jquery', {
-    success: function() {
-      // plugin requires jquery
-      window.myAwesomePlugin = function() {
-        if (!window.jQuery) throw "jQuery is missing!";
-      };
-
-      // plugin is done loading
-      loadjs.done('my-awesome-plugin');
-    }
-  });
+  function fn1() {
+    loadjs.done('dependency1');
+  }
+  
+  function fn2() {
+    loadjs.done('dependency2');
+  }
   ```
 
 ## Directory structure
