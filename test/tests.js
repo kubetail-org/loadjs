@@ -104,7 +104,7 @@ describe('LoadJS tests', function() {
       var numCompleted = 0,
           numTests = 20,
           paths = ['assets/asyncfalse1.js', 'assets/asyncfalse2.js'];
-      
+
       // run tests sequentially
       var testFn = function(paths) {
         // add cache busters
@@ -116,21 +116,21 @@ describe('LoadJS tests', function() {
           success: function() {
             var f1 = paths[0].replace('assets/', '');
             var f2 = paths[1].replace('assets/', '');
-            
+
             // check load order
             assert.isTrue(pathsLoaded[f1]);
             assert.isFalse(pathsLoaded[f2]);
-            
+
             // increment tests
             numCompleted += 1;
-            
+
             if (numCompleted === numTests) {
               // exit
               done();
             } else {
               // reset register
               pathsLoaded = {};
-              
+
               // run test again
               paths.reverse();
               testFn(paths);
@@ -139,7 +139,7 @@ describe('LoadJS tests', function() {
           async: false
         });
       };
-      
+
       // run tests
       testFn(paths);
     });
@@ -442,6 +442,19 @@ describe('LoadJS tests', function() {
       setTimeout(function() {
         loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle2');
       }, 1000);
+    });
+
+
+    it('should reset dependencies statuses', function() {
+      loadjs(['assets/file1.js'], 'cleared');
+      loadjs.reset();
+
+      // define bundle again
+      var fn = function() {
+        loadjs(['assets/file1.js'], 'cleared');
+      };
+
+      expect(fn).not.to.throw(Error, "LoadJS");
     });
   });
 });

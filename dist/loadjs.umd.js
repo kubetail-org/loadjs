@@ -42,7 +42,7 @@ function subscribe(bundleIds, callbackFn) {
     numWaiting--;
     if (!numWaiting) callbackFn(depsNotFound);
   };
-  
+
   // register callback
   while (i--) {
     bundleId = bundleIds[i];
@@ -69,7 +69,7 @@ function subscribe(bundleIds, callbackFn) {
 function publish(bundleId, pathsNotFound) {
   // exit if id isn't defined
   if (!bundleId) return;
-  
+
   var q = bundleCallbackQueue[bundleId];
 
   // cache result
@@ -77,7 +77,7 @@ function publish(bundleId, pathsNotFound) {
 
   // exit if queue is empty
   if (!q) return;
-  
+
   // empty callback queue
   while (q.length) {
     q[0](bundleId, pathsNotFound);
@@ -161,13 +161,13 @@ function loadFile(path, callbackFn, args, numTries) {
 function loadFiles(paths, callbackFn, args) {
   // listify paths
   paths = paths.push ? paths : [paths];
-  
+
   var numWaiting = paths.length,
       x = numWaiting,
       pathsNotFound = [],
       fn,
       i;
-  
+
   // define callback function
   fn = function(path, result, defaultPrevented) {
     // handle error
@@ -199,7 +199,7 @@ function loadFiles(paths, callbackFn, args) {
 function loadjs(paths, arg1, arg2) {
   var bundleId,
       args;
-  
+
   // bundleId (if string)
   if (arg1 && arg1.trim) bundleId = arg1;
 
@@ -250,6 +250,16 @@ loadjs.ready = function (deps, args) {
  */
 loadjs.done = function done(bundleId) {
   publish(bundleId, []);
+};
+
+
+/**
+ * Reset loadjs dependencies statuses
+ */
+loadjs.reset = function reset() {
+  bundleIdCache = {};
+  bundleResultCache = {};
+  bundleCallbackQueue = {};
 };
 
 
