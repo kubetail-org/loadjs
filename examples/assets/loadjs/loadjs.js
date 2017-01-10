@@ -201,7 +201,7 @@ function loadjs(paths, arg1, arg2) {
   // throw error if bundle is already defined
   if (bundleId) {
     if (bundleId in bundleIdCache) {
-      throw new Error("LoadJS");
+      throw "LoadJS";
     } else {
       bundleIdCache[bundleId] = true;
     }

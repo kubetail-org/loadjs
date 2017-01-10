@@ -14,6 +14,9 @@ describe('LoadJS tests', function() {
   beforeEach(function() {
     // reset register
     pathsLoaded = {};
+
+    // reset loadjs dependencies
+    loadjs.reset();
   });
 
   // ==========================================================================
@@ -307,19 +310,19 @@ describe('LoadJS tests', function() {
 
     it('should throw an error if bundle is already defined', function() {
       // define bundle
-      loadjs(['assets/file1.js'], 'bundle3');
+      loadjs(['assets/file1.js'], 'bundle');
 
       // define bundle again
       var fn = function() {
-        loadjs(['assets/file1.js'], 'bundle3');
+        loadjs(['assets/file1.js'], 'bundle');
       };
 
-      expect(fn).to.throw(Error, "LoadJS");
+      expect(fn).to.throw("LoadJS");
     });
 
 
     it('should create a bundle id and a callback inline', function(done) {
-      loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle4', {
+      loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle', {
         success: function() {
           assert.equal(pathsLoaded['file1.js'], true);
           assert.equal(pathsLoaded['file2.js'], true);
@@ -335,16 +338,16 @@ describe('LoadJS tests', function() {
       }
 
       // define bundles
-      loadjs('assets/file1.js', 'bundle5');
-      loadjs('assets/file2.js', 'bundle6');
+      loadjs('assets/file1.js', 'bundle1');
+      loadjs('assets/file2.js', 'bundle2');
 
       loadjs
-        .ready('bundle5', {
+        .ready('bundle1', {
           success: function() {
             assert.equal(pathsLoaded['file1.js'], true);
             bothDone();
           }})
-        .ready('bundle6', {
+        .ready('bundle2', {
           success: function() {
             assert.equal(pathsLoaded['file2.js'], true);
             bothDone();
@@ -354,10 +357,10 @@ describe('LoadJS tests', function() {
 
 
     it('should handle multiple dependencies', function(done) {
-      loadjs('assets/file1.js', 'bundle7');
-      loadjs('assets/file2.js', 'bundle8');
+      loadjs('assets/file1.js', 'bundle1');
+      loadjs('assets/file2.js', 'bundle2');
 
-      loadjs.ready(['bundle7', 'bundle8'], {
+      loadjs.ready(['bundle1', 'bundle2'], {
         success: function() {
           assert.equal(pathsLoaded['file1.js'], true);
           assert.equal(pathsLoaded['file2.js'], true);
@@ -368,17 +371,17 @@ describe('LoadJS tests', function() {
 
 
     it('should error on missing depdendencies', function(done) {
-      loadjs('assets/file1.js', 'bundle9');
-      loadjs('assets/file-doesntexist.js', 'bundle10');
+      loadjs('assets/file1.js', 'bundle1');
+      loadjs('assets/file-doesntexist.js', 'bundle2');
 
-      loadjs.ready(['bundle9', 'bundle10'], {
+      loadjs.ready(['bundle1', 'bundle2'], {
         success: function() {
           throw "Executed success callback";
         },
         error: function(depsNotFound) {
           assert.equal(pathsLoaded['file1.js'], true);
           assert.equal(depsNotFound.length, 1);
-          assert.equal(depsNotFound[0], 'bundle10');
+          assert.equal(depsNotFound[0], 'bundle2');
           done();
         }
       });
@@ -387,23 +390,23 @@ describe('LoadJS tests', function() {
 
     it('should execute callbacks on .done()', function(done) {
       // add handler
-      loadjs.ready('plugin1', {
+      loadjs.ready('plugin', {
         success: function() {
           done();
         }
       });
 
       // execute done
-      loadjs.done('plugin1');
+      loadjs.done('plugin');
     });
 
 
     it('should execute callbacks created after .done()', function(done) {
       // execute done
-      loadjs.done('plugin2');
+      loadjs.done('plugin');
 
       // add handler
-      loadjs.ready('plugin2', {
+      loadjs.ready('plugin', {
         success: function() {
           done();
         }
@@ -413,11 +416,11 @@ describe('LoadJS tests', function() {
 
     it('should define bundles', function(done) {
       // define bundle
-      loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle1');
+      loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle');
 
       // use 1 second delay to let files load
       setTimeout(function() {
-        loadjs.ready('bundle1', {
+        loadjs.ready('bundle', {
           success: function() {
             assert.equal(pathsLoaded['file1.js'], true);
             assert.equal(pathsLoaded['file2.js'], true);
@@ -430,7 +433,7 @@ describe('LoadJS tests', function() {
 
     it('should allow bundle callbacks before definitions', function(done) {
       // define callback
-      loadjs.ready('bundle2', {
+      loadjs.ready('bundle', {
         success: function() {
           assert.equal(pathsLoaded['file1.js'], true);
           assert.equal(pathsLoaded['file2.js'], true);
@@ -440,7 +443,7 @@ describe('LoadJS tests', function() {
 
       // use 1 second delay
       setTimeout(function() {
-        loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle2');
+        loadjs(['assets/file1.js', 'assets/file2.js'], 'bundle');
       }, 1000);
     });
 
@@ -454,7 +457,7 @@ describe('LoadJS tests', function() {
         loadjs(['assets/file1.js'], 'cleared');
       };
 
-      expect(fn).not.to.throw(Error, "LoadJS");
+      expect(fn).not.to.throw("LoadJS");
     });
   });
 });
