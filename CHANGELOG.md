@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 3.3.0 - January 9, 2007
+
+* Added reset() method to reset dependency trackers
+
 ## 3.2.1 - December 18, 2016
 
 * Minor code cleanup
