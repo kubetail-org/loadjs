@@ -36,7 +36,7 @@ function subscribe(bundleIds, callbackFn) {
       q;
 
   // define callback function
-  fn = function(bundleId, pathsNotFound) {
+  fn = function (bundleId, pathsNotFound) {
     if (pathsNotFound.length) depsNotFound.push(bundleId);
 
     numWaiting--;
@@ -115,7 +115,7 @@ function loadFile(path, callbackFn, args, numTries) {
     e.async = async === undefined ? true : async;
   }
 
-  e.onload = e.onerror = e.onbeforeload = function(ev) {
+  e.onload = e.onerror = e.onbeforeload = function (ev) {
     var result = ev.type[0];
 
     // Note: The following code isolates IE using `hideFocus` and treats empty
@@ -216,7 +216,7 @@ function loadjs(paths, arg1, arg2) {
   }
 
   // load scripts
-  loadFiles(paths, function(pathsNotFound) {
+  loadFiles(paths, function (pathsNotFound) {
     // success and error callbacks
     if (pathsNotFound.length) (args.error || devnull)(pathsNotFound);
     else (args.success || devnull)();
@@ -232,9 +232,9 @@ function loadjs(paths, arg1, arg2) {
  * @param {(string|string[])} deps - List of bundle ids
  * @param {Object} args - success/error arguments
  */
-loadjs.ready = function (deps, args) {
+loadjs.ready = function ready(deps, args) {
   // subscribe to bundle load event
-  subscribe(deps, function(depsNotFound) {
+  subscribe(deps, function (depsNotFound) {
     // execute callbacks
     if (depsNotFound.length) (args.error || devnull)(depsNotFound);
     else (args.success || devnull)();

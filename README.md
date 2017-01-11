@@ -206,7 +206,7 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 
 
   ```javascript
-  loadjs.reset()
+  loadjs.reset();
   ```
 
 ## Directory structure
