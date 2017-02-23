@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 3.4.0 - February 23, 2017
+
+* Added isDefined() method to check if a bundle is already defined
+
 ## 3.3.1 - January 11, 2017
 
 * Minor code cleanup

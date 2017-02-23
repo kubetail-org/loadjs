@@ -255,6 +255,15 @@ loadjs.reset = function reset() {
 };
 
 
+/**
+ * Determine if bundle has already been defined
+ * @param String} bundleId - The bundle id
+ */
+loadjs.isDefined = function isDefined(bundleId) {
+  return bundleId in bundleIdCache;
+};
+
+
 // export
 return loadjs;
 
