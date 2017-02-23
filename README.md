@@ -107,6 +107,16 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
   });
   ```
 
+1. Check if bundle has already been defined
+
+  ```javascript
+  if (!loadjs.isDefined('foobar')) {
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
+      success: function() { /* foo.js & bar.js loaded */ }
+    });
+  }
+  ```
+
 1. Add an error callback
 
   ```javascript

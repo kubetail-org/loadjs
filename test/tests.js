@@ -459,5 +459,13 @@ describe('LoadJS tests', function() {
 
       expect(fn).not.to.throw("LoadJS");
     });
+
+
+    it('should indicate if bundle has already been defined', function() {
+      loadjs(['assets/file1/js'], 'bundle1');
+
+      assert.equal(loadjs.isDefined('bundle1'), true);
+      assert.equal(loadjs.isDefined('bundleXX'), false);
+    });
   });
 });
