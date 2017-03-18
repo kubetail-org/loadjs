@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="assets/log.js"></script>
+    <script src="assets/loadjs/loadjs.js"></script>
+    <style id="placeholder" type="text/css"></style>
+    <style id="critical" type="text/css">
+      .super-green {
+        color: green;
+      }
+    </style>
+
+    <!-- styles shouldnt be appended here to allow critical to override the appended stylesheet -->
+  </head>
+  <body>
+    <h1 class="super-green">I should be green</h1>
+
+    <script>
+      // load a file after window onload event fires
+      window.addEventListener('load', function(ev) {
+        loadjs('assets/style.css', {
+          append: function (path, elm) {
+            log('im overriding the default append behavior');
+            document.getElementById('placeholder').replaceWith(elm);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
