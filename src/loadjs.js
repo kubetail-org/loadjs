@@ -87,6 +87,7 @@ function loadFile(path, callbackFn, args, numTries) {
       async = args.async,
       maxTries = (args.numRetries || 0) + 1,
       beforeCallbackFn = args.before || devnull,
+      appendCallbackFn = args.append,
       isCss,
       e;
 
@@ -139,7 +140,13 @@ function loadFile(path, callbackFn, args, numTries) {
   // execute before callback
   beforeCallbackFn(path, e);
 
-  // add to document
+  // allow the user to customize how the element is appended to the document
+  // this is useful for when you have critical-css that is loaded in the head
+  // and if you want to control how the styles override eachother
+  if (appendCallbackFn) {
+    return appendCallbackFn(path, e);
+  }
+
   doc.head.appendChild(e);
 }
 
