@@ -1,5 +1,10 @@
 # LoadJS Changelog
 
+## 3.5.0 - March 28, 2017
+
+* Added support for "css!" prefix to force treating file as stylesheet
+* Added support for DOM insertion bypass if `before` callback returns `false`
+
 ## 3.4.0 - February 23, 2017
 
 * Added isDefined() method to check if a bundle is already defined

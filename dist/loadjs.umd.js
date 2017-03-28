@@ -101,13 +101,13 @@ function loadFile(path, callbackFn, args, numTries) {
 
   numTries = numTries || 0;
 
-  if (/\.css$/.test(path)) {
+  if (/(^css!|\.css$)/.test(path)) {
     isCss = true;
 
     // css
     e = doc.createElement('link');
     e.rel = 'stylesheet';
-    e.href = path;
+    e.href = path.replace(/^css!/, '');  // remove "css!" prefix
   } else {
     // javascript
     e = doc.createElement('script');
@@ -145,11 +145,8 @@ function loadFile(path, callbackFn, args, numTries) {
     callbackFn(path, result, ev.defaultPrevented);
   };
 
-  // execute before callback
-  beforeCallbackFn(path, e);
-
-  // add to document
-  doc.head.appendChild(e);
+  // add to document (unless callback returns `false`)
+  if (beforeCallbackFn(path, e) !== false) doc.head.appendChild(e);
 }
 
 
