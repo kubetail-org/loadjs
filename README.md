@@ -68,179 +68,178 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 
 1. Load a single file
 
-  ```javascript
-  loadjs('/path/to/foo.js', {
-    success: function() { /* foo.js loaded */}
-  });
-  ```
+    ```javascript
+    loadjs('/path/to/foo.js', {
+      success: function() { /* foo.js loaded */}
+    });
+    ```
 
 1. Fetch files in parallel and load them asynchronously
 
-  ```javascript
-  loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
-    success: function() { /* foo.js & bar.js loaded */ }
-  });
-  ```
+    ```javascript
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
+      success: function() { /* foo.js & bar.js loaded */ }
+    });
+    ```
 
 1. Fetch files in parallel and load them in series
 
-  ```javascript
-  loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
-    success: function() { /* foo.js and bar.js loaded in series */ },
-    async: false
-  });
-  ```
+    ```javascript
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
+      success: function() { /* foo.js and bar.js loaded in series */ },
+      async: false
+    });
+    ```
 
 1. Fetch JavaScript and CSS files
 
-  ```javascript
-  loadjs(['/path/to/foo.css', '/path/to/bar.js'], {
-    success: function() { /* foo.css and bar.js loaded */ }
-  });
-  ```
+    ```javascript
+    loadjs(['/path/to/foo.css', '/path/to/bar.js'], {
+      success: function() { /* foo.css and bar.js loaded */ }
+    });
+    ```
 
 1. Force treating file as CSS stylesheet
 
-  ```javascript
-  loadjs(['css!/path/to/cssfile.custom'], {
-    success: function() { /* cssfile.custom loaded as stylesheet */ }
-  });
-  ```
+    ```javascript
+    loadjs(['css!/path/to/cssfile.custom'], {
+      success: function() { /* cssfile.custom loaded as stylesheet */ }
+    });
+    ```
 
 1. Add a bundle id
 
-  ```javascript
-  loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
-    success: function() { /* foo.js & bar.js loaded */ }
-  });
-  ```
-
-1. Check if bundle has already been defined
-
-  ```javascript
-  if (!loadjs.isDefined('foobar')) {
+    ```javascript
     loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
       success: function() { /* foo.js & bar.js loaded */ }
     });
-  }
-  ```
+    ```
+
+1. Check if bundle has already been defined
+
+    ```javascript
+    if (!loadjs.isDefined('foobar')) {
+      loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
+        success: function() { /* foo.js & bar.js loaded */ }
+      });
+    }
+    ```
 
 1. Add an error callback
 
-  ```javascript
-  loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
-    success: function() { /* foo.js & bar.js loaded */ },
-    error: function(pathsNotFound) { /* at least one path didn't load */ }
-  });
-  ```
+    ```javascript
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
+      success: function() { /* foo.js & bar.js loaded */ },
+      error: function(pathsNotFound) { /* at least one path didn't load */ }
+    });
+    ```
 
 1. Retry files before calling the error callback
 
-  ```javascript
-  loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
-    success: function() { /* foo.js & bar.js loaded */ },
-    error: function(pathsNotFound) { /* at least one path didn't load */ },
-    numRetries: 3
-  });
-  ```
+    ```javascript
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
+      success: function() { /* foo.js & bar.js loaded */ },
+      error: function(pathsNotFound) { /* at least one path didn't load */ },
+      numRetries: 3
+    });
+    ```
 
 1. Execute a callback before script tags are embedded
 
-  ```javascript
-  loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
-    success: function() {},
-    error: function(pathsNotFound) {},
-    before: function(path, scriptEl) {
-      /* called for each script node before being embedded */
-      if (path === '/path/to/foo.js') scriptEl.crossOrigin = true;
-    }
-  });
-  ```
+    ```javascript
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
+      success: function() {},
+      error: function(pathsNotFound) {},
+      before: function(path, scriptEl) {
+        /* called for each script node before being embedded */
+        if (path === '/path/to/foo.js') scriptEl.crossOrigin = true;
+      }
+    });
+    ```
 
 1. Bypass LoadJS default DOM insertion mechanism (DOM `<head>`)
 
-  ```javascript
-  loadjs(['/path/to/foo.js'], {
-    success: function() {},
-    error: function(pathsNotFound) {},
-    before: function(path, scriptEl) {
-      document.body.appendChild(scriptEl);
+    ```javascript
+    loadjs(['/path/to/foo.js'], {
+      success: function() {},
+      error: function(pathsNotFound) {},
+      before: function(path, scriptEl) {
+        document.body.appendChild(scriptEl);
       
-      /* return `false` to bypass default DOM insertion mechanism */
-      return false;
-    }
-  });
-  ```
+        /* return `false` to bypass default DOM insertion mechanism */
+        return false;
+      }
+    });
+    ```
 
 1. Execute a callback after bundle finishes loading
 
-  ```javascript
-  loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
+    ```javascript
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
-  loadjs.ready('foobar', {
-    success: function() { /* foo.js & bar.js loaded */ }
-  });
-  ```
+    loadjs.ready('foobar', {
+      success: function() { /* foo.js & bar.js loaded */ }
+    });
+    ```
 
 1. Chain .ready() together
 
-  ```javascript
-  loadjs('/path/to/foo.js', 'foo');
-  loadjs('/path/to/bar.js', 'bar');
+    ```javascript
+    loadjs('/path/to/foo.js', 'foo');
+    loadjs('/path/to/bar.js', 'bar');
 
-  loadjs
-    .ready('foo', {
-      success: function() { /* foo.js loaded */ }
-    })
-    .ready('bar', {
-      success: function() { /* bar.js loaded */ }
-    });
-  ```
+    loadjs
+      .ready('foo', {
+        success: function() { /* foo.js loaded */ }
+      })
+      .ready('bar', {
+        success: function() { /* bar.js loaded */ }
+      });
+    ```
 
 1. Compose more complex dependency lists
 
-  ```javascript
-  loadjs('/path/to/foo.js', 'foo');
-  loadjs('/path/to/bar.js', 'bar');
-  loadjs(['/path/to/thunkor.js', '/path/to/thunky.js'], 'thunk');
+    ```javascript
+    loadjs('/path/to/foo.js', 'foo');
+    loadjs('/path/to/bar.js', 'bar');
+    loadjs(['/path/to/thunkor.js', '/path/to/thunky.js'], 'thunk');
 
-  // wait for multiple depdendencies
-  loadjs.ready(['foo', 'bar', 'thunk'], {
-    success: function() {
-      // foo.js & bar.js & thunkor.js & thunky.js loaded
-    },
-    error: function(depsNotFound) {
-      if (depsNotFound.indexOf('foo') > -1) {};  // foo failed
-      if (depsNotFound.indexOf('bar') > -1) {};  // bar failed
-      if (depsNotFound.indexOf('thunk') > -1) {};  // thunk failed
-    }
-  });
-  ```
+    // wait for multiple depdendencies
+    loadjs.ready(['foo', 'bar', 'thunk'], {
+      success: function() {
+        // foo.js & bar.js & thunkor.js & thunky.js loaded
+      },
+      error: function(depsNotFound) {
+        if (depsNotFound.indexOf('foo') > -1) {};  // foo failed
+        if (depsNotFound.indexOf('bar') > -1) {};  // bar failed
+        if (depsNotFound.indexOf('thunk') > -1) {};  // thunk failed
+      }
+    });
+    ```
   
 1. Use .done() for more control
 
-  ```javascript
-  loadjs.ready(['dependency1', 'dependency2'], {
-    success: function() {
-      // run code after dependencies have been met
-    }
-  });
+    ```javascript
+    loadjs.ready(['dependency1', 'dependency2'], {
+      success: function() {
+        // run code after dependencies have been met
+      }
+    });
 
-  function fn1() {
-    loadjs.done('dependency1');
-  }
+    function fn1() {
+      loadjs.done('dependency1');
+    }
   
-  function fn2() {
-    loadjs.done('dependency2');
-  }
-  ```
+    function fn2() {
+      loadjs.done('dependency2');
+    }
+    ```
 
 1. Reset dependency trackers
 
-
-  ```javascript
-  loadjs.reset();
-  ```
+    ```javascript
+    loadjs.reset();
+    ```
 
 ## Directory structure
 
@@ -265,59 +264,59 @@ loadjs/
 
 1. Install dependencies
 
-  * [nodejs](http://nodejs.org/)
-  * [npm](https://www.npmjs.org/)
-  * http-server (via npm)
+    * [nodejs](http://nodejs.org/)
+    * [npm](https://www.npmjs.org/)
+    * http-server (via npm)
 
 1. Clone repository
 
-  ```bash
-  $ git clone git@github.com:muicss/loadjs.git
-  $ cd loadjs
-  ```
+    ```bash
+    $ git clone git@github.com:muicss/loadjs.git
+    $ cd loadjs
+    ```
 
 1. Install node dependencies using npm
 
-  ```bash
-  $ npm install
-  ```
+    ```bash
+    $ npm install
+    ```
 
 1. Build examples
 
-  ```bash
-  $ npm run build-examples
-  ```
+    ```bash
+    $ npm run build-examples
+    ```
 
-  To view the examples you can use any static file server. To use the `nodejs` http-server module:
+    To view the examples you can use any static file server. To use the `nodejs` http-server module:
 
-  ```bash
-  $ npm install http-server
-  $ npm run http-server -- -p 3000
-  ```
+    ```bash
+    $ npm install http-server
+    $ npm run http-server -- -p 3000
+    ```
 
-  Then visit [http://localhost:3000/examples](http://localhost:3000/examples)
+    Then visit [http://localhost:3000/examples](http://localhost:3000/examples)
 
 1. Build distribution files
 
-  ```bash
-  $ npm run build-dist
-  ```
+    ```bash
+    $ npm run build-dist
+    ```
 
-  The files will be located in the `dist` directory.
+    The files will be located in the `dist` directory.
 
 1. Run tests
 
-   To run the browser tests first build the `loadjs` library:
+     To run the browser tests first build the `loadjs` library:
 
-   ```bash
-   $ npm run build-tests
-   ```
+     ```bash
+     $ npm run build-tests
+     ```
 
-   Then visit [http://localhost:3000/test](http://localhost:3000/test)
+     Then visit [http://localhost:3000/test](http://localhost:3000/test)
 
 1. Build all files
 
-   ```bash
-   $ npm run build-all
-   ```
+     ```bash
+     $ npm run build-all
+     ```
 
