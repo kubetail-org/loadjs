@@ -262,6 +262,24 @@ describe('LoadJS tests', function() {
     });
 
 
+    it('should support forced "css!" files', function(done) {
+      this.timeout(0);
+
+      loadjs(['css!assets/cssfile.custom'], {
+        success: function() {
+          // loop through files
+          var els = document.getElementsByTagName('link'),
+              i = els.length,
+              el;
+
+          while (i--) {
+            if (els[i].href.indexOf('cssfile.custom') !== -1) done();
+          }
+        }
+      });
+    });
+
+
     it('should load external css files', function(done) {
       this.timeout(0);
 

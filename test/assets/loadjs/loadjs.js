@@ -93,13 +93,13 @@ function loadFile(path, callbackFn, args, numTries) {
 
   numTries = numTries || 0;
 
-  if (/\.css$/.test(path)) {
+  if (/(^css!|\.css$)/.test(path)) {
     isCss = true;
 
     // css
     e = doc.createElement('link');
     e.rel = 'stylesheet';
-    e.href = path;
+    e.href = path.replace(/^css!/, '');  // remove "css!" prefix
   } else {
     // javascript
     e = doc.createElement('script');
