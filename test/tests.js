@@ -64,7 +64,7 @@ describe('LoadJS tests', function() {
             el.crossOrigin = 'anonymous';
           }
         },
-        success: function () {
+        success: function() {
           assert.equal(scriptTags[0].path, 'assets/file1.js');
           assert.equal(scriptTags[1].path, 'assets/file2.js');
 
@@ -72,6 +72,27 @@ describe('LoadJS tests', function() {
           assert.equal(scriptTags[1].el.crossOrigin, 'anonymous');
 
           done();
+        }
+      });
+    });
+
+
+    it('should bypass insertion if before returns `false`', function(done) {
+      loadjs(['assets/file1.js'], {
+        before: function(path, el) {
+          // append to body (instead of head)
+          document.body.appendChild(el);
+
+          // return `false` to bypass default DOM insertion
+          return false;
+        },
+        success: function() {
+          assert.equal(pathsLoaded['file1.js'], true);
+          
+          // verify that file was added to body
+          document.body.querySelectorAll('script').forEach(function(el) {
+            if (el.src.indexOf('assets/file1.js') !== -1) done();
+          });
         }
       });
     });

@@ -136,11 +136,8 @@ function loadFile(path, callbackFn, args, numTries) {
     callbackFn(path, result, ev.defaultPrevented);
   };
 
-  // execute before callback
-  beforeCallbackFn(path, e);
-
-  // add to document
-  doc.head.appendChild(e);
+  // add to document (unless callback returns `false`)
+  if (beforeCallbackFn(path, e) !== false) doc.head.appendChild(e);
 }
 
 
