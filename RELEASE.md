@@ -12,7 +12,7 @@
 
 1. Change version number in bower.json
 
-1. Update README.md (if necessary)
+1. Update CDN urls in README.md
 
 1. Commit changes and tag code
 
