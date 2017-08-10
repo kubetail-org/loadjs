@@ -188,16 +188,18 @@ describe('LoadJS tests', function() {
     //   custom filter under Options
     //
     xit('it should report ad blocked scripts as missing', function(done) {
-      var blockedScript = 'https://www.googletagservices.com/tag/js/gpt.js';
+      var s1 = 'https://www.googletagservices.com/tag/js/gpt.js',
+          s2 = 'https://munchkin.marketo.net/munchkin-beta.js';
 
-      loadjs([blockedScript, 'assets/file1.js'], {
+      loadjs([s1, s2, 'assets/file1.js'], {
         success: function() {
           throw new Error('Executed success callback');
         },
         error: function(pathsNotFound) {
           assert.equal(pathsLoaded['file1.js'], true);
-          assert.equal(pathsNotFound.length, 1);
-          assert.equal(pathsNotFound[0], blockedScript);
+          assert.equal(pathsNotFound.length, 2);
+          assert.equal(pathsNotFound[0], s1);
+          assert.equal(pathsNotFound[1], s2);
           done();
         }
       });
@@ -315,7 +317,7 @@ describe('LoadJS tests', function() {
     });
 
 
-    it('should call errorure on missing external file', function(done) {
+    it('should call error on missing external file', function(done) {
       this.timeout(0);
 
       loadjs(['//cdn.muicss.com/mui-0.6.8/css/mui-doesnotexist.min.css'], {

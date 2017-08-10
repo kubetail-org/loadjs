@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 3.5.1 - August 9, 2017
+
+* Upgraded devDependencies and re-built payload
+
 ## 3.5.0 - March 28, 2017
 
 * Added support for "css!" prefix to force treating file as stylesheet
