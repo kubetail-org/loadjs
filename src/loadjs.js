@@ -224,6 +224,8 @@ loadjs.ready = function ready(deps, args) {
   // subscribe to bundle load event
   subscribe(deps, function (depsNotFound) {
     // execute callbacks
+    if (typeof args === 'function')
+      args();
     if (depsNotFound.length) (args.error || devnull)(depsNotFound);
     else (args.success || devnull)();
   });
