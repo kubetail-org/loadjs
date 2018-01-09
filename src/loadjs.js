@@ -78,6 +78,21 @@ function publish(bundleId, pathsNotFound) {
 
 
 /**
+ * Execute callbacks.
+ * @param {Object or Function} args - The callback args
+ * @param {strin[]} depsNotFound - List of dependencies not found
+ */
+function executeCallbacks(args, depsNotFound) {
+  // accept function as argument
+  if (args.call) args = {success: args};
+  
+  // success and error callbacks
+  if (depsNotFound.length) (args.error || devnull)(depsNotFound);
+  else (args.success || devnull)();
+}
+
+
+/**
  * Load individual file.
  * @param {string} path - The file path
  * @param {Function} callbackFn - The callback function
@@ -205,9 +220,8 @@ function loadjs(paths, arg1, arg2) {
 
   // load scripts
   loadFiles(paths, function (pathsNotFound) {
-    // success and error callbacks
-    if (pathsNotFound.length) (args.error || devnull)(pathsNotFound);
-    else (args.success || devnull)();
+    // execute callbacks
+    executeCallbacks(args, pathsNotFound);
 
     // publish bundle load event
     publish(bundleId, pathsNotFound);
@@ -224,10 +238,7 @@ loadjs.ready = function ready(deps, args) {
   // subscribe to bundle load event
   subscribe(deps, function (depsNotFound) {
     // execute callbacks
-    if (typeof args === 'function')
-      args();
-    if (depsNotFound.length) (args.error || devnull)(depsNotFound);
-    else (args.success || devnull)();
+    executeCallbacks(args, depsNotFound);
   });
 
   return loadjs;
