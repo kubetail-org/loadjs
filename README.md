@@ -12,7 +12,7 @@ LoadJS is a tiny async loader for modern browsers (753 bytes).
 
 LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch JavaScript and CSS files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code of [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js) in your &lt;html&gt; (possibly in the &lt;head&gt; tag) and then use the `loadjs` global to manage JavaScript dependencies after pageload.
 
-LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 738 bytes (minified + gzipped).
+LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 753 bytes (minified + gzipped).
 
 Here's an example of what you can do with LoadJS:
 
@@ -25,8 +25,15 @@ loadjs.ready('foobar', {
   success: function() { /* foo.js & bar.js loaded */ },
   error: function(depsNotFound) { /* foobar bundle load failed */ }
 });
+```
 
-// use simpler syntax to only execute success function
+Note that if you only want a success callback you can use this simpler syntax instead:
+
+```javascript
+// define a dependency bundle
+loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
+
+// execute code when the bundle loads successfully
 loadjs.ready('foobar', function() {
   // foo.js & bar.js loaded
 });
