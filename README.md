@@ -2,7 +2,7 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (738 bytes).
+LoadJS is a tiny async loader for modern browsers (753 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
@@ -20,16 +20,21 @@ Here's an example of what you can do with LoadJS:
 // define a dependency bundle
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
-// execute code elsewhere when the bundle has loaded
+// execute code when the bundle loads
 loadjs.ready('foobar', {
   success: function() { /* foo.js & bar.js loaded */ },
   error: function(depsNotFound) { /* foobar bundle load failed */ }
 });
+
+// use simpler syntax to only execute success function
+loadjs.ready('foobar', function() {
+  // foo.js & bar.js loaded
+});
 ```
 
 The latest version of LoadJS can be found in the `dist/` directory in this repository:
- * [loadjs.js](https://cdn.rawgit.com/muicss/loadjs/3.5.1/dist/loadjs.js)
- * [loadjs.min.js](https://cdn.rawgit.com/muicss/loadjs/3.5.1/dist/loadjs.min.js)
+ * [loadjs.js](https://cdn.rawgit.com/muicss/loadjs/3.5.2/dist/loadjs.js)
+ * [loadjs.min.js](https://cdn.rawgit.com/muicss/loadjs/3.5.2/dist/loadjs.min.js)
 
 You can also use it as a CJS or AMD module:
 
@@ -79,7 +84,7 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 
     ```javascript
     loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
-      success: function() { /* foo.js & bar.js loaded */ }
+      success: function() { /* foo.js and bar.js loaded */ }
     });
     ```
 
@@ -241,6 +246,18 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     ```javascript
     loadjs.reset();
     ```
+
+1. Use success callback functions for simplicity
+
+   ```javascript
+   loadjs('/path/to/foo.js', 'foo', function() {
+     // foo.js loaded
+   });
+
+   loadjs.ready('foo', function() {
+     // foo.js loaded
+   });
+   ```
 
 ## Directory structure
 
