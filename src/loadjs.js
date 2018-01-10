@@ -80,7 +80,7 @@ function publish(bundleId, pathsNotFound) {
 /**
  * Execute callbacks.
  * @param {Object or Function} args - The callback args
- * @param {strin[]} depsNotFound - List of dependencies not found
+ * @param {string[]} depsNotFound - List of dependencies not found
  */
 function executeCallbacks(args, depsNotFound) {
   // accept function as argument
