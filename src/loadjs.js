@@ -85,10 +85,10 @@ function publish(bundleId, pathsNotFound) {
 function executeCallbacks(args, depsNotFound) {
   // accept function as argument
   if (args.call) args = {success: args};
-  
+
   // success and error callbacks
   if (depsNotFound.length) (args.error || devnull)(depsNotFound);
-  else (args.success || devnull)();
+  else (args.success || devnull)(args);
 }
 
 
