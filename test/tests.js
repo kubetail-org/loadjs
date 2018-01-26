@@ -90,9 +90,13 @@ describe('LoadJS tests', function() {
           assert.equal(pathsLoaded['file1.js'], true);
           
           // verify that file was added to body
-          document.body.querySelectorAll('script').forEach(function(el) {
+          var els = document.body.querySelectorAll('script'),
+              el;
+
+          for (var i=0; i < els.length; i++) {
+            el = els[i];
             if (el.src.indexOf('assets/file1.js') !== -1) done();
-          });
+          }
         }
       });
     });
@@ -125,6 +129,8 @@ describe('LoadJS tests', function() {
 
 
     it('should support async false', function(done) {
+      this.timeout(5000);
+
       var numCompleted = 0,
           numTests = 20,
           paths = ['assets/asyncfalse1.js', 'assets/asyncfalse2.js'];
@@ -286,9 +292,9 @@ describe('LoadJS tests', function() {
 
 
     it('should support forced "css!" files', function(done) {
-      this.timeout(0);
+      //this.timeout(0);
 
-      loadjs(['css!assets/cssfile.custom'], {
+      loadjs(['css!assets/file1.css'], {
         success: function() {
           // loop through files
           var els = document.getElementsByTagName('link'),
@@ -296,7 +302,7 @@ describe('LoadJS tests', function() {
               el;
 
           while (i--) {
-            if (els[i].href.indexOf('cssfile.custom') !== -1) done();
+            if (els[i].href.indexOf('file1.css') !== -1) done();
           }
         }
       });
@@ -507,6 +513,21 @@ describe('LoadJS tests', function() {
 
       assert.equal(loadjs.isDefined('bundle1'), true);
       assert.equal(loadjs.isDefined('bundleXX'), false);
+    });
+
+
+    it('should accept success callback functions to loadjs()', function(done) {
+      loadjs('assets/file1.js', function() {
+        done();
+      });
+    });
+
+
+    it('should accept success callback functions to .ready()', function(done) {
+      loadjs.done('plugin');
+      loadjs.ready('plugin', function() {
+        done();
+      });
     });
   });
 });

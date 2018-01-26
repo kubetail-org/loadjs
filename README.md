@@ -2,7 +2,7 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (738 bytes).
+LoadJS is a tiny async loader for modern browsers (753 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
@@ -12,7 +12,7 @@ LoadJS is a tiny async loader for modern browsers (738 bytes).
 
 LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch JavaScript and CSS files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code of [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js) in your &lt;html&gt; (possibly in the &lt;head&gt; tag) and then use the `loadjs` global to manage JavaScript dependencies after pageload.
 
-LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 738 bytes (minified + gzipped).
+LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 753 bytes (minified + gzipped).
 
 Here's an example of what you can do with LoadJS:
 
@@ -20,16 +20,28 @@ Here's an example of what you can do with LoadJS:
 // define a dependency bundle
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
-// execute code elsewhere when the bundle has loaded
+// execute code when the bundle loads
 loadjs.ready('foobar', {
   success: function() { /* foo.js & bar.js loaded */ },
   error: function(depsNotFound) { /* foobar bundle load failed */ }
 });
 ```
 
+Note that if you only want a success callback you can use this simpler syntax instead:
+
+```javascript
+// define a dependency bundle
+loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
+
+// execute code when the bundle loads successfully
+loadjs.ready('foobar', function() {
+  // foo.js & bar.js loaded
+});
+```
+
 The latest version of LoadJS can be found in the `dist/` directory in this repository:
- * [loadjs.js](https://cdn.rawgit.com/muicss/loadjs/3.5.1/dist/loadjs.js)
- * [loadjs.min.js](https://cdn.rawgit.com/muicss/loadjs/3.5.1/dist/loadjs.min.js)
+ * [loadjs.js](https://cdn.rawgit.com/muicss/loadjs/3.5.2/dist/loadjs.js)
+ * [loadjs.min.js](https://cdn.rawgit.com/muicss/loadjs/3.5.2/dist/loadjs.min.js)
 
 You can also use it as a CJS or AMD module:
 
@@ -79,7 +91,7 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 
     ```javascript
     loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
-      success: function() { /* foo.js & bar.js loaded */ }
+      success: function() { /* foo.js and bar.js loaded */ }
     });
     ```
 
@@ -241,6 +253,18 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     ```javascript
     loadjs.reset();
     ```
+
+1. Use success callback functions for simplicity
+
+   ```javascript
+   loadjs('/path/to/foo.js', 'foo', function() {
+     // foo.js loaded
+   });
+
+   loadjs.ready('foo', function() {
+     // foo.js loaded
+   });
+   ```
 
 ## Directory structure
 
