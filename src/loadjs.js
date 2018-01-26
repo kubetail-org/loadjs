@@ -272,6 +272,19 @@ loadjs.isDefined = function isDefined(bundleId) {
   return bundleId in bundleIdCache;
 };
 
-
+/**
+ * Removes a single bundle
+  * @param String bundleId - The bundle id
+*/
+loadjs.removeBundle = function removeBundle(bundleId) {
+  if (!bundleId)
+    throw "LoadJs - missing argument bundleId";
+  if (bundleIdCache && bundleIdCache[bundleId ])
+    delete bundleIdCache[bundleId];
+  if (bundleResultCache && bundleResultCache[bundleId])
+    delete bundleResultCache[bundleId];
+  if (bundleCallbackQueue && bundleCallbackQueue[bundleId])
+    delete bundleCallbackQueue[bundleId];
+ };
 // export
 return loadjs;
