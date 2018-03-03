@@ -21,21 +21,14 @@ Here's an example of what you can do with LoadJS:
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
 // execute code when the bundle loads
+loadjs.ready('foobar', function() {
+  /* foo.js & bar.js loaded */
+});
+
+// OR use more advanced syntax for more options
 loadjs.ready('foobar', {
   success: function() { /* foo.js & bar.js loaded */ },
   error: function(depsNotFound) { /* foobar bundle load failed */ }
-});
-```
-
-Note that if you only want a success callback you can use this simpler syntax instead:
-
-```javascript
-// define a dependency bundle
-loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
-
-// execute code when the bundle loads successfully
-loadjs.ready('foobar', function() {
-  // foo.js & bar.js loaded
 });
 ```
 
@@ -54,9 +47,15 @@ var loadjs = require('loadjs');
 
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
+// execute code when the bundle loads
+loadjs.ready('foobar', function() {
+  /* foo.js & bar.js loaded */
+});
+
+// OR use more advanced syntax for more options
 loadjs.ready('foobar', {
   success: function() { /* foo.js & bar.js loaded */ },
-  error: function(depsNotFound) {/* foobar bundle load failed */}
+  error: function(depsNotFound) { /* foobar bundle load failed */ }
 });
 ```
 
@@ -82,17 +81,51 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 1. Load a single file
 
     ```javascript
-    loadjs('/path/to/foo.js', {
-      success: function() { /* foo.js loaded */}
+    loadjs('/path/to/foo.js', function() {
+      /* foo.js loaded */
     });
     ```
 
 1. Fetch files in parallel and load them asynchronously
 
     ```javascript
-    loadjs(['/path/to/foo.js', '/path/to/bar.js'], {
-      success: function() { /* foo.js and bar.js loaded */ }
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], function() {
+      /* foo.js and bar.js loaded */
     });
+    ```
+
+1. Fetch JavaScript and CSS files
+
+    ```javascript
+    loadjs(['/path/to/foo.css', '/path/to/bar.js'], function() {
+      /* foo.css and bar.js loaded */
+    });
+    ```
+
+1. Force treating file as CSS stylesheet
+
+    ```javascript
+    loadjs(['css!/path/to/cssfile.custom'], function() {
+      /* cssfile.custom loaded as stylesheet */
+    });
+    ```
+
+1. Add a bundle id
+
+    ```javascript
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', function() {
+      /* foo.js & bar.js loaded */
+    });
+    ```
+
+1. Check if bundle has already been defined
+
+    ```javascript
+    if (!loadjs.isDefined('foobar')) {
+      loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', function() {
+        /* foo.js & bar.js loaded */
+      });
+    }
     ```
 
 1. Fetch files in parallel and load them in series
@@ -102,40 +135,6 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
       success: function() { /* foo.js and bar.js loaded in series */ },
       async: false
     });
-    ```
-
-1. Fetch JavaScript and CSS files
-
-    ```javascript
-    loadjs(['/path/to/foo.css', '/path/to/bar.js'], {
-      success: function() { /* foo.css and bar.js loaded */ }
-    });
-    ```
-
-1. Force treating file as CSS stylesheet
-
-    ```javascript
-    loadjs(['css!/path/to/cssfile.custom'], {
-      success: function() { /* cssfile.custom loaded as stylesheet */ }
-    });
-    ```
-
-1. Add a bundle id
-
-    ```javascript
-    loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
-      success: function() { /* foo.js & bar.js loaded */ }
-    });
-    ```
-
-1. Check if bundle has already been defined
-
-    ```javascript
-    if (!loadjs.isDefined('foobar')) {
-      loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
-        success: function() { /* foo.js & bar.js loaded */ }
-      });
-    }
     ```
 
 1. Add an error callback
@@ -190,8 +189,8 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     ```javascript
     loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
-    loadjs.ready('foobar', {
-      success: function() { /* foo.js & bar.js loaded */ }
+    loadjs.ready('foobar', function() {
+      /* foo.js & bar.js loaded */
     });
     ```
 
@@ -202,11 +201,11 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     loadjs('/path/to/bar.js', 'bar');
 
     loadjs
-      .ready('foo', {
-        success: function() { /* foo.js loaded */ }
+      .ready('foo', function() {
+        /* foo.js loaded */
       })
-      .ready('bar', {
-        success: function() { /* bar.js loaded */ }
+      .ready('bar', function() {
+        /* bar.js loaded */
       });
     ```
 
@@ -233,10 +232,8 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 1. Use .done() for more control
 
     ```javascript
-    loadjs.ready(['dependency1', 'dependency2'], {
-      success: function() {
-        // run code after dependencies have been met
-      }
+    loadjs.ready(['dependency1', 'dependency2'], function() {
+      /* run code after dependencies have been met */
     });
 
     function fn1() {
@@ -253,18 +250,6 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     ```javascript
     loadjs.reset();
     ```
-
-1. Use success callback functions for simplicity
-
-   ```javascript
-   loadjs('/path/to/foo.js', 'foo', function() {
-     // foo.js loaded
-   });
-
-   loadjs.ready('foo', function() {
-     // foo.js loaded
-   });
-   ```
 
 ## Directory structure
 
