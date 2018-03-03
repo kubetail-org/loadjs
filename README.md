@@ -132,10 +132,9 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 
    ```javascript
    loadjs(['/path/to/foo1.js', '/path/to/foo2.js'], 'foo');
-   loadjs(['/path/to/bar1.js', '/path/to/bar2.js'], 'bar');
 
-   loadjs(['foo', 'bar'], function() {
-     /* foo1.js & foo2.js & bar1.js & bar2.js loaded */
+   loadjs(['foo', '/path/to/bar.js'], function() {
+     /* foo1.js & foo2.js & bar.js loaded */
    });
    ```
 
