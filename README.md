@@ -128,6 +128,42 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     }
     ```
 
+1. Use bundle ids in dependency lists
+
+   ```javascript
+   loadjs(['/path/to/foo1.js', '/path/to/foo2.js'], 'foo');
+   loadjs(['/path/to/bar1.js', '/path/to/bar2.js'], 'bar');
+
+   loadjs(['foo', 'bar'], function() {
+     /* foo1.js & foo2.js & bar1.js & bar2.js loaded */
+   });
+   ```
+
+1. Use .ready() to define bundles and callbacks separately
+
+    ```javascript
+    loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
+
+    loadjs.ready('foobar', function() {
+      /* foo.js & bar.js loaded */
+    });
+    ```
+
+1. Chain .ready() together
+
+    ```javascript
+    loadjs('/path/to/foo.js', 'foo');
+    loadjs('/path/to/bar.js', 'bar');
+
+    loadjs
+      .ready('foo', function() {
+        /* foo.js loaded */
+      })
+      .ready('bar', function() {
+        /* bar.js loaded */
+      });
+    ```
+
 1. Fetch files in parallel and load them in series
 
     ```javascript
@@ -184,32 +220,7 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     });
     ```
 
-1. Execute a callback after bundle finishes loading
-
-    ```javascript
-    loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
-
-    loadjs.ready('foobar', function() {
-      /* foo.js & bar.js loaded */
-    });
-    ```
-
-1. Chain .ready() together
-
-    ```javascript
-    loadjs('/path/to/foo.js', 'foo');
-    loadjs('/path/to/bar.js', 'bar');
-
-    loadjs
-      .ready('foo', function() {
-        /* foo.js loaded */
-      })
-      .ready('bar', function() {
-        /* bar.js loaded */
-      });
-    ```
-
-1. Compose more complex dependency lists
+1. Use bundle ids in error callback
 
     ```javascript
     loadjs('/path/to/foo.js', 'foo');
