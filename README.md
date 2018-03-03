@@ -102,7 +102,7 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     });
     ```
 
-1. Force treating file as CSS stylesheet
+1. Force treat file as CSS stylesheet
 
     ```javascript
     loadjs(['css!/path/to/cssfile.custom'], function() {
