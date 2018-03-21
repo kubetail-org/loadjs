@@ -1,6 +1,6 @@
 {
   "name": "loadjs",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "license": "MIT",
   "description": "Tiny async loader for modern browsers",
   "keywords": [
@@ -27,11 +27,11 @@
     "http-server": "http-server"
   },
   "devDependencies": {
-    "del": "3.0.0",
-    "gulp": "git+https://github.com/gulpjs/gulp#4.0",
-    "gulp-jshint": "2.0.4",
-    "gulp-rename": "1.2.2",
-    "gulp-uglify": "3.0.0",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0",
     "gulp-umd": "^0.2.1",
     "jshint": "^2.9.5"
   }

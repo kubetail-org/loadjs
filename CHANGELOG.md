@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 3.5.3 - March 21, 2018
+
+* Updated documentation
+
 ## 3.5.2 - January 10, 2018
 
 * Added support for success function as callback argument
