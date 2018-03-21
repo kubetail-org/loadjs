@@ -118,26 +118,6 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     });
     ```
 
-1. Check if bundle has already been defined
-
-    ```javascript
-    if (!loadjs.isDefined('foobar')) {
-      loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', function() {
-        /* foo.js & bar.js loaded */
-      });
-    }
-    ```
-
-1. Use bundle ids in dependency lists
-
-   ```javascript
-   loadjs(['/path/to/foo1.js', '/path/to/foo2.js'], 'foo');
-
-   loadjs(['foo', '/path/to/bar.js'], function() {
-     /* foo1.js & foo2.js & bar.js loaded */
-   });
-   ```
-
 1. Use .ready() to define bundles and callbacks separately
 
     ```javascript
@@ -145,6 +125,17 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 
     loadjs.ready('foobar', function() {
       /* foo.js & bar.js loaded */
+    });
+    ```
+
+1. Use multiple bundles in .ready() dependency lists
+
+    ```javascript
+    loadjs('/path/to/foo.js', 'foo');
+    loadjs(['/path/to/bar1.js', '/path/to/bar2.js'], 'bar');
+
+    loadjs.ready(['foo', 'bar'], function() {
+      /* foo.js & bar1.js & bar2.js loaded */
     });
     ```
 
@@ -161,6 +152,16 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
       .ready('bar', function() {
         /* bar.js loaded */
       });
+    ```
+
+1. Check if bundle has already been defined
+
+    ```javascript
+    if (!loadjs.isDefined('foobar')) {
+      loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', function() {
+        /* foo.js & bar.js loaded */
+      });
+    }
     ```
 
 1. Fetch files in parallel and load them in series
