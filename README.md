@@ -28,7 +28,10 @@ loadjs.ready('foobar', function() {
 // OR use more advanced syntax for more options
 loadjs.ready('foobar', {
   success: function() { /* foo.js & bar.js loaded */ },
-  error: function(depsNotFound) { /* foobar bundle load failed */ }
+  error: function(depsNotFound) { /* foobar bundle load failed */ },
+  before: function(path, scriptEl) { /* execute code before fetch */ },
+  async: true,  // load files synchronously or asynchronously (default: true)
+  numRetries: 3  // number of times to retry fetch (default: 0)
 });
 ```
 
@@ -55,7 +58,10 @@ loadjs.ready('foobar', function() {
 // OR use more advanced syntax for more options
 loadjs.ready('foobar', {
   success: function() { /* foo.js & bar.js loaded */ },
-  error: function(depsNotFound) { /* foobar bundle load failed */ }
+  error: function(depsNotFound) { /* foobar bundle load failed */ },
+  before: function(path, scriptEl) { /* execute code before fetch */ },
+  async: true,  // load files synchronously or asynchronously (default: true)
+  numRetries: 3  // number of times to retry fetch (default: 0)
 });
 ```
 
