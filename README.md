@@ -265,6 +265,26 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     loadjs.reset();
     ```
 
+1. Implement a require-like dependency manager
+
+    ```javascript
+    var bundles = {
+      'bundle1': ['file1', 'file2'],
+      'bundle2': ['file3', 'file4']
+    };
+
+    function require(bundleIds, callbackFn) {
+      bundleIds.forEach(function(bundleId) {
+        if (!loadjs.isDefined(bundleId)) loadjs(bundles[bundleId], bundleId);
+      });
+      loadjs.ready(bundleIds, callbackFn);
+    }
+
+    require(['bundle1'], function() { /* bundle1 loaded */ });
+    require(['bundle2'], function() { /* bundle2 loaded */ });
+    require(['bundle1', 'bundle2'], function() { /* bundle1 and bundle2 loaded */ });
+    ```
+
 ## Directory structure
 
 <pre>
