@@ -27,7 +27,7 @@ loadjs.ready('foobar', function() {
 
 You can also use more advanced syntax for more options:
 ```javascript
-// define a dependency bundle that loads sychronously with retries
+// define a dependency bundle with advanced options
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
   before: function(path, scriptEl) { /* execute code before fetch */ },
   async: true,  // load files synchronously or asynchronously (default: true)
