@@ -17,21 +17,26 @@ LoadJS is based on the excellent [$script](https://github.com/ded/script.js) lib
 Here's an example of what you can do with LoadJS:
 
 ```javascript
-// define a dependency bundle
+// define a dependency bundle and execute code when it loads
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
-// execute code when the bundle loads
 loadjs.ready('foobar', function() {
   /* foo.js & bar.js loaded */
 });
+```
 
-// OR use more advanced syntax for more options
+You can also use more advanced syntax for more options:
+```javascript
+// define a dependency bundle that loads sychronously with retries
+loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
+  before: function(path, scriptEl) { /* execute code before fetch */ },
+  async: false,  // load files synchronously or asynchronously (default: true)
+  numRetries: 3  // number of times to retry fetch (default: 0)
+});
+
 loadjs.ready('foobar', {
   success: function() { /* foo.js & bar.js loaded */ },
   error: function(depsNotFound) { /* foobar bundle load failed */ },
-  before: function(path, scriptEl) { /* execute code before fetch */ },
-  async: true,  // load files synchronously or asynchronously (default: true)
-  numRetries: 3  // number of times to retry fetch (default: 0)
 });
 ```
 
@@ -50,18 +55,8 @@ var loadjs = require('loadjs');
 
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar');
 
-// execute code when the bundle loads
 loadjs.ready('foobar', function() {
   /* foo.js & bar.js loaded */
-});
-
-// OR use more advanced syntax for more options
-loadjs.ready('foobar', {
-  success: function() { /* foo.js & bar.js loaded */ },
-  error: function(depsNotFound) { /* foobar bundle load failed */ },
-  before: function(path, scriptEl) { /* execute code before fetch */ },
-  async: true,  // load files synchronously or asynchronously (default: true)
-  numRetries: 3  // number of times to retry fetch (default: 0)
 });
 ```
 
