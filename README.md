@@ -30,8 +30,8 @@ You can also use more advanced syntax for more options:
 // define a dependency bundle that loads sychronously with retries
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
   before: function(path, scriptEl) { /* execute code before fetch */ },
-  async: false,  // load files synchronously or asynchronously (default: true)
-  numRetries: 3  // number of times to retry fetch (default: 0)
+  async: true,  // load files synchronously or asynchronously (default: true)
+  numRetries: 3  // see caveats about using numRetries with async:false (default: 0)
 });
 
 loadjs.ready('foobar', {
@@ -191,6 +191,8 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
       error: function(pathsNotFound) { /* at least one path didn't load */ },
       numRetries: 3
     });
+    
+    // NOTE: Using `numRetries` with `async: false` can cause files to load out-of-sync on retries
     ```
 
 1. Execute a callback before script tags are embedded
