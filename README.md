@@ -269,8 +269,8 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
 
     ```javascript
     var bundles = {
-      'bundle1': ['file1', 'file2'],
-      'bundle2': ['file3', 'file4']
+      'bundleA': ['/file1.js', '/file2.js'],
+      'bundleB': ['/file3.js', '/file4.js']
     };
 
     function require(bundleIds, callbackFn) {
@@ -280,9 +280,9 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
       loadjs.ready(bundleIds, callbackFn);
     }
 
-    require(['bundle1'], function() { /* bundle1 loaded */ });
-    require(['bundle2'], function() { /* bundle2 loaded */ });
-    require(['bundle1', 'bundle2'], function() { /* bundle1 and bundle2 loaded */ });
+    require(['bundleA'], function() { /* bundleA loaded */ });
+    require(['bundleB'], function() { /* bundleB loaded */ });
+    require(['bundleA', 'bundleB'], function() { /* bundleA and bundleB loaded */ });
     ```
 
 ## Directory structure
