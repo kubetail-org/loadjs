@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 3.5.4 - March 28, 2018
+
+* Added support for loading images
+
 ## 3.5.3 - March 21, 2018
 
 * Updated documentation

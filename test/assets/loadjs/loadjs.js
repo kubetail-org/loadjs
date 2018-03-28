@@ -118,7 +118,7 @@ function loadFile(path, callbackFn, args, numTries) {
     e.href = pathStripped; //.replace(/^css!/, '');  // remove "css!" prefix
   } else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(path)) {
     // image
-    e = new Image();
+    e = doc.createElement('img');
     e.src = pathStripped;    
   } else {
     // javascript
