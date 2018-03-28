@@ -350,6 +350,124 @@ describe('LoadJS tests', function() {
 
 
   // ==========================================================================
+  // Image file loading tests
+  // ==========================================================================
+
+  describe('Image file loading tests', function() {
+
+    function assertLoaded(src) {
+      var i = new Image();
+      i.src = src;
+      assert.equal(i.naturalWidth > 0, true);
+    }
+
+    
+    function assertNotLoaded(src) {
+      var i = new Image();
+      i.src = src;
+      assert.equal(i.naturalWidth, 0)
+    }
+
+    
+    it('should load one file', function(done) {
+      loadjs(['assets/flash.png'], {
+        success: function() {
+	  assertLoaded('assets/flash.png');
+          done();
+        }
+      });
+    });
+
+
+    it('should load multiple files', function(done) {
+      loadjs(['assets/flash.png', 'assets/flash.jpg'], {
+        success: function() {
+	  assertLoaded('assets/flash.png');
+          assertLoaded('assets/flash.jpg');
+          done();
+        }
+      });
+    });
+
+
+    it('should support forced "img!" files', function(done) {
+      var src = 'assets/flash.png?' + Math.random();
+
+      loadjs(['img!' + src], {
+        success: function() {
+          assertLoaded(src);
+          done();
+        }
+      });
+    });
+
+
+    it('should call error callback on one invalid path', function(done) {
+      var src1 = 'assets/flash.png?' + Math.random(),
+          src2 = 'assets/flash-doesntexist.png?' + Math.random(); 
+      
+      loadjs(['img!' + src1, 'img!' + src2], {
+        success: function() {
+          throw new Error('Executed success callback');
+        },
+        error: function(pathsNotFound) {
+          assert.equal(pathsNotFound.length, 1);
+          assertLoaded(src1);
+          assertNotLoaded(src2);
+          done();
+        }
+      });
+    });
+
+
+    it('should support mix of img and js', function(done) {
+      var src = 'assets/flash.png?' + Math.random();
+      
+      loadjs(['img!' + src, 'assets/file1.js'], {
+        success: function() {
+          assert.equal(pathsLoaded['file1.js'], true);
+          assertLoaded(src);
+          done();
+        }
+      });
+    });
+
+
+    it('should load external img files', function(done) {
+      this.timeout(0);
+
+      var src = 'https://www.muicss.com/static/images/mui-logo.png?';
+      src += Math.random();
+      
+      loadjs(['img!' + src], {
+        success: function() {
+          assertLoaded(src);
+          done();
+        }
+      });
+    });
+
+
+    it('should call error on missing external file', function(done) {
+      this.timeout(0);
+
+      var src = 'https://www.muicss.com/static/images/';
+      src += 'mui-logo-doesntexist.png?' + Math.random();
+      
+      loadjs(['img!' + src], {
+        success: function() {
+          throw new Error('Executed success callback');
+        },
+        error: function(pathsNotFound) {
+          assertNotLoaded(src);
+          done();
+        }
+      });
+    });
+  });
+
+
+  // ==========================================================================
   // API tests
   // ==========================================================================
 

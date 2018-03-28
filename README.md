@@ -2,7 +2,7 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (747 bytes).
+LoadJS is a tiny async loader for modern browsers (789 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs#info=devDependencies)
@@ -10,9 +10,9 @@ LoadJS is a tiny async loader for modern browsers (747 bytes).
 
 ## Introduction
 
-LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch JavaScript and CSS files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code of [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js) in your &lt;html&gt; (possibly in the &lt;head&gt; tag) and then use the `loadjs` global to manage JavaScript dependencies after pageload.
+LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch JavaScript, CSS and image files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code of [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js) in your &lt;html&gt; (possibly in the &lt;head&gt; tag) and then use the `loadjs` global to manage JavaScript dependencies after pageload.
 
-LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 747 bytes (minified + gzipped).
+LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 789 bytes (minified + gzipped).
 
 Here's an example of what you can do with LoadJS:
 
@@ -95,11 +95,11 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     });
     ```
 
-1. Fetch JavaScript and CSS files
+1. Fetch JavaScript, CSS and image files
 
     ```javascript
-    loadjs(['/path/to/foo.css', '/path/to/bar.js'], function() {
-      /* foo.css and bar.js loaded */
+    loadjs(['/path/to/foo.css', '/path/to/bar.png', 'path/to/thunk.js'], function() {
+      /* foo.css, bar.png and thunk.js loaded */
     });
     ```
 
@@ -108,6 +108,14 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
     ```javascript
     loadjs(['css!/path/to/cssfile.custom'], function() {
       /* cssfile.custom loaded as stylesheet */
+    });
+    ```
+
+1. Force treat file as image
+
+    ```javascript
+    loadjs(['img!/path/to/image.custom'], function() {
+      /* image.custom loaded */
     });
     ```
 

@@ -102,6 +102,7 @@ function loadFile(path, callbackFn, args, numTries) {
       async = args.async,
       maxTries = (args.numRetries || 0) + 1,
       beforeCallbackFn = args.before || devnull,
+      pathStripped = path.replace(/^(css|img)!/, ''),
       isCss,
       e;
 
@@ -113,7 +114,11 @@ function loadFile(path, callbackFn, args, numTries) {
     // css
     e = doc.createElement('link');
     e.rel = 'stylesheet';
-    e.href = path.replace(/^css!/, '');  // remove "css!" prefix
+    e.href = pathStripped; //.replace(/^css!/, '');  // remove "css!" prefix
+  } else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(path)) {
+    // image
+    e = doc.createElement('img');
+    e.src = pathStripped;    
   } else {
     // javascript
     e = doc.createElement('script');
