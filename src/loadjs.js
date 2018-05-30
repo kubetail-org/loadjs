@@ -6,7 +6,8 @@
 var devnull = function() {},
     bundleIdCache = {},
     bundleResultCache = {},
-    bundleCallbackQueue = {};
+    bundleCallbackQueue = {},
+    promisesAvailable = Object.prototype.toString.call(Promise.resolve()) === '[object Promise]';
 
 
 /**
@@ -223,14 +224,28 @@ function loadjs(paths, arg1, arg2) {
     }
   }
 
-  // load scripts
-  loadFiles(paths, function (pathsNotFound) {
-    // execute callbacks
-    executeCallbacks(args, pathsNotFound);
+  function doLoad(_args, shouldPublish) {
+    // load scripts
+    loadFiles(paths, function (pathsNotFound) {
+      // execute callbacks
+      executeCallbacks(_args, pathsNotFound);
 
-    // publish bundle load event
-    publish(bundleId, pathsNotFound);
-  }, args);
+      // publish bundle load event
+      if (shouldPublish) publish(bundleId, pathsNotFound);
+    }, _args);
+  }
+
+  if (promisesAvailable && !arg1 && !arg2) {
+    return new Promise(function(resolve, reject) {
+      doLoad({
+        success: resolve,
+        error: reject
+      });
+    });
+  }
+
+  doLoad(args, true);
+  
 }
 
 

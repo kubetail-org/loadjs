@@ -24,7 +24,6 @@ describe('LoadJS tests', function() {
   // ==========================================================================
 
   describe('JavaScript file loading tests', function() {
-
     it('should call success callback on valid path', function(done) {
       loadjs(['assets/file1.js'], {
         success: function() {
@@ -472,6 +471,20 @@ describe('LoadJS tests', function() {
   // ==========================================================================
 
   describe('API tests', function() {
+    
+    it('should return a promise if promises are available', function() {
+      assert.equal(typeof loadjs(['assets/file1.js']).then, 'function');
+    });
+
+    it('should call success if promises are not available', function(done) {
+      function endTest() {
+        window.Promise = window.tempPromise;
+        done();
+      }
+      window.tempPromise = window.Promise;
+      window.Promise = null;
+      assert.equal(typeof loadjs(['assets/file1.js'], { success: endTest }), 'undefined');
+    });
 
     it('should throw an error if bundle is already defined', function() {
       // define bundle
