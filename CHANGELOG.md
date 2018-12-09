@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 3.5.5 - December 8, 2018
+
+* Bugfix for IE Edge CSS file cross-domain SecurityError
+
 ## 3.5.4 - March 28, 2018
 
 * Added support for loading images

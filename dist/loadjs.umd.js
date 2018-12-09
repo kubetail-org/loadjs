@@ -145,8 +145,8 @@ function loadFile(path, callbackFn, args, numTries) {
         if (!e.sheet.cssText.length) result = 'e';
       } catch (x) {
         // sheets objects created from load errors don't allow access to
-        // `cssText`
-        result = 'e';
+        // `cssText` (unless error is Code:18 SecurityError)
+        if (x.code != 18) result = 'e';
       }
     }
 
