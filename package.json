@@ -33,6 +33,6 @@
     "gulp-rename": "^1.4.0",
     "gulp-uglify": "^3.0.1",
     "gulp-umd": "^2.0.0",
-    "jshint": "^2.9.5"
+    "jshint": "^2.10.1"
   }
 }
