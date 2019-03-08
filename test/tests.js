@@ -647,5 +647,81 @@ describe('LoadJS tests', function() {
         done();
       });
     });
+
+
+    it('should return Promise object if returnPromise is true', function() {
+      var prom = loadjs(['assets/file1.js'], {returnPromise: true});
+
+      // verify that response object is a Promise
+      assert.equal(prom instanceof Promise, true);
+    });
+
+
+    it('Promise object should support resolutions', function(done) {
+      var prom = loadjs(['assets/file1.js'], {returnPromise: true});
+
+      prom.then(function() {
+        assert.equal(pathsLoaded['file1.js'], true);
+        done();
+      });
+    });
+
+
+    it('Promise object should support rejections', function(done) {
+      var prom = loadjs(['assets/file-doesntexist.js'], {returnPromise: true});
+
+      prom.then(
+        function(){},
+        function(pathsNotFound) {
+          assert.equal(pathsNotFound.length, 1);
+          assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
+          done();
+        }
+      );
+    });
+
+
+    it('Promise object should support catches', function(done) {
+      var prom = loadjs(['assets/file-doesntexist.js'], {returnPromise: true});
+
+      prom
+        .catch(function(pathsNotFound) {
+          assert.equal(pathsNotFound.length, 1);
+          assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
+          done();
+        });
+    });
+
+
+    it('supports Promises and success callbacks', function(done) {
+      var numCompleted = 0;
+
+      function completedFn() {
+        numCompleted += 1;
+        if (numCompleted === 2) done();
+      };
+      
+      var prom = loadjs('assets/file1.js', {
+        success: completedFn,
+        returnPromise: true
+      });
+
+      prom.then(completedFn);
+    });
+
+
+    it('supports Promises and bundle ready events', function(done) {
+      var numCompleted = 0;
+
+      function completedFn() {
+        numCompleted += 1;
+        if (numCompleted === 2) done();
+      };
+      
+      loadjs('assets/file1.js', 'bundle1', {returnPromise: true})
+        .then(completedFn);
+
+      loadjs.ready('bundle1', completedFn);
+    });
   });
 });

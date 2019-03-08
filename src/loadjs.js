@@ -223,14 +223,23 @@ function loadjs(paths, arg1, arg2) {
     }
   }
 
-  // load scripts
-  loadFiles(paths, function (pathsNotFound) {
-    // execute callbacks
-    executeCallbacks(args, pathsNotFound);
+  function loadFn(resolve, reject) {
+    loadFiles(paths, function (pathsNotFound) {
+      // execute callbacks
+      executeCallbacks(args, pathsNotFound);
+      
+      // resolve Promise
+      if (resolve) {
+        executeCallbacks({success: resolve, error: reject}, pathsNotFound);
+      }
 
-    // publish bundle load event
-    publish(bundleId, pathsNotFound);
-  }, args);
+      // publish bundle load event
+      publish(bundleId, pathsNotFound);
+    }, args);
+  }
+  
+  if (args.returnPromise) return new Promise(loadFn);
+  else loadFn();
 }
 
 
