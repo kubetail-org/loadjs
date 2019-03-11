@@ -241,31 +241,6 @@ function loadjs(paths, arg1, arg2) {
   
   if (args.returnPromise) return new Promise(loadFn);
   else loadFn();
-
-      /*
-      loadFiles(paths, function (pathsNotFound) {
-        // execute callbacks
-        executeCallbacks(args, pathsNotFound);
-
-        // resolve Promise
-        executeCallbacks({success: resolve, error: reject}, pathsNotFound);
-
-        // publish bundle load event
-        publish(bundleId, pathsNotFound);
-      }, args);
-      */
-    //});
-  /*
-} else {
-    // load scripts
-    loadFiles(paths, function (pathsNotFound) {
-      // execute callbacks
-      executeCallbacks(args, pathsNotFound);
-
-      // publish bundle load event
-      publish(bundleId, pathsNotFound);
-    }, args);
-  }*/
 }
 
 
