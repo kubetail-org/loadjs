@@ -104,18 +104,26 @@ function loadFile(path, callbackFn, args, numTries) {
       maxTries = (args.numRetries || 0) + 1,
       beforeCallbackFn = args.before || devnull,
       pathStripped = path.replace(/^(css|img)!/, ''),
-      isCss,
+      isLegacyIECss,
       e;
 
   numTries = numTries || 0;
 
   if (/(^css!|\.css$)/.test(path)) {
-    isCss = true;
-
     // css
     e = doc.createElement('link');
     e.rel = 'stylesheet';
-    e.href = pathStripped; //.replace(/^css!/, '');  // remove "css!" prefix
+    e.href = pathStripped;
+
+    // tag IE9+
+    isLegacyIECss = 'hideFocus' in e;
+
+    // use preload in IE Edge (to detect load errors)
+    if (isLegacyIECss && e.relList) {
+      isLegacyIECss = 0;
+      e.rel = 'preload';
+      e.as = 'style';
+    }
   } else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(path)) {
     // image
     e = doc.createElement('img');
@@ -130,9 +138,9 @@ function loadFile(path, callbackFn, args, numTries) {
   e.onload = e.onerror = e.onbeforeload = function (ev) {
     var result = ev.type[0];
 
-    // Note: The following code isolates IE using `hideFocus` and treats empty
-    // stylesheets as failures to get around lack of onerror support
-    if (isCss && 'hideFocus' in e) {
+    // treat empty stylesheets as failures to get around lack of onerror
+    // support in IE9-11
+    if (isLegacyIECss) {
       try {
         if (!e.sheet.cssText.length) result = 'e';
       } catch (x) {
@@ -151,8 +159,11 @@ function loadFile(path, callbackFn, args, numTries) {
       if (numTries < maxTries) {
         return loadFile(path, callbackFn, args, numTries);
       }
+    } else if (e.rel == 'preload' && e.as == 'style') {
+      // activate preloaded stylesheets
+      return e.rel = 'stylesheet'; // jshint ignore:line
     }
-
+    
     // execute callback
     callbackFn(path, result, ev.defaultPrevented);
   };
@@ -224,14 +235,23 @@ function loadjs(paths, arg1, arg2) {
     }
   }
 
-  // load scripts
-  loadFiles(paths, function (pathsNotFound) {
-    // execute callbacks
-    executeCallbacks(args, pathsNotFound);
+  function loadFn(resolve, reject) {
+    loadFiles(paths, function (pathsNotFound) {
+      // execute callbacks
+      executeCallbacks(args, pathsNotFound);
+      
+      // resolve Promise
+      if (resolve) {
+        executeCallbacks({success: resolve, error: reject}, pathsNotFound);
+      }
 
-    // publish bundle load event
-    publish(bundleId, pathsNotFound);
-  }, args);
+      // publish bundle load event
+      publish(bundleId, pathsNotFound);
+    }, args);
+  }
+  
+  if (args.returnPromise) return new Promise(loadFn);
+  else loadFn();
 }
 
 

@@ -2,7 +2,7 @@
 
 <img src="https://www.muicss.com/static/images/loadjs.svg" width="250px">
 
-LoadJS is a tiny async loader for modern browsers (789 bytes).
+LoadJS is a tiny async loader for modern browsers (884 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs?type=dev)
@@ -12,7 +12,7 @@ LoadJS is a tiny async loader for modern browsers (789 bytes).
 
 LoadJS is a tiny async loading library for modern browsers (IE9+). It has a simple yet powerful dependency management system that lets you fetch JavaScript, CSS and image files in parallel and execute code after the dependencies have been met. The recommended way to use LoadJS is to include the minified source code of [loadjs.js](https://raw.githubusercontent.com/muicss/loadjs/master/dist/loadjs.min.js) in your &lt;html&gt; (possibly in the &lt;head&gt; tag) and then use the `loadjs` global to manage JavaScript dependencies after pageload.
 
-LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 789 bytes (minified + gzipped).
+LoadJS is based on the excellent [$script](https://github.com/ded/script.js) library by [Dustin Diaz](https://github.com/ded). We kept the behavior of the library the same but we re-wrote the code from scratch to add support for success/error callbacks and to optimize the library for modern browsers. LoadJS is 884 bytes (minified + gzipped).
 
 Here's an example of what you can do with LoadJS:
 
@@ -31,7 +31,8 @@ You can also use more advanced syntax for more options:
 loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
   before: function(path, scriptEl) { /* execute code before fetch */ },
   async: true,  // load files synchronously or asynchronously (default: true)
-  numRetries: 3  // see caveats about using numRetries with async:false (default: 0)
+  numRetries: 3  // see caveats about using numRetries with async:false (default: 0),
+  returnPromise: false  // return Promise object (default: false)
 });
 
 loadjs.ready('foobar', {
@@ -75,7 +76,7 @@ LoadJS also detects script load failures from AdBlock Plus and Ghostery in:
  * Safari
  * Chrome
 
-Note: LoadJS treats empty CSS files as load failures in IE (to get around lack of support for onerror events on `<link>` tags)
+Note: LoadJS treats empty CSS files as load failures in IE9-11 and uses `rel="preload"` to load CSS files in Edge (to get around lack of support for onerror events on `<link rel="stylesheet">` tags)
 
 ## Documentation
 
@@ -162,6 +163,14 @@ Note: LoadJS treats empty CSS files as load failures in IE (to get around lack o
         /* bar.js loaded */
       });
     ```
+
+1. Use Promises to register callbacks
+
+   ```javascript
+   loadjs(['/path/to/foo.js', '/path/to/bar.js'], {returnPromise: true})
+     .then(function() { /* foo.js & bar.js loaded */ })
+     .catch(function(pathsNotFound) { /* at least one didn't load */ });
+   ```
 
 1. Check if bundle has already been defined
 
