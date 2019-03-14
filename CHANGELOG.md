@@ -1,5 +1,10 @@
 # LoadJS Changelog
 
+## 3.6.0 - March 14, 2019
+
+* Bugfix for IE Edge CSS file cross-domain onerror detection
+* Added support for Promises via `returnPromise` option
+
 ## 3.5.5 - December 8, 2018
 
 * Bugfix for IE Edge CSS file cross-domain SecurityError
