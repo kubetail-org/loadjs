@@ -6,20 +6,30 @@
     <script>
      loadjs("//cdn.muicss.com/mui-0.9.41/css/mui.min.css", {
        success: function() {
-         log('example1: font.css triggered success (OK)');
+         log('example1: mui.min.css triggered success (OK)');
        },
        error: function() {
-         log('example1: font.css triggered error (FAIL)');
+         log('example1: mui.min.css triggered error (FAIL)');
+       }
+     });
+
+     
+     loadjs("//cdn.muicss.com/mui-0.9.41/css/mui-doesntexist.min.css", {
+       success: function() {
+         log('example2: mui-doesntexist.css triggered success (FAIL)');
+       },
+       error: function() {
+         log('example2: mui-doesntexist.css triggered error (OK)');
        }
      });
 
      
      loadjs('assets/fontcss-doesntexist.css', {
        success: function() {
-         log('example2: font-doesntexist.css triggered success (FAIL)');
+         log('example3: font-doesntexist.css triggered success (FAIL)');
        },
        error: function() {
-         log('example2: font-doesntexist.css triggered error (OK)');
+         log('example3: font-doesntexist.css triggered error (OK)');
        }
      });
     </script>

@@ -115,7 +115,13 @@ function loadFile(path, callbackFn, args, numTries) {
     // css
     e = doc.createElement('link');
     e.rel = 'stylesheet';
-    e.href = pathStripped; //.replace(/^css!/, '');  // remove "css!" prefix
+    e.href = pathStripped;
+
+    // use preload (if available)
+    //if (e.relList) {
+    //  e.rel = 'preload';
+    //  e.as = 'style';
+    //}
   } else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(path)) {
     // image
     e = doc.createElement('img');
@@ -129,16 +135,20 @@ function loadFile(path, callbackFn, args, numTries) {
 
   e.onload = e.onerror = e.onbeforeload = function (ev) {
     var result = ev.type[0];
+    
+    if (isCss) {
+      //e.rel = 'stylesheet';  // undo preload
 
-    // Note: The following code isolates IE using `hideFocus` and treats empty
-    // stylesheets as failures to get around lack of onerror support
-    if (isCss && 'hideFocus' in e) {
-      try {
-        if (!e.sheet.cssText.length) result = 'e';
-      } catch (x) {
-        // sheets objects created from load errors don't allow access to
-        // `cssText` (unless error is Code:18 SecurityError)
-        if (x.code != 18) result = 'e';
+      // Note: The following code isolates IE using `hideFocus` and treats empty
+      // stylesheets as failures to get around lack of onerror support
+      if ('hideFocus' in e) {
+        try {
+          if (!e.sheet.cssText.length) result = 'e';
+        } catch (x) {
+          // sheets objects created from load errors don't allow access to
+          // `cssText` (unless error is Code:18 SecurityError)
+          if (x.code != 18) result = 'e';
+        }
       }
     }
 
@@ -224,14 +234,23 @@ function loadjs(paths, arg1, arg2) {
     }
   }
 
-  // load scripts
-  loadFiles(paths, function (pathsNotFound) {
-    // execute callbacks
-    executeCallbacks(args, pathsNotFound);
+  function loadFn(resolve, reject) {
+    loadFiles(paths, function (pathsNotFound) {
+      // execute callbacks
+      executeCallbacks(args, pathsNotFound);
+      
+      // resolve Promise
+      if (resolve) {
+        executeCallbacks({success: resolve, error: reject}, pathsNotFound);
+      }
 
-    // publish bundle load event
-    publish(bundleId, pathsNotFound);
-  }, args);
+      // publish bundle load event
+      publish(bundleId, pathsNotFound);
+    }, args);
+  }
+  
+  if (args.returnPromise) return new Promise(loadFn);
+  else loadFn();
 }
 
 
