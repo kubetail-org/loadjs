@@ -1,5 +1,10 @@
 # LoadJS Changelog
 
+## 3.6.1 - April 11, 2019
+
+* Upgraded devDependencies
+* Fixed issue with source code documentation (https://github.com/muicss/loadjs/issues/88)
+
 ## 3.6.0 - March 14, 2019
 
 * Bugfix for IE Edge CSS file cross-domain onerror detection
