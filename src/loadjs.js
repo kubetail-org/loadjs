@@ -211,9 +211,11 @@ function loadFiles(paths, callbackFn, args) {
 /**
  * Initiate script load and register bundle.
  * @param {(string|string[])} paths - The file paths
- * @param {(string|Function)} [arg1] - The bundleId or success callback
- * @param {Function} [arg2] - The success or error callback
- * @param {Function} [arg3] - The error callback
+ * @param {(string|Function|Object)} [arg1] - The (1) bundleId or (2) success
+ *   callback or (3) object literal with success/error arguments, numRetries,
+ *   etc.
+ * @param {(Function|Object)} [arg2] - The (1) success callback or (2) object
+ *   literal with success/error arguments, numRetries, etc.
  */
 function loadjs(paths, arg1, arg2) {
   var bundleId,

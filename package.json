@@ -27,13 +27,13 @@
     "http-server": "http-server"
   },
   "devDependencies": {
-    "del": "^4.0.0",
+    "del": "^4.1.0",
     "fsevents": "^1.2.7",
     "gulp": "^4.0.0",
     "gulp-jshint": "^2.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-uglify": "^3.0.2",
     "gulp-umd": "^2.0.0",
-    "jshint": "^2.10.1"
+    "jshint": "^2.10.2"
   }
 }
