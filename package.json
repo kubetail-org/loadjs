@@ -27,7 +27,7 @@
     "http-server": "http-server"
   },
   "devDependencies": {
-    "del": "^4.1.1",
+    "del": "^5.0.0",
     "gulp": "^4.0.2",
     "gulp-jshint": "^2.1.0",
     "gulp-rename": "^1.4.0",
