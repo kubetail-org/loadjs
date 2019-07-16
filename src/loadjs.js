@@ -299,6 +299,16 @@ loadjs.isDefined = function isDefined(bundleId) {
   return bundleId in bundleIdCache;
 };
 
+/**
+ * Determine if bundle has already been defined and add to chache if not
+ * @param String} bundleId - The bundle id
+ */
+loadjs.define = function isDefined(bundleId) {
+  if(!loadjs.idDefined(bundleId)) {
+    bundleIdCache[bundleId] = true;
+    bundleResultCache[bundleId];
+  }
+};
 
 // export
 return loadjs;
