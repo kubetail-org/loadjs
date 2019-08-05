@@ -309,6 +309,36 @@ describe('LoadJS tests', function() {
     });
 
 
+    it('supports urls with query arguments', function(done) {
+      loadjs(['assets/file1.css?x=x'], {
+        success: function() {
+          assert.equal(testEl.offsetWidth, 100);
+          done();
+        }
+      });
+    });
+
+
+    it('supports urls with anchor tags', function(done) {
+      loadjs(['assets/file1.css#anchortag'], {
+        success: function() {
+          assert.equal(testEl.offsetWidth, 100);
+          done();
+        }
+      });
+    });
+
+
+    it('supports urls with query arguments and anchor tags', function(done) {
+      loadjs(['assets/file1.css?x=x#anchortag'], {
+        success: function() {
+          assert.equal(testEl.offsetWidth, 100);
+          done();
+        }
+      });
+    });
+
+    
     it('should load external css files', function(done) {
       this.timeout(0);
 
