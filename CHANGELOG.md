@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 4.0.0 - August 5, 2019
+
+* Added support for automatic image and css detection on urls with with query arguments and anchor tags
+
 ## 3.6.1 - April 11, 2019
 
 * Upgraded devDependencies

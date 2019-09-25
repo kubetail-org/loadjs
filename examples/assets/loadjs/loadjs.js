@@ -103,13 +103,14 @@ function loadFile(path, callbackFn, args, numTries) {
       async = args.async,
       maxTries = (args.numRetries || 0) + 1,
       beforeCallbackFn = args.before || devnull,
+      pathname = path.replace(/[\?|#].*$/, ''),
       pathStripped = path.replace(/^(css|img)!/, ''),
       isLegacyIECss,
       e;
-
+  console.log(pathname);
   numTries = numTries || 0;
 
-  if (/(^css!|\.css$)/.test(path)) {
+  if (/(^css!|\.css$)/.test(pathname)) {
     // css
     e = doc.createElement('link');
     e.rel = 'stylesheet';
@@ -124,7 +125,7 @@ function loadFile(path, callbackFn, args, numTries) {
       e.rel = 'preload';
       e.as = 'style';
     }
-  } else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(path)) {
+  } else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(pathname)) {
     // image
     e = doc.createElement('img');
     e.src = pathStripped;    

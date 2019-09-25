@@ -292,8 +292,6 @@ describe('LoadJS tests', function() {
 
 
     it('should support forced "css!" files', function(done) {
-      //this.timeout(0);
-
       loadjs(['css!assets/file1.css'], {
         success: function() {
           // loop through files
@@ -386,19 +384,27 @@ describe('LoadJS tests', function() {
   describe('Image file loading tests', function() {
 
     function assertLoaded(src) {
-      var i = new Image();
-      i.src = src;
-      assert.equal(i.naturalWidth > 0, true);
+      // loop through images
+      var imgs = document.getElementsByTagName('img');
+
+      Array.prototype.slice.call(imgs).forEach(function(img) {
+        // verify image was loaded
+        if (img.src === src) assert.equal(img.naturalWidth > 0, true);
+      });
     }
 
     
     function assertNotLoaded(src) {
-      var i = new Image();
-      i.src = src;
-      assert.equal(i.naturalWidth, 0)
+      // loop through images
+      var imgs = document.getElementsByTagName('img');
+
+      Array.prototype.slice.call(imgs).forEach(function(img) {
+        // fail if image was loaded
+        if (img.src === src) assert.equal(img.naturalWidth, 0);
+      });
     }
 
-    
+
     it('should load one file', function(done) {
       loadjs(['assets/flash.png'], {
         success: function() {
@@ -420,6 +426,44 @@ describe('LoadJS tests', function() {
     });
 
 
+    it('supports urls with query arguments', function(done) {
+      var src = 'assets/flash.png?' + Math.random();
+
+      loadjs([src], {
+        success: function() {
+          assertLoaded(src);
+          done();
+        }
+      });
+    });
+
+
+    it('supports urls with anchor tags', function(done) {
+      var src = 'assets/flash.png#' + Math.random();
+
+      loadjs([src], {
+        success: function() {
+          assertLoaded(src);
+          done();
+        }
+      });
+    });
+
+
+    it('supports urls with query arguments and anchor tags', function(done) {
+      var src = 'assets/flash.png';
+      src += '?' + Math.random();
+      src += '#' + Math.random();
+
+      loadjs([src], {
+        success: function() {
+          assertLoaded(src);
+          done();
+        }
+      });
+    });
+    
+    
     it('should support forced "img!" files', function(done) {
       var src = 'assets/flash.png?' + Math.random();
 
@@ -468,7 +512,7 @@ describe('LoadJS tests', function() {
 
       var src = 'https://www.muicss.com/static/images/mui-logo.png?';
       src += Math.random();
-      
+
       loadjs(['img!' + src], {
         success: function() {
           assertLoaded(src);
