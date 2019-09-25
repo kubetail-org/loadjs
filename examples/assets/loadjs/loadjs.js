@@ -107,7 +107,7 @@ function loadFile(path, callbackFn, args, numTries) {
       pathStripped = path.replace(/^(css|img)!/, ''),
       isLegacyIECss,
       e;
-  console.log(pathname);
+
   numTries = numTries || 0;
 
   if (/(^css!|\.css$)/.test(pathname)) {

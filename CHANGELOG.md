@@ -1,6 +1,10 @@
 # LoadJS Changelog
 
-## 4.0.0 - August 5, 2019
+## 4.0.1 - September 25, 2019
+
+* Removed unnecessary console.log() statement
+
+## 4.0.0 - September 25, 2019
 
 * Added support for automatic image and css detection on urls with with query arguments and anchor tags
 
