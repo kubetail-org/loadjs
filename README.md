@@ -6,7 +6,7 @@ LoadJS is a tiny async loader for modern browsers (899 bytes).
 
 [![Dependency Status](https://david-dm.org/muicss/loadjs.svg)](https://david-dm.org/muicss/loadjs)
 [![devDependency Status](https://david-dm.org/muicss/loadjs/dev-status.svg)](https://david-dm.org/muicss/loadjs?type=dev)
-[![CDNJS](https://img.shields.io/cdnjs/v/loadjs.svg)](https://cdnjs.com/libraries/loadjs)
+[![CDNJS](https://img.shields.io/cdnjs/v/loadjs.svg)](https://cdnjs.com/libraries/loadjs) [![Greenkeeper badge](https://badges.greenkeeper.io/muicss/loadjs.svg)](https://greenkeeper.io/)
 
 ## Introduction
 
