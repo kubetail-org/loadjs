@@ -133,7 +133,7 @@ function loadFile(path, callbackFn, args, numTries) {
       e.rel = 'preload';
       e.as = 'style';
     }
-  } else if (/(^img!|\.(png|gif|jpg|svg)$)/.test(pathname)) {
+  } else if (/(^img!|\.(png|gif|jpg|svg|webp)$)/.test(pathname)) {
     // image
     e = doc.createElement('img');
     e.src = pathStripped;    

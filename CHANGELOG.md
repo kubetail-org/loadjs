@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 4.2.0 - December 1, 2019
+
+* Added support for .webp image extensions
+
 ## 4.0.1 - September 25, 2019
 
 * Removed unnecessary console.log() statement

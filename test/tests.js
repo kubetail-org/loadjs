@@ -426,6 +426,22 @@ describe('LoadJS tests', function() {
     });
 
 
+    it('detects png|gif|jpg|svg|webp extensions', function(done) {
+      let files = [
+        'assets/flash.png',
+        'assets/flash.gif',
+        'assets/flash.jpg',
+        'assets/flash.svg',
+        'assets/flash.webp'
+      ];
+
+      loadjs(files, function() {
+        files.forEach(file => {assertLoaded(file);});
+        done();
+      });
+    });
+
+    
     it('supports urls with query arguments', function(done) {
       var src = 'assets/flash.png?' + Math.random();
 
