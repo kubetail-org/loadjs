@@ -30,9 +30,9 @@
     "del": "^5.1.0",
     "gulp": "^4.0.2",
     "gulp-jshint": "^2.1.0",
-    "gulp-rename": "^1.4.0",
+    "gulp-rename": "^2.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-umd": "^2.0.0",
-    "jshint": "^2.10.2"
+    "jshint": "^2.11.0"
   }
 }
