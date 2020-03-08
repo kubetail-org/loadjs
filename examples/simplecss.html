@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="assets/log.js"></script>
+    <script src="assets/loadjs/loadjs.js"></script>
+    <style>
+      .test-div {
+        border: 1px solid red;
+        height: 100px;
+        display: inline-block;
+      }
+    </style>
+    <script>
+     loadjs("assets/file.css", {
+       success: function() {
+         log('file.css loaded (OK)');
+       },
+       error: function() {
+         log('file.css load error (FAIL)');
+       }
+     });
+    </script>
+  </head>
+  <body>
+    <div class="test-div"></div>
+  </body>
+</html>
