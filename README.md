@@ -51,6 +51,11 @@ The latest version of LoadJS can be found in the `dist/` directory in this repos
  * [https://cdn.rawgit.com/muicss/loadjs/4.2.0/dist/loadjs.js](https://cdn.rawgit.com/muicss/loadjs/4.2.0/dist/loadjs.js) (for development)
  * [https://cdn.rawgit.com/muicss/loadjs/4.2.0/dist/loadjs.min.js](https://cdn.rawgit.com/muicss/loadjs/4.2.0/dist/loadjs.min.js) (for production)
 
+It's also available from these public CDNs:
+
+  * [https://unpkg.com/loadjs@4.2.0/dist/loadjs.min.js](https://unpkg.com/loadjs@4.2.0/dist/loadjs.min.js)
+  * [https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.min.js](https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.min.js)
+
 You can also use it as a CJS or AMD module:
 
 ```bash
