@@ -53,8 +53,12 @@ The latest version of LoadJS can be found in the `dist/` directory in this repos
 
 It's also available from these public CDNs:
 
-  * [https://unpkg.com/loadjs@4.2.0/dist/loadjs.min.js](https://unpkg.com/loadjs@4.2.0/dist/loadjs.min.js)
-  * [https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.min.js](https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.min.js)
+  * UNPKG
+    * [https://unpkg.com/loadjs@4.2.0/dist/loadjs.js](https://unpkg.com/loadjs@4.2.0/dist/loadjs.js) (for development)
+    * [https://unpkg.com/loadjs@4.2.0/dist/loadjs.min.js](https://unpkg.com/loadjs@4.2.0/dist/loadjs.min.js) (for production)
+  * CDNJS
+    * [https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.js](https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.js) (for development)
+    * [https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.min.js](https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.min.js) (for production)
 
 You can also use it as a CJS or AMD module:
 
