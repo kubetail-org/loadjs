@@ -144,14 +144,6 @@ Note: LoadJS treats empty CSS files as load failures in IE9-11 and uses `rel="pr
     });
     ```
 
-1. Load a JavaScript file (only in browsers without Module support)
-
-    ```javascript
-    loadjs('nomodule!/path/to/foo.js', function() {
-      /* foo.js loaded in browsers with module support, skipped in browsers without module support */
-    });
-    ```
-
 1. Add a bundle id
 
     ```javascript
