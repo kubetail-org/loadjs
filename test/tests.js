@@ -188,7 +188,7 @@ describe('LoadJS tests', function () {
     });
 
     // tests for browsers with/without module support
-    if ('noModule' in document.createElement('script')) {
+    if (caniuseModule()) {
       describe('module tests for browsers with module support', function () {
 
         it('should support loading modules with "module!" modifier', function (done) {
@@ -244,7 +244,7 @@ describe('LoadJS tests', function () {
             },
             error: function (pathsNotFound) {
               assert.equal(pathsNotFound.length, 1);
-              assert.equal(pathsNotFound[0], 'module!assets/file-doesntexist.js');
+              assert.equal(pathsNotFound[0], 'nomodule!assets/file-doesntexist.js');
               done();
             }
           });
@@ -261,7 +261,7 @@ describe('LoadJS tests', function () {
         });
       });
     }
-    
+
 
     // Un-'x' this for testing ad blocked scripts.
     //   Ghostery: Disallow "Google Adservices"
@@ -269,23 +269,23 @@ describe('LoadJS tests', function () {
     //   custom filter under Options
     //
     xit('it should report ad blocked scripts as missing', function (done) {
-        var s1 = 'https://www.googletagservices.com/tag/js/gpt.js',
-          s2 = 'https://munchkin.marketo.net/munchkin-beta.js';
+      var s1 = 'https://www.googletagservices.com/tag/js/gpt.js',
+        s2 = 'https://munchkin.marketo.net/munchkin-beta.js';
 
-        loadjs([s1, s2, 'assets/file1.js'], {
-          success: function () {
-            throw new Error('Executed success callback');
-          },
-          error: function (pathsNotFound) {
-            assert.equal(pathsLoaded['file1.js'], true);
-            assert.equal(pathsNotFound.length, 2);
-            assert.equal(pathsNotFound[0], s1);
-            assert.equal(pathsNotFound[1], s2);
-            done();
-          }
-        });
+      loadjs([s1, s2, 'assets/file1.js'], {
+        success: function () {
+          throw new Error('Executed success callback');
+        },
+        error: function (pathsNotFound) {
+          assert.equal(pathsLoaded['file1.js'], true);
+          assert.equal(pathsNotFound.length, 2);
+          assert.equal(pathsNotFound[0], s1);
+          assert.equal(pathsNotFound[1], s2);
+          done();
+        }
       });
     });
+  });
 
 
   // ==========================================================================
@@ -477,7 +477,7 @@ describe('LoadJS tests', function () {
       });
     }
 
-    
+
     it('should load one file', function (done) {
       loadjs(['assets/flash.png'], {
         success: function () {
@@ -487,7 +487,7 @@ describe('LoadJS tests', function () {
       });
     });
 
-    
+
     it('should load multiple files', function (done) {
       loadjs(['assets/flash.png', 'assets/flash.jpg'], {
         success: function () {
@@ -508,7 +508,7 @@ describe('LoadJS tests', function () {
       ];
 
       loadjs(files, function () {
-        files.forEach(function(file) {
+        files.forEach(function (file) {
           assertLoaded(file);
         });
         done();
@@ -631,7 +631,7 @@ describe('LoadJS tests', function () {
 
 
     if (caniuseWebp()) {
-      describe('tests for browsers with webp support', function() {
+      describe('tests for browsers with webp support', function () {
 
         it('detects webp extensions', function (done) {
           loadjs('assets/flash.webp', function () {
@@ -639,14 +639,14 @@ describe('LoadJS tests', function () {
             done();
           });
         });
-        
+
       });
     } else {
-      describe('tests for browsers without webp support', function() {
+      describe('tests for browsers without webp support', function () {
 
         it('executes error callback when browser loads webp file', function (done) {
           loadjs('assets/flash.webp', {
-            error: function(pathsNotFound) {
+            error: function (pathsNotFound) {
               assertNotLoaded('assets/flash.webp');
               done();
             }
@@ -841,80 +841,86 @@ describe('LoadJS tests', function () {
     });
 
 
-    it('should return Promise object if returnPromise is true', function () {
-      var prom = loadjs(['assets/file1.js'], { returnPromise: true });
+    if (caniusePromise()) {
+      describe('tests for browsers with Promise support', function () {
 
-      // verify that response object is a Promise
-      assert.equal(prom instanceof Promise, true);
-    });
+        it('should return Promise object if returnPromise is true', function () {
+          var prom = loadjs(['assets/file1.js'], { returnPromise: true });
 
-
-    it('Promise object should support resolutions', function (done) {
-      var prom = loadjs(['assets/file1.js'], { returnPromise: true });
-
-      prom.then(function () {
-        assert.equal(pathsLoaded['file1.js'], true);
-        done();
-      });
-    });
-
-
-    it('Promise object should support rejections', function (done) {
-      var prom = loadjs(['assets/file-doesntexist.js'], { returnPromise: true });
-
-      prom.then(
-        function () { },
-        function (pathsNotFound) {
-          assert.equal(pathsNotFound.length, 1);
-          assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
-          done();
-        }
-      );
-    });
-
-
-    it('Promise object should support catches', function (done) {
-      var prom = loadjs(['assets/file-doesntexist.js'], { returnPromise: true });
-
-      prom
-        .catch(function (pathsNotFound) {
-          assert.equal(pathsNotFound.length, 1);
-          assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
-          done();
+          // verify that response object is a Promise
+          assert.equal(prom instanceof Promise, true);
         });
-    });
 
 
-    it('supports Promises and success callbacks', function (done) {
-      var numCompleted = 0;
+        it('Promise object should support resolutions', function (done) {
+          var prom = loadjs(['assets/file1.js'], { returnPromise: true });
 
-      function completedFn() {
-        numCompleted += 1;
-        if (numCompleted === 2) done();
-      };
+          prom.then(function () {
+            assert.equal(pathsLoaded['file1.js'], true);
+            done();
+          });
+        });
 
-      var prom = loadjs('assets/file1.js', {
-        success: completedFn,
-        returnPromise: true
+
+        it('Promise object should support rejections', function (done) {
+          var prom = loadjs(['assets/file-doesntexist.js'], { returnPromise: true });
+
+          prom.then(
+            function () { },
+            function (pathsNotFound) {
+              assert.equal(pathsNotFound.length, 1);
+              assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
+              done();
+            }
+          );
+        });
+
+
+        it('Promise object should support catches', function (done) {
+          var prom = loadjs(['assets/file-doesntexist.js'], { returnPromise: true });
+
+          prom
+            .catch(function (pathsNotFound) {
+              assert.equal(pathsNotFound.length, 1);
+              assert.equal(pathsNotFound[0], 'assets/file-doesntexist.js');
+              done();
+            });
+        });
+
+
+        it('supports Promises and success callbacks', function (done) {
+          var numCompleted = 0;
+
+          function completedFn() {
+            numCompleted += 1;
+            if (numCompleted === 2) done();
+          };
+
+          var prom = loadjs('assets/file1.js', {
+            success: completedFn,
+            returnPromise: true
+          });
+
+          prom.then(completedFn);
+        });
+
+
+        it('supports Promises and bundle ready events', function (done) {
+          var numCompleted = 0;
+
+          function completedFn() {
+            numCompleted += 1;
+            if (numCompleted === 2) done();
+          };
+
+          loadjs('assets/file1.js', 'bundle1', { returnPromise: true })
+            .then(completedFn);
+
+          loadjs.ready('bundle1', completedFn);
+        });
+
       });
-
-      prom.then(completedFn);
-    });
-
-
-    it('supports Promises and bundle ready events', function (done) {
-      var numCompleted = 0;
-
-      function completedFn() {
-        numCompleted += 1;
-        if (numCompleted === 2) done();
-      };
-
-      loadjs('assets/file1.js', 'bundle1', { returnPromise: true })
-        .then(completedFn);
-
-      loadjs.ready('bundle1', completedFn);
-    });
+    }
   });
 });
 
@@ -927,8 +933,16 @@ describe('LoadJS tests', function () {
 function caniuseWebp() {
   var elem = document.createElement('canvas');
   if (!!(elem.getContext && elem.getContext('2d'))) {
-   return elem.toDataURL('image/webp').indexOf('data:image/webp') == 0;
+    return elem.toDataURL('image/webp').indexOf('data:image/webp') == 0;
   } else {
-   return false;
+    return false;
   }
+}
+
+function caniuseModule() {
+  return 'noModule' in document.createElement('script');
+}
+
+function caniusePromise() {
+  return typeof Promise !== "undefined";
 }

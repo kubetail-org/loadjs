@@ -104,8 +104,9 @@ function loadFile(path, callbackFn, args, numTries) {
       maxTries = (args.numRetries || 0) + 1,
       beforeCallbackFn = args.before || devnull,
       pathname = path.replace(/[\?|#].*$/, ''),
-      pathStripped = path.replace(/^(css|img)!/, ''),
+      pathStripped = path.replace(/^(css|img|module|nomodule)!/, ''),
       isLegacyIECss,
+      hasModuleSupport,
       e;
 
   numTries = numTries || 0;
@@ -132,8 +133,21 @@ function loadFile(path, callbackFn, args, numTries) {
   } else {
     // javascript
     e = doc.createElement('script');
-    e.src = path;
+    e.src = pathStripped;
     e.async = async === undefined ? true : async;
+
+    // handle es modules
+    // modern browsers:
+    //   module: add to dom with type="module"
+    //   nomodule: call success() callback without adding to dom
+    // legacy browsers:
+    //   module: call success() callback without adding to dom
+    //   nomodule: add to dom with default type ("text/javascript")
+    hasModuleSupport = 'noModule' in e;
+    if (/^module!/.test(pathname)) {
+      if (!hasModuleSupport) return callbackFn(path, 'l');
+      e.type = "module";
+    } else if (/^nomodule!/.test(pathname) && hasModuleSupport) return callbackFn(path, 'l');
   }
 
   e.onload = e.onerror = e.onbeforeload = function (ev) {
