@@ -187,6 +187,81 @@ describe('LoadJS tests', function () {
       });
     });
 
+    // tests for browsers with/without module support
+    if ('noModule' in document.createElement('script')) {
+      describe('module tests for browsers with module support', function () {
+
+        it('should support loading modules with "module!" modifier', function (done) {
+          loadjs(['module!assets/module1.js'], {
+            success: function () {
+              assert.equal(pathsLoaded['module1.js'], true);
+              done();
+            }
+          });
+        });
+
+
+        it('should call error callback on invalid module! path', function (done) {
+          loadjs(['module!assets/module-doesntexist.js'], {
+            success: function () {
+              throw "Executed success callback";
+            },
+            error: function (pathsNotFound) {
+              assert.equal(pathsNotFound.length, 1);
+              assert.equal(pathsNotFound[0], 'module!assets/module-doesntexist.js');
+              done();
+            }
+          });
+        });
+
+
+        it('should support bypassing loading files with "nomodule!" modifier', function (done) {
+          loadjs(['nomodule!assets/file1.js'], {
+            success: function () {
+              assert.equal(pathsLoaded['file1.js'], undefined);
+              done();
+            }
+          });
+        });
+      });
+    } else {
+      describe('module tests for browsers without module support', function () {
+
+        it('should support loading modules with "nomodule!" modifier', function (done) {
+          loadjs(['nomodule!assets/file1.js'], {
+            success: function () {
+              assert.equal(pathsLoaded['file1.js'], true);
+              done();
+            }
+          });
+        });
+
+
+        it('should call error callback on invalid nomodule! path', function (done) {
+          loadjs(['nomodule!assets/file-doesntexist.js'], {
+            success: function () {
+              throw "Executed success callback";
+            },
+            error: function (pathsNotFound) {
+              assert.equal(pathsNotFound.length, 1);
+              assert.equal(pathsNotFound[0], 'module!assets/file-doesntexist.js');
+              done();
+            }
+          });
+        });
+
+
+        it('should support bypassing loading files with "module!" modifier', function (done) {
+          loadjs(['module!assets/module1.js'], {
+            success: function () {
+              assert.equal(pathsLoaded['module1.js'], undefined);
+              done();
+            }
+          });
+        });
+      });
+    }
+    
 
     // Un-'x' this for testing ad blocked scripts.
     //   Ghostery: Disallow "Google Adservices"
@@ -194,23 +269,23 @@ describe('LoadJS tests', function () {
     //   custom filter under Options
     //
     xit('it should report ad blocked scripts as missing', function (done) {
-      var s1 = 'https://www.googletagservices.com/tag/js/gpt.js',
-        s2 = 'https://munchkin.marketo.net/munchkin-beta.js';
+        var s1 = 'https://www.googletagservices.com/tag/js/gpt.js',
+          s2 = 'https://munchkin.marketo.net/munchkin-beta.js';
 
-      loadjs([s1, s2, 'assets/file1.js'], {
-        success: function () {
-          throw new Error('Executed success callback');
-        },
-        error: function (pathsNotFound) {
-          assert.equal(pathsLoaded['file1.js'], true);
-          assert.equal(pathsNotFound.length, 2);
-          assert.equal(pathsNotFound[0], s1);
-          assert.equal(pathsNotFound[1], s2);
-          done();
-        }
+        loadjs([s1, s2, 'assets/file1.js'], {
+          success: function () {
+            throw new Error('Executed success callback');
+          },
+          error: function (pathsNotFound) {
+            assert.equal(pathsLoaded['file1.js'], true);
+            assert.equal(pathsNotFound.length, 2);
+            assert.equal(pathsNotFound[0], s1);
+            assert.equal(pathsNotFound[1], s2);
+            done();
+          }
+        });
       });
     });
-  });
 
 
   // ==========================================================================
@@ -244,7 +319,7 @@ describe('LoadJS tests', function () {
       }
     });
 
-  
+
     it('should load one file', function (done) {
       loadjs(['assets/file1.css'], {
         success: function () {
@@ -254,7 +329,7 @@ describe('LoadJS tests', function () {
       });
     });
 
-  
+
     it('should load multiple files', function (done) {
       loadjs(['assets/file1.css', 'assets/file2.css'], {
         success: function () {
@@ -402,7 +477,7 @@ describe('LoadJS tests', function () {
       });
     }
 
-  
+    
     it('should load one file', function (done) {
       loadjs(['assets/flash.png'], {
         success: function () {
@@ -412,7 +487,7 @@ describe('LoadJS tests', function () {
       });
     });
 
-  
+    
     it('should load multiple files', function (done) {
       loadjs(['assets/flash.png', 'assets/flash.jpg'], {
         success: function () {
@@ -423,9 +498,9 @@ describe('LoadJS tests', function () {
       });
     });
 
-  
+
     it('detects png|gif|jpg|svg extensions', function (done) {
-      var files = [
+      let files = [
         'assets/flash.png',
         'assets/flash.gif',
         'assets/flash.jpg',
@@ -557,15 +632,18 @@ describe('LoadJS tests', function () {
 
     if (caniuseWebp()) {
       describe('tests for browsers with webp support', function() {
+
         it('detects webp extensions', function (done) {
           loadjs('assets/flash.webp', function () {
             assertLoaded('assets/flash.webp');
             done();
           });
         });
+        
       });
     } else {
       describe('tests for browsers without webp support', function() {
+
         it('executes error callback when browser loads webp file', function (done) {
           loadjs('assets/flash.webp', {
             error: function(pathsNotFound) {
@@ -574,6 +652,7 @@ describe('LoadJS tests', function () {
             }
           });
         });
+
       });
     }
   });
