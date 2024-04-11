@@ -8,14 +8,14 @@
     "loader",
     "dependency manager"
   ],
-  "homepage": "https://github.com/muicss/loadjs",
+  "homepage": "https://github.com/kubetail-org/loadjs",
   "bugs": {
-    "url": "https://github.com/muicss/loadjs/issues",
-    "email": "contact@muicss.com"
+    "url": "https://github.com/kubetail-org/loadjs/issues",
+    "email": "hello@kubetail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/muicss/loadjs.git"
+    "url": "https://github.com/kubetail-org/loadjs.git"
   },
   "main": "dist/loadjs.umd.js",
   "scripts": {

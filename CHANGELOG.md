@@ -1,5 +1,9 @@
 # LoadJS Changelog
 
+## 4.3.0 - April, 11, 2024
+
+* Added support for module/nomodule path modifier (https://github.com/kubetail-org/loadjs/issues/108)
+
 ## 4.2.0 - December 1, 2019
 
 * Added support for .webp image extensions
@@ -15,7 +19,7 @@
 ## 3.6.1 - April 11, 2019
 
 * Upgraded devDependencies
-* Fixed issue with source code documentation (https://github.com/muicss/loadjs/issues/88)
+* Fixed issue with source code documentation (https://github.com/kubetail-org/loadjs/issues/88)
 
 ## 3.6.0 - March 14, 2019
 

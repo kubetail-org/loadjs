@@ -19,7 +19,7 @@
   ```bash
   $ git add . --all
   $ git commit -a -m "bumped version number"
-  $ git push origin master
+  $ git push origin main
   $ git tag <version-number>
   $ git push --tags
   ```
