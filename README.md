@@ -34,7 +34,7 @@ You can also use more advanced syntax for more options:
   loadjs(['/path/to/foo.js', '/path/to/bar.js'], 'foobar', {
     before: function(path, scriptEl) { /* execute code before fetch */ },
     async: true,  // load files synchronously or asynchronously (default: true)
-    numRetries: 3  // see caveats about using numRetries with async:false (default: 0),
+    numRetries: 3,  // see caveats about using numRetries with async:false (default: 0)
     returnPromise: false  // return Promise object (default: false)
   });
 
